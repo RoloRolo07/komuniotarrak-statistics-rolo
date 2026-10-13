@@ -3,420 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Komuniotarrak Hub</title>
+    <title>Estadísticas Komuniotarrak</title>
     <style>
         :root {
-            --bg: #0b0f19;
-            --surface: #111827;
-            --card: #1e293b;
-            --border: #334155;
-            --accent: #10b981;
-            --accent-glow: rgba(16, 185, 129, 0.2);
-            --gold: #f59e0b;
-            --danger: #ef4444;
-            --blue: #3b82f6;
-            --text: #f8fafc;
-            --muted: #94a3b8;
+            --bg: #0b0f19; --surface: #111827; --card: #1e293b; --border: #334155;
+            --accent: #10b981; --gold: #f59e0b; --danger: #ef4444; --text: #f8fafc; --muted: #94a3b8;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 60%);
-            color: var(--text);
-            min-height: 100vh;
-            padding-bottom: 40px;
-        }
-        /* CABECERA Y NAVEGACIÓN SUPERIOR */
-        header {
-            background: rgba(17, 24, 39, 0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-top {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 16px 20px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.35rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            background: linear-gradient(90deg, #34d399, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .badge-update {
-            font-size: 0.78rem;
-            background: #1e293b;
-            color: var(--muted);
-            padding: 5px 12px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-        }
-        .top-tabs {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            gap: 6px;
-            padding: 8px 16px 0;
-            overflow-x: auto;
-        }
-        .tab-btn {
-            background: transparent;
-            color: var(--muted);
-            border: none;
-            border-bottom: 3px solid transparent;
-            padding: 10px 18px;
-            font-size: 0.92rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .tab-btn:hover { color: var(--text); }
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-            background: linear-gradient(180deg, transparent, var(--accent-glow));
-        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 40px; }
+        
+        /* HEADER Y NAVEGACIÓN PRINCIPAL */
+        header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 20px 0; }
+        .header-top { max-width: 1100px; margin: 0 auto 16px; text-align: center; }
+        .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: 1px; background: linear-gradient(90deg, #34d399, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+        
+        .main-nav { display: flex; justify-content: center; gap: 10px; max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 2px; }
+        .main-tab { background: transparent; color: var(--muted); border: none; padding: 12px 24px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .main-tab:hover { color: var(--text); }
+        .main-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(16, 185, 129, 0.1); }
 
-        /* CONTENEDOR PRINCIPAL */
-        .container { max-width: 1000px; margin: 22px auto; padding: 0 16px; }
-        .tab-section { display: none; }
-        .tab-section.active { display: block; animation: fadeIn 0.25s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        /* SUB NAVEGACIÓN */
+        .sub-nav-container { background: #0f172a; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; padding: 10px 0; }
+        .sub-nav { display: none; justify-content: center; gap: 8px; max-width: 1100px; margin: 0 auto; overflow-x: auto; padding: 0 16px; }
+        .sub-nav.active { display: flex; }
+        .sub-tab { background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .sub-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-        /* TARJETAS Y GRIDS */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .card {
-            background: rgba(30, 41, 59, 0.75);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 18px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
-        }
-        .card-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #e2e8f0;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-            padding-bottom: 10px;
-        }
-        .mgr-card {
-            position: relative;
-            transition: transform 0.2s;
-        }
-        .mgr-card:hover { transform: translateY(-3px); border-color: #475569; }
-        .mgr-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .mgr-name { font-size: 1.1rem; font-weight: 800; }
-        .pts-pill {
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 0.85rem;
-        }
-        .kpi-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            padding: 6px 0;
-            border-bottom: 1px dashed rgba(255,255,255,0.06);
-        }
-        .kpi-label { color: var(--muted); }
-        .kpi-val { font-weight: 700; }
-        .pos { color: var(--accent); }
-        .neg { color: var(--danger); }
-        .progress-bar {
-            height: 7px;
-            background: #0f172a;
-            border-radius: 999px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981, #3b82f6);
-            border-radius: 999px;
-        }
+        /* CONTENEDOR Y TARJETAS */
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+        .section-content { display: none; animation: fadeIn 0.3s ease; }
+        .section-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .card-title { font-size: 1.1rem; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 14px; color: #e2e8f0; }
+        
+        /* DASHBOARD MANAGERS */
+        .grid-managers { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .mgr-header { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; margin-bottom: 8px; }
+        .kpi-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+        .val-pos { color: var(--accent); font-weight: 700; }
+        .val-neg { color: var(--danger); font-weight: 700; }
+        .alert-mini { background: rgba(239, 68, 68, 0.15); border-left: 3px solid var(--danger); padding: 8px; margin-top: 10px; font-size: 0.8rem; border-radius: 4px; }
+        .ok-mini { background: rgba(16, 185, 129, 0.1); border-left: 3px solid var(--accent); padding: 8px; margin-top: 10px; font-size: 0.8rem; border-radius: 4px; color: var(--muted); }
 
-        /* ALERTAS AUDITORÍA / VAR */
-        .alert-box {
-            background: rgba(15, 23, 42, 0.8);
-            border-left: 4px solid var(--accent);
-            padding: 12px 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .alert-box.danger { border-left-color: var(--danger); background: rgba(239, 68, 68, 0.08); }
-
-        /* TABLAS Y FILTROS */
-        .filters {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 12px;
-        }
-        .filter-btn {
-            background: #0f172a;
-            color: var(--muted);
-            border: 1px solid var(--border);
-            padding: 7px 14px;
-            border-radius: 999px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 800; }
-        .search-input {
-            width: 100%;
-            padding: 11px 15px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #0f172a;
-            color: #fff;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-        }
-        table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
-        th, td { padding: 11px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        th { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
-        tr:hover td { background: rgba(255,255,255,0.02); }
+        /* TABLAS Y BUSCADORES */
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: var(--muted); text-transform: uppercase; font-size: 0.75rem; background: rgba(0,0,0,0.2); }
+        .search-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: #0f172a; color: #fff; margin-bottom: 12px; }
+        .btn-filter-grp { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; }
+        .text-block { background: rgba(0,0,0,0.2); padding: 16px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="header-top">
-        <div class="brand">⚽ KOMUNIOTARRAK HUB</div>
-        <div class="badge-update">🕒 Actualizado: 13/10/2026 05:59</div>
+        <div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div>
+        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 11:07</div>
     </div>
-    <nav class="top-tabs">
-        <button class="tab-btn active" onclick="cambiarTab('tab-dashboard', this)">📊 Dashboard</button>
-        <button class="tab-btn" onclick="cambiarTab('tab-finanzas', this)">💰 Finanzas y Mercado</button>
-        <button class="tab-btn" onclick="cambiarTab('tab-catalogo', this)">🚀 Catálogo Pelotazos</button>
-        <button class="tab-btn" onclick="cambiarTab('tab-jornada', this)">🏆 Jornada y VAR</button>
-    </nav>
+    <!-- PESTAÑAS PRINCIPALES -->
+    <div class="main-nav">
+        <button class="main-tab active" onclick="setMainTab('diario')">📰 Diario</button>
+        <button class="main-tab" onclick="setMainTab('jornada')">🏆 Jornada</button>
+        <button class="main-tab" onclick="setMainTab('historico')">📚 Histórico</button>
+    </div>
 </header>
 
+<!-- SUB-PESTAÑAS -->
+<div class="sub-nav-container">
+    <!-- Sub-nav Diario -->
+    <div id="sub-diario" class="sub-nav active">
+        <button class="sub-tab active" onclick="setSubTab('diario', 'movimientos')">🔄 Movimientos</button>
+        <button class="sub-tab" onclick="setSubTab('diario', 'cuentas')">👤 Dashboard Manager</button>
+        <button class="sub-tab" onclick="setSubTab('diario', 'mercado')">📉 Subidas y Bajadas</button>
+        <button class="sub-tab" onclick="setSubTab('diario', 'latentes')">🚀 Latentes</button>
+    </div>
+    <!-- Sub-nav Jornada -->
+    <div id="sub-jornada" class="sub-nav">
+        <button class="sub-tab active" onclick="setSubTab('jornada', 'resultados')">🏅 Resultados</button>
+        <button class="sub-tab" onclick="setSubTab('jornada', 'alineaciones')">👕 Alineaciones</button>
+        <button class="sub-tab" onclick="setSubTab('jornada', 'var')">🚨 VAR</button>
+    </div>
+    <!-- Sub-nav Histórico -->
+    <div id="sub-historico" class="sub-nav">
+        <button class="sub-tab active" onclick="setSubTab('historico', 'evolucion')">📈 Evolución</button>
+        <button class="sub-tab" onclick="setSubTab('historico', 'cerradas')">💰 Op. Cerradas</button>
+    </div>
+</div>
+
 <div class="container">
-    <!-- PESTAÑA 1: DASHBOARD EJECUTIVO -->
-    <section id="tab-dashboard" class="tab-section active">
-        <div class="grid-cards" id="grid-managers"></div>
+    <!-- ==================== SECCIÓN: DIARIO ==================== -->
+    <div id="content-movimientos" class="section-content active">
         <div class="card">
-            <div class="card-title">🚨 Auditoría de Plantillas y Saldos (En Vivo)</div>
-            <div id="lista-alertas"></div>
+            <div class="card-title">🔄 Compras y Ventas Recientes</div>
+            <div class="text-block" id="bloque-movimientos">Cargando movimientos...</div>
         </div>
-    </section>
-
-    <!-- PESTAÑA 2: FINANZAS Y MERCADO -->
-    <section id="tab-finanzas" class="tab-section">
-        <div class="card" style="margin-bottom:16px;">
-            <div class="card-title">🏦 Comparativa Financiera de Mánagers</div>
+    </div>
+    
+    <div id="content-cuentas" class="section-content">
+        <div class="grid-managers" id="grid-dashboard"></div>
+    </div>
+    
+    <div id="content-mercado" class="section-content">
+        <div class="card">
+            <div class="card-title">📉 Top Variaciones de Mercado</div>
+            <div class="text-block" id="bloque-subidas">Cargando mercado...</div>
+        </div>
+    </div>
+    
+    <div id="content-latentes" class="section-content">
+        <div class="card">
+            <div class="card-title">🚀 Catálogo de Rentabilidad (En Plantilla)</div>
+            <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar jugador o mánager..." oninput="renderCatalogo()">
+            <div class="btn-filter-grp" id="filtros-catalogo"></div>
             <div style="overflow-x:auto;">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Mánager</th>
-                            <th>Patrimonio Total</th>
-                            <th>Valor Plantilla</th>
-                            <th>Saldo Líquido</th>
-                            <th>Puja Máx.</th>
-                            <th>Movimientos</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-finanzas-mgr"></tbody>
+                    <thead><tr><th>Jugador / Mánager</th><th>Compra</th><th>Actual</th><th>Pelotazo / Pufo</th></tr></thead>
+                    <tbody id="tabla-catalogo"></tbody>
                 </table>
             </div>
         </div>
-        <div class="card" id="card-estado-mercantil" style="display:none; line-height:1.65;">
-            <div class="card-title">📈 Informe de Especulación y Paguitas</div>
-            
-        </div>
-    </section>
+    </div>
 
-    <!-- PESTAÑA 3: CATÁLOGO TOTAL DE PELOTAZOS -->
-    <section id="tab-catalogo" class="tab-section">
+    <!-- ==================== SECCIÓN: JORNADA ==================== -->
+    <div id="content-resultados" class="section-content">
         <div class="card">
-            <div class="card-title">🚀 Catálogo Interactivo de Jugadores</div>
-            <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar jugador o mánager..." oninput="renderTablaCatalogo()">
-            <div class="filters" id="botones-managers"></div>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Jugador / Mánager</th>
-                            <th>Compra</th>
-                            <th>Valor Actual</th>
-                            <th>Pelotazo / Pufo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-jugadores"></tbody>
-                </table>
-            </div>
+            <div class="card-title">🏅 Clasificación y Crónica</div>
+            <div class="text-block">{'jornada<i>num': 10, 'fecha</i>cierre': '2026-10-13 11:06:38'}</div>
         </div>
-    </section>
+    </div>
+    <div id="content-alineaciones" class="section-content">
+        <div class="card"><div class="card-title">👕 Alineaciones y Once de Gala</div><div class="text-block muted">Próximamente...</div></div>
+    </div>
+    <div id="content-var" class="section-content">
+        <div class="card"><div class="card-title">🚨 Revisiones y Sanciones</div><div class="text-block muted">Próximamente...</div></div>
+    </div>
 
-    <!-- PESTAÑA 4: JORNADA Y VAR -->
-    <section id="tab-jornada" class="tab-section">
-        <div class="card" style="line-height:1.65;">
-            <div class="card-title">🏆 Crónica de la Jornada, Once de Gala y Alineaciones</div>
-            2026-10-13 07:58:41
+    <!-- ==================== SECCIÓN: HISTÓRICO ==================== -->
+    <div id="content-evolucion" class="section-content">
+        <div class="card"><div class="card-title">📈 Evolución de Equipos</div><div class="text-block muted">Módulo en construcción...</div></div>
+    </div>
+    <div id="content-cerradas" class="section-content">
+        <div class="card">
+            <div class="card-title">💰 Operaciones Cerradas (Paguitas y Especulación)</div>
+            <div class="text-block">Sin datos históricos recientes.</div>
         </div>
-    </section>
+    </div>
 </div>
 
 <script>
-    const managersData = [{"manager": "Rolo Tomasi", "valor_plantilla": 83250000, "presupuesto_liquido": -2868135, "patrimonio_total": 80381865, "puja_maxima": 17944365, "total_jugadores": 15, "compras_realizadas": 52, "ventas_realizadas": 37, "puntos": 541}, {"manager": "Alberto Garcia", "valor_plantilla": 74690000, "presupuesto_liquido": 2204300, "patrimonio_total": 76894300, "puja_maxima": 20876800, "total_jugadores": 17, "compras_realizadas": 40, "ventas_realizadas": 23, "puntos": 467}, {"manager": "Iñaki", "valor_plantilla": 46880000, "presupuesto_liquido": 9553083, "patrimonio_total": 56433083, "puja_maxima": 21273083, "total_jugadores": 17, "compras_realizadas": 50, "ventas_realizadas": 33, "puntos": 371}, {"manager": "Gorka Bartu", "valor_plantilla": 53320000, "presupuesto_liquido": 606326, "patrimonio_total": 53926326, "puja_maxima": 13936326, "total_jugadores": 14, "compras_realizadas": 69, "ventas_realizadas": 55, "puntos": 349}, {"manager": "Lord Rhal", "valor_plantilla": 50750000, "presupuesto_liquido": 4410467, "patrimonio_total": 55160467, "puja_maxima": 17097967, "total_jugadores": 13, "compras_realizadas": 38, "ventas_realizadas": 25, "puntos": 343}, {"manager": "Jon MARQUEZ PEREZ", "valor_plantilla": 50040000, "presupuesto_liquido": -788417, "patrimonio_total": 49251583, "puja_maxima": 11721583, "total_jugadores": 17, "compras_realizadas": 46, "ventas_realizadas": 29, "puntos": 298}];
-    const alertasData = ["👤 <b><b>Jon MARQUEZ PEREZ</b></b> (17 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -788.417 €<br>", "👤 <b><b>Rolo Tomasi</b></b> (15 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -2.868.135 €<br>", "👤 <b><b>Gorka Bartu</b></b> (14 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Lord Rhal</b></b> (13 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Alberto Garcia</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Iñaki</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>"];
+    const managers = [{"manager": "Rolo Tomasi", "valor_plantilla": 83250000, "presupuesto_liquido": -2868135, "patrimonio_total": 80381865, "puja_maxima": 17944365, "total_jugadores": 15, "compras_realizadas": 52, "ventas_realizadas": 37, "puntos": 541}, {"manager": "Alberto Garcia", "valor_plantilla": 74690000, "presupuesto_liquido": 2204300, "patrimonio_total": 76894300, "puja_maxima": 20876800, "total_jugadores": 17, "compras_realizadas": 40, "ventas_realizadas": 23, "puntos": 467}, {"manager": "Iñaki", "valor_plantilla": 46880000, "presupuesto_liquido": 9553083, "patrimonio_total": 56433083, "puja_maxima": 21273083, "total_jugadores": 17, "compras_realizadas": 50, "ventas_realizadas": 33, "puntos": 371}, {"manager": "Gorka Bartu", "valor_plantilla": 53320000, "presupuesto_liquido": 606326, "patrimonio_total": 53926326, "puja_maxima": 13936326, "total_jugadores": 14, "compras_realizadas": 69, "ventas_realizadas": 55, "puntos": 349}, {"manager": "Lord Rhal", "valor_plantilla": 50750000, "presupuesto_liquido": 4410467, "patrimonio_total": 55160467, "puja_maxima": 17097967, "total_jugadores": 13, "compras_realizadas": 38, "ventas_realizadas": 25, "puntos": 343}, {"manager": "Jon MARQUEZ PEREZ", "valor_plantilla": 50040000, "presupuesto_liquido": -788417, "patrimonio_total": 49251583, "puja_maxima": 11721583, "total_jugadores": 17, "compras_realizadas": 46, "ventas_realizadas": 29, "puntos": 298}];
+    const alertas = ["👤 <b><b>Jon MARQUEZ PEREZ</b></b> (17 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -788.417 €<br>", "👤 <b><b>Rolo Tomasi</b></b> (15 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -2.868.135 €<br>", "👤 <b><b>Gorka Bartu</b></b> (14 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Lord Rhal</b></b> (13 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Alberto Garcia</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Iñaki</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>"];
     const catalogo = [{"manager": "Iñaki", "jugador": "Julián Álvarez", "compra": 10000000, "actual": 10000000, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Iñaki", "jugador": "Íñigo Vicente", "compra": 5502000, "actual": 5502000, "dif": 0, "porc": 0.0, "fecha": "2026-07-28"}, {"manager": "Iñaki", "jugador": "Borja Iglesias", "compra": 8000004, "actual": 8000004, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Iñaki", "jugador": "Alberto Moleiro", "compra": 8000002, "actual": 8000002, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Iñaki", "jugador": "Laporte", "compra": 6666668, "actual": 6666668, "dif": 0, "porc": 0.0, "fecha": "2026-08-06"}, {"manager": "Iñaki", "jugador": "Guliashvili", "compra": 2000002, "actual": 2000002, "dif": 0, "porc": 0.0, "fecha": "2026-08-07"}, {"manager": "Iñaki", "jugador": "De Haas", "compra": 3260000, "actual": 3260000, "dif": 0, "porc": 0.0, "fecha": "2026-08-18"}, {"manager": "Iñaki", "jugador": "Pablo Ramón", "compra": 752100, "actual": 752100, "dif": 0, "porc": 0.0, "fecha": "2026-08-18"}, {"manager": "Iñaki", "jugador": "Jorge de Frutos", "compra": 8888889, "actual": 8888889, "dif": 0, "porc": 0.0, "fecha": "2026-08-19"}, {"manager": "Iñaki", "jugador": "Radu", "compra": 3250002, "actual": 3250002, "dif": 0, "porc": 0.0, "fecha": "2026-08-25"}, {"manager": "Iñaki", "jugador": "Sancet", "compra": 7741002, "actual": 7741002, "dif": 0, "porc": 0.0, "fecha": "2026-08-25"}, {"manager": "Iñaki", "jugador": "Adrián Niño", "compra": 2525000, "actual": 2525000, "dif": 0, "porc": 0.0, "fecha": "2026-08-26"}, {"manager": "Iñaki", "jugador": "Íñigo Arguibide", "compra": 1802000, "actual": 1802000, "dif": 0, "porc": 0.0, "fecha": "2026-09-05"}, {"manager": "Iñaki", "jugador": "Militão", "compra": 2222224, "actual": 2222224, "dif": 0, "porc": 0.0, "fecha": "2026-09-07"}, {"manager": "Iñaki", "jugador": "Ryan", "compra": 3140001, "actual": 3140001, "dif": 0, "porc": 0.0, "fecha": "2026-09-09"}, {"manager": "Iñaki", "jugador": "Bryan Zaragoza", "compra": 5000500, "actual": 5000500, "dif": 0, "porc": 0.0, "fecha": "2026-09-10"}, {"manager": "Iñaki", "jugador": "Aleix Febas", "compra": 1802001, "actual": 1802001, "dif": 0, "porc": 0.0, "fecha": "2026-09-29"}, {"manager": "Iñaki", "jugador": "Jon Martín", "compra": 2000003, "actual": 2000003, "dif": 0, "porc": 0.0, "fecha": "2026-10-11"}, {"manager": "Rolo Tomasi", "jugador": "Herrando", "compra": 555235, "actual": 555235, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Rolo Tomasi", "jugador": "Hugo Sotelo", "compra": 625789, "actual": 625789, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Rolo Tomasi", "jugador": "Villares", "compra": 1234856, "actual": 1234856, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Rolo Tomasi", "jugador": "Omar El Hilali", "compra": 1444444, "actual": 1444444, "dif": 0, "porc": 0.0, "fecha": "2026-07-27"}, {"manager": "Rolo Tomasi", "jugador": "Bellingham", "compra": 17759759, "actual": 17759759, "dif": 0, "porc": 0.0, "fecha": "2026-07-29"}, {"manager": "Rolo Tomasi", "jugador": "Djené", "compra": 759009, "actual": 759009, "dif": 0, "porc": 0.0, "fecha": "2026-08-01"}, {"manager": "Rolo Tomasi", "jugador": "Sivera", "compra": 3111111, "actual": 3111111, "dif": 0, "porc": 0.0, "fecha": "2026-08-06"}, {"manager": "Rolo Tomasi", "jugador": "Koke", "compra": 4555555, "actual": 4555555, "dif": 0, "porc": 0.0, "fecha": "2026-08-21"}, {"manager": "Rolo Tomasi", "jugador": "Lamine Yamal", "compra": 26259001, "actual": 26259001, "dif": 0, "porc": 0.0, "fecha": "2026-08-24"}, {"manager": "Rolo Tomasi", "jugador": "Rodrigo Riquelme", "compra": 2971009, "actual": 2971009, "dif": 0, "porc": 0.0, "fecha": "2026-08-29"}, {"manager": "Rolo Tomasi", "jugador": "Aitor Ruibal", "compra": 859859, "actual": 859859, "dif": 0, "porc": 0.0, "fecha": "2026-09-01"}, {"manager": "Rolo Tomasi", "jugador": "Moi Gómez", "compra": 1459459, "actual": 1459459, "dif": 0, "porc": 0.0, "fecha": "2026-09-06"}, {"manager": "Rolo Tomasi", "jugador": "Olasagasti", "compra": 3539009, "actual": 3539009, "dif": 0, "porc": 0.0, "fecha": "2026-09-12"}, {"manager": "Rolo Tomasi", "jugador": "Edu Expósito", "compra": 5111111, "actual": 5111111, "dif": 0, "porc": 0.0, "fecha": "2026-09-16"}, {"manager": "Rolo Tomasi", "jugador": "Adrián Rodríguez", "compra": 176009, "actual": 176009, "dif": 0, "porc": 0.0, "fecha": "2026-09-16"}, {"manager": "Rolo Tomasi", "jugador": "Konaté", "compra": 7359009, "actual": 7359009, "dif": 0, "porc": 0.0, "fecha": "2026-09-25"}, {"manager": "Rolo Tomasi", "jugador": "Lucas Boyé", "compra": 6330009, "actual": 6330009, "dif": 0, "porc": 0.0, "fecha": "2026-10-06"}, {"manager": "Rolo Tomasi", "jugador": "Hancko", "compra": 4902009, "actual": 4902009, "dif": 0, "porc": 0.0, "fecha": "2026-10-10"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Zakharyan", "compra": 350000, "actual": 350000, "dif": 0, "porc": 0.0, "fecha": "2026-07-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Jon Moncayola", "compra": 2000000, "actual": 2000000, "dif": 0, "porc": 0.0, "fecha": "2026-07-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Le Normand", "compra": 2200000, "actual": 2200000, "dif": 0, "porc": 0.0, "fecha": "2026-07-30"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Antonio Blanco", "compra": 2200000, "actual": 2200000, "dif": 0, "porc": 0.0, "fecha": "2026-08-10"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Jonny", "compra": 1650009, "actual": 1650009, "dif": 0, "porc": 0.0, "fecha": "2026-08-12"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Vinícius Júnior", "compra": 23310009, "actual": 23310009, "dif": 0, "porc": 0.0, "fecha": "2026-08-13"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Quagliata", "compra": 2000000, "actual": 2000000, "dif": 0, "porc": 0.0, "fecha": "2026-08-24"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Álex Berenguer", "compra": 3600000, "actual": 3600000, "dif": 0, "porc": 0.0, "fecha": "2026-09-04"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Santiago Mouriño", "compra": 2830000, "actual": 2830000, "dif": 0, "porc": 0.0, "fecha": "2026-09-14"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Andrés García", "compra": 1950000, "actual": 1950000, "dif": 0, "porc": 0.0, "fecha": "2026-09-16"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Sucic", "compra": 4100000, "actual": 4100000, "dif": 0, "porc": 0.0, "fecha": "2026-09-20"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "David Larrubia", "compra": 3250000, "actual": 3250000, "dif": 0, "porc": 0.0, "fecha": "2026-09-20"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Hjulmand", "compra": 5730000, "actual": 5730000, "dif": 0, "porc": 0.0, "fecha": "2026-09-21"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Alfonso Herrero", "compra": 2650000, "actual": 2650000, "dif": 0, "porc": 0.0, "fecha": "2026-09-24"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Ander Barrenetxea", "compra": 3500000, "actual": 3500000, "dif": 0, "porc": 0.0, "fecha": "2026-09-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Alemao", "compra": 1680000, "actual": 1680000, "dif": 0, "porc": 0.0, "fecha": "2026-09-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Villalibre", "compra": 710000, "actual": 710000, "dif": 0, "porc": 0.0, "fecha": "2026-10-01"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Ugrinic", "compra": 770000, "actual": 770000, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Huijsen", "compra": 4510000, "actual": 4510000, "dif": 0, "porc": 0.0, "fecha": "2026-10-10"}, {"manager": "Alberto Garcia", "jugador": "Le Normand", "compra": 1518000, "actual": 1518000, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Alberto Garcia", "jugador": "Aïssa Mandi", "compra": 1390000, "actual": 1390000, "dif": 0, "porc": 0.0, "fecha": "2026-07-29"}, {"manager": "Alberto Garcia", "jugador": "Jon Moncayola", "compra": 1780000, "actual": 1780000, "dif": 0, "porc": 0.0, "fecha": "2026-07-30"}, {"manager": "Alberto Garcia", "jugador": "Tchouaméni", "compra": 8217000, "actual": 8217000, "dif": 0, "porc": 0.0, "fecha": "2026-08-02"}, {"manager": "Alberto Garcia", "jugador": "Álvaro Valles", "compra": 3300100, "actual": 3300100, "dif": 0, "porc": 0.0, "fecha": "2026-08-04"}, {"manager": "Alberto Garcia", "jugador": "Nsongo", "compra": 3890000, "actual": 3890000, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Alberto Garcia", "jugador": "Danjuma", "compra": 1330000, "actual": 1330000, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Alberto Garcia", "jugador": "Kang-In Lee", "compra": 7744000, "actual": 7744000, "dif": 0, "porc": 0.0, "fecha": "2026-08-07"}, {"manager": "Alberto Garcia", "jugador": "Matías Dituro", "compra": 2279000, "actual": 2279000, "dif": 0, "porc": 0.0, "fecha": "2026-08-18"}, {"manager": "Alberto Garcia", "jugador": "Adrián de la Fuente", "compra": 3511000, "actual": 3511000, "dif": 0, "porc": 0.0, "fecha": "2026-08-27"}, {"manager": "Alberto Garcia", "jugador": "Gabriel Suazo", "compra": 2190000, "actual": 2190000, "dif": 0, "porc": 0.0, "fecha": "2026-08-28"}, {"manager": "Alberto Garcia", "jugador": "Rüdiger", "compra": 3040000, "actual": 3040000, "dif": 0, "porc": 0.0, "fecha": "2026-09-12"}, {"manager": "Alberto Garcia", "jugador": "Marcos Llorente", "compra": 6200000, "actual": 6200000, "dif": 0, "porc": 0.0, "fecha": "2026-09-15"}, {"manager": "Alberto Garcia", "jugador": "Isco", "compra": 8655000, "actual": 8655000, "dif": 0, "porc": 0.0, "fecha": "2026-09-19"}, {"manager": "Alberto Garcia", "jugador": "Pape Gueye", "compra": 8450000, "actual": 8450000, "dif": 0, "porc": 0.0, "fecha": "2026-09-23"}, {"manager": "Alberto Garcia", "jugador": "Aitor Mañas", "compra": 350000, "actual": 350000, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Alberto Garcia", "jugador": "Guedes", "compra": 4600000, "actual": 4600000, "dif": 0, "porc": 0.0, "fecha": "2026-10-11"}, {"manager": "Alberto Garcia", "jugador": "Koundé", "compra": 2563000, "actual": 2563000, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Gorka Bartu", "jugador": "Logan Costa", "compra": 666666, "actual": 666666, "dif": 0, "porc": 0.0, "fecha": "2026-07-26"}, {"manager": "Gorka Bartu", "jugador": "Budimir", "compra": 12501000, "actual": 12501000, "dif": 0, "porc": 0.0, "fecha": "2026-08-02"}, {"manager": "Gorka Bartu", "jugador": "Nico Williams", "compra": 14551551, "actual": 14551551, "dif": 0, "porc": 0.0, "fecha": "2026-08-12"}, {"manager": "Gorka Bartu", "jugador": "Sergi Cardona", "compra": 1080000, "actual": 1080000, "dif": 0, "porc": 0.0, "fecha": "2026-09-04"}, {"manager": "Gorka Bartu", "jugador": "Nathan Saliba", "compra": 2010101, "actual": 2010101, "dif": 0, "porc": 0.0, "fecha": "2026-09-05"}, {"manager": "Gorka Bartu", "jugador": "Leo Román", "compra": 3651000, "actual": 3651000, "dif": 0, "porc": 0.0, "fecha": "2026-09-09"}, {"manager": "Gorka Bartu", "jugador": "Yangel Herrera", "compra": 3501000, "actual": 3501000, "dif": 0, "porc": 0.0, "fecha": "2026-09-10"}, {"manager": "Gorka Bartu", "jugador": "Unai Marrero", "compra": 201000, "actual": 201000, "dif": 0, "porc": 0.0, "fecha": "2026-09-18"}, {"manager": "Gorka Bartu", "jugador": "Lejeune", "compra": 3081000, "actual": 3081000, "dif": 0, "porc": 0.0, "fecha": "2026-09-19"}, {"manager": "Gorka Bartu", "jugador": "Sorloth", "compra": 4155555, "actual": 4155555, "dif": 0, "porc": 0.0, "fecha": "2026-09-19"}, {"manager": "Gorka Bartu", "jugador": "Jesús Areso", "compra": 2001001, "actual": 2001001, "dif": 0, "porc": 0.0, "fecha": "2026-09-22"}, {"manager": "Gorka Bartu", "jugador": "Nelson Deossa", "compra": 3010101, "actual": 3010101, "dif": 0, "porc": 0.0, "fecha": "2026-09-23"}, {"manager": "Gorka Bartu", "jugador": "Rosier", "compra": 451000, "actual": 451000, "dif": 0, "porc": 0.0, "fecha": "2026-09-24"}, {"manager": "Gorka Bartu", "jugador": "Oyarzabal", "compra": 11151000, "actual": 11151000, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Gorka Bartu", "jugador": "Peio Canales", "compra": 4001001, "actual": 4001001, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Lord Rhal", "jugador": "Antony", "compra": 12501009, "actual": 12501009, "dif": 0, "porc": 0.0, "fecha": "2026-07-28"}, {"manager": "Lord Rhal", "jugador": "Abde Ezzalzouli", "compra": 12000109, "actual": 12000109, "dif": 0, "porc": 0.0, "fecha": "2026-07-29"}, {"manager": "Lord Rhal", "jugador": "Pablo Ibáñez", "compra": 1380009, "actual": 1380009, "dif": 0, "porc": 0.0, "fecha": "2026-07-30"}, {"manager": "Lord Rhal", "jugador": "Kike Salas", "compra": 4001390, "actual": 4001390, "dif": 0, "porc": 0.0, "fecha": "2026-08-01"}, {"manager": "Lord Rhal", "jugador": "Javi Puado", "compra": 2509909, "actual": 2509909, "dif": 0, "porc": 0.0, "fecha": "2026-08-04"}, {"manager": "Lord Rhal", "jugador": "David Soria", "compra": 4699009, "actual": 4699009, "dif": 0, "porc": 0.0, "fecha": "2026-09-06"}, {"manager": "Lord Rhal", "jugador": "Juan Iglesias", "compra": 1739009, "actual": 1739009, "dif": 0, "porc": 0.0, "fecha": "2026-09-11"}, {"manager": "Lord Rhal", "jugador": "Yoel Lago", "compra": 1559009, "actual": 1559009, "dif": 0, "porc": 0.0, "fecha": "2026-09-14"}, {"manager": "Lord Rhal", "jugador": "Ilaix Moriba", "compra": 1841009, "actual": 1841009, "dif": 0, "porc": 0.0, "fecha": "2026-09-20"}, {"manager": "Lord Rhal", "jugador": "Fer Niño", "compra": 6113099, "actual": 6113099, "dif": 0, "porc": 0.0, "fecha": "2026-09-23"}, {"manager": "Lord Rhal", "jugador": "Johaneko", "compra": 1730009, "actual": 1730009, "dif": 0, "porc": 0.0, "fecha": "2026-10-01"}, {"manager": "Lord Rhal", "jugador": "Pepelu", "compra": 2531009, "actual": 2531009, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}, {"manager": "Lord Rhal", "jugador": "Carlos Romero", "compra": 2079009, "actual": 2079009, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}, {"manager": "Mánager 1", "jugador": "Pedri", "compra": 14357000, "actual": 14357000, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Mánager 1", "jugador": "Josan", "compra": 318800, "actual": 318800, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Mánager 1", "jugador": "Gorrotxategi", "compra": 751200, "actual": 751200, "dif": 0, "porc": 0.0, "fecha": "2026-10-06"}, {"manager": "Mánager 1", "jugador": "Yago Santiago", "compra": 178300, "actual": 178300, "dif": 0, "porc": 0.0, "fecha": "2026-10-06"}, {"manager": "Mánager 1", "jugador": "Buchanan", "compra": 2353500, "actual": 2353500, "dif": 0, "porc": 0.0, "fecha": "2026-10-07"}, {"manager": "Mánager 1", "jugador": "Renato Veiga", "compra": 4990000, "actual": 4990000, "dif": 0, "porc": 0.0, "fecha": "2026-10-07"}, {"manager": "Mánager 1", "jugador": "Sergio Camello", "compra": 13035200, "actual": 13035200, "dif": 0, "porc": 0.0, "fecha": "2026-10-07"}, {"manager": "Mánager 1", "jugador": "Cucurella", "compra": 8792700, "actual": 8792700, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Miguel Sierra", "compra": 5691000, "actual": 5691000, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Eric García", "compra": 6198000, "actual": 6198000, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Fermín López", "compra": 15212900, "actual": 15212900, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Lookman", "compra": 9812600, "actual": 9812600, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Rockson Yeboah", "compra": 1140200, "actual": 1140200, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Alexander-Arnold", "compra": 2476800, "actual": 2476800, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Guridi", "compra": 967000, "actual": 967000, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Dmitrovic", "compra": 1941100, "actual": 1941100, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Nicolas Pépé", "compra": 8541200, "actual": 8541200, "dif": 0, "porc": 0.0, "fecha": "2026-10-11"}, {"manager": "Mánager 1", "jugador": "Kubo", "compra": 2512900, "actual": 2512900, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Mánager 1", "jugador": "Marcos Fernández", "compra": 2408300, "actual": 2408300, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Mánager 1", "jugador": "Mariano Díaz", "compra": 4591900, "actual": 4591900, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Mánager 1", "jugador": "Luis Rioja", "compra": 1503400, "actual": 1503400, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}, {"manager": "Mánager 1", "jugador": "César Tárrega", "compra": 1424400, "actual": 1424400, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}];
-    let managerSeleccionado = 'TODOS';
+    const textosDiarios = [];
+    
+    let currentMain = 'diario';
+    let currentSub = { 'diario': 'movimientos', 'jornada': 'resultados', 'historico': 'evolucion' };
+    let mgrFilter = 'TODOS';
 
-    function cambiarTab(tabId, btn) {
-        document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    function fmtE(n) { return Number(n).toLocaleString('es-ES') + ' €'; }
+    function fmtM(n) { return (n < 0 ? '-' : '') + (Math.abs(n) / 1000000).toFixed(2) + ' M€'; }
+
+    // NAVEGACIÓN
+    function setMainTab(tab) {
+        currentMain = tab;
+        document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        document.querySelectorAll('.sub-nav').forEach(n => n.classList.remove('active'));
+        document.getElementById('sub-' + tab).classList.add('active');
+        
+        showContent(currentSub[tab]);
     }
 
-    function fmtEur(n) {
-        return Number(n).toLocaleString('es-ES') + ' €';
+    function setSubTab(parent, target) {
+        currentSub[parent] = target;
+        const subNav = document.getElementById('sub-' + parent);
+        subNav.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        showContent(target);
     }
 
-    function fmtMillones(n) {
-        const signo = n < 0 ? '-' : '';
-        return signo + (Math.abs(n) / 1000000).toFixed(2) + ' M€';
+    function showContent(id) {
+        document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+        document.getElementById('content-' + id).classList.add('active');
     }
 
+    // RENDER DASHBOARD MANAGER
     function renderDashboard() {
-        const grid = document.getElementById('grid-managers');
-        if (managersData && managersData.length) {
-            const ordenados = [...managersData].sort((a, b) => (b.puntos || 0) - (a.puntos || 0));
-            const maxPat = Math.max(...ordenados.map(m => m.patrimonio_total || 1));
-            const medallas = ['🥇', '🥈', '🥉', '4º', '5º', '6º'];
+        const grid = document.getElementById('grid-dashboard');
+        if (!managers.length) return grid.innerHTML = '<p class="muted">No hay datos de mánagers.</p>';
+        
+        grid.innerHTML = managers.map(m => {
+            const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg';
+            // Buscar si este manager tiene infracciones en la lista de alertas
+            const suAlerta = alertas.find(a => a.includes(m.manager));
+            const alertaHTML = suAlerta 
+                ? `<div class="alert-mini">⚠️ ${suAlerta.replace(/<[^>]*>?/gm, '').substring(0, 80)}...</div>` 
+                : `<div class="ok-mini">✅ Sin incidencias</div>`;
 
-            grid.innerHTML = ordenados.map((m, idx) => {
-                const saldoClass = m.presupuesto_liquido >= 0 ? 'pos' : 'neg';
-                const pctBarra = Math.max(10, Math.round(((m.patrimonio_total || 0) / maxPat) * 100));
-                return `<div class="card mgr-card">
-                    <div class="mgr-header">
-                        <div class="mgr-name">${medallas[idx] || '👤'} ${m.manager}</div>
-                        <div class="pts-pill">⭐ ${m.puntos} pts</div>
-                    </div>
-                    <div class="kpi-row"><span class="kpi-label">🏛️ Patrimonio Total</span><span class="kpi-val">${fmtMillones(m.patrimonio_total)}</span></div>
-                    <div class="kpi-row"><span class="kpi-label">👕 Valor Plantilla (${m.total_jugadores} jug.)</span><span class="kpi-val">${fmtMillones(m.valor_plantilla)}</span></div>
-                    <div class="kpi-row"><span class="kpi-label">💵 Saldo en Caja</span><span class="kpi-val ${saldoClass}">${fmtEur(m.presupuesto_liquido)}</span></div>
-                    <div class="kpi-row"><span class="kpi-label">🔨 Puja Máxima</span><span class="kpi-val" style="color:#f59e0b">${fmtMillones(m.puja_maxima)}</span></div>
-                    <div class="kpi-row"><span class="kpi-label">🔄 Operaciones</span><span class="kpi-val">${m.compras_realizadas} compras / ${m.ventas_realizadas} ventas</span></div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:${pctBarra}%"></div></div>
-                </div>`;
-            }).join('');
-
-            // Tabla comparativa en pestaña Finanzas
-            const porPatrimonio = [...managersData].sort((a, b) => (b.patrimonio_total || 0) - (a.patrimonio_total || 0));
-            document.getElementById('tabla-finanzas-mgr').innerHTML = porPatrimonio.map((m, i) => {
-                const sClass = m.presupuesto_liquido >= 0 ? 'pos' : 'neg';
-                return `<tr>
-                    <td><b>${i+1}. ${m.manager}</b> <small style="color:#94a3b8">(${m.total_jugadores} jug)</small></td>
-                    <td><b>${fmtEur(m.patrimonio_total)}</b></td>
-                    <td>${fmtEur(m.valor_plantilla)}</td>
-                    <td class="${sClass}">${fmtEur(m.presupuesto_liquido)}</td>
-                    <td style="color:#f59e0b; font-weight:700;">${fmtEur(m.puja_maxima)}</td>
-                    <td>🟢 ${m.compras_realizadas} / 🔴 ${m.ventas_realizadas}</td>
-                </tr>`;
-            }).join('');
-        }
-
-        const contAlertas = document.getElementById('lista-alertas');
-        if (alertasData && alertasData.length) {
-            contAlertas.innerHTML = alertasData.map(a => {
-                const esPeligro = a.includes('INFRACCIÓN') || a.includes('NEGATIVO') || a.includes('ALERTA');
-                return `<div class="alert-box ${esPeligro ? 'danger' : ''}">${a}</div>`;
-            }).join('');
-        } else {
-            contAlertas.innerHTML = "<p style='color:#94a3b8;'>Todo en orden.</p>";
-        }
-    }
-
-    function inicializarCatalogo() {
-        const managers = ['TODOS', ...new Set(catalogo.map(item => item.manager))];
-        const cont = document.getElementById('botones-managers');
-        cont.innerHTML = managers.map(m => 
-            `<button class="filter-btn ${m === 'TODOS' ? 'active' : ''}" onclick="filtrarManager('${m}', this)">${m}</button>`
-        ).join('');
-        renderTablaCatalogo();
-    }
-
-    function filtrarManager(m, btn) {
-        managerSeleccionado = m;
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderTablaCatalogo();
-    }
-
-    function renderTablaCatalogo() {
-        const query = document.getElementById('buscador').value.toLowerCase();
-        const tbody = document.getElementById('tabla-jugadores');
-        const filtrados = catalogo.filter(item => {
-            const coincideManager = (managerSeleccionado === 'TODOS' || item.manager === managerSeleccionado);
-            const coincideTexto = item.jugador.toLowerCase().includes(query) || item.manager.toLowerCase().includes(query);
-            return coincideManager && coincideTexto;
-        });
-
-        if (!filtrados.length) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:18px;">No hay datos de jugadores cargados o que coincidan con el filtro.</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = filtrados.map(item => {
-            const clase = item.dif >= 0 ? 'pos' : 'neg';
-            const signo = item.dif > 0 ? '+' : '';
-            return `<tr>
-                <td><b>${item.jugador}</b><br><small style="color:#94a3b8">${item.manager}</small></td>
-                <td>${fmtMillones(item.compra)}</td>
-                <td>${fmtMillones(item.actual)}</td>
-                <td class="${clase}">${signo}${fmtMillones(item.dif)} <small>(${signo}${item.porc}%)</small></td>
-            </tr>`;
+            return `<div class="card">
+                <div class="mgr-header"><span>👤 ${m.manager}</span></div>
+                <div class="kpi-row"><span class="muted">👕 Valor Plantilla</span><span class="val-pos">${fmtE(m.valor_plantilla)}</span></div>
+                <div class="kpi-row"><span class="muted">💵 Banco (Saldo)</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div>
+                ${alertaHTML}
+            </div>`;
         }).join('');
     }
 
+    // RENDER LATENTES
+    function initCatalogo() {
+        const mNames = ['TODOS', ...new Set(catalogo.map(i => i.manager))];
+        document.getElementById('filtros-catalogo').innerHTML = mNames.map(m => 
+            `<button class="sub-tab ${m === 'TODOS' ? 'active' : ''}" onclick="filterCat('${m}', this)">${m}</button>`
+        ).join('');
+        renderCatalogo();
+    }
+    
+    function filterCat(m, btn) {
+        mgrFilter = m;
+        document.getElementById('filtros-catalogo').querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCatalogo();
+    }
+
+    function renderCatalogo() {
+        const q = document.getElementById('buscador').value.toLowerCase();
+        const f = catalogo.filter(i => (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q)));
+        
+        document.getElementById('tabla-catalogo').innerHTML = f.length ? f.map(i => {
+            const c = i.dif >= 0 ? 'val-pos' : 'val-neg';
+            const s = i.dif > 0 ? '+' : '';
+            return `<tr>
+                <td><b>${i.jugador}</b><br><small class="muted">${i.manager}</small></td>
+                <td>${fmtM(i.compra)}</td><td>${fmtM(i.actual)}</td>
+                <td class="${c}">${s}${fmtM(i.dif)} <small>(${s}${i.porc}%)</small></td>
+            </tr>`;
+        }).join('') : '<tr><td colspan="4" style="text-align:center;" class="muted">Sin resultados</td></tr>';
+    }
+
+    // REPARTO DE TEXTOS DIARIOS TEMPORAL
+    function repartirTextos() {
+        if(textosDiarios.length > 0) {
+            // De momento volcamos los textos en movimientos y mercado para no perder info
+            document.getElementById('bloque-movimientos').innerHTML = textosDiarios.join('<br><br>');
+            document.getElementById('bloque-subidas').innerHTML = "<i>Nota: En próximas versiones filtraremos aquí solo los tops del mercado. Revisa movimientos por ahora.</i>";
+        }
+    }
+
     renderDashboard();
-    inicializarCatalogo();
+    initCatalogo();
+    repartirTextos();
 </script>
 </body>
 </html>
