@@ -57,6 +57,9 @@
         th { color: var(--muted); text-transform: uppercase; font-size: 0.75rem; background: rgba(0,0,0,0.2); }
         tr:hover td { background: rgba(255,255,255,0.02); }
         
+        /* TABLA COMPACTA PARA EL DASHBOARD MANAGER */
+        .tabla-compacta th, .tabla-compacta td { padding: 4px 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        
         .search-input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: #111827; color: var(--white); margin-bottom: 16px; font-size: 0.9rem; }
         .btn-filter-grp { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 8px; }
         .btn-filter { background: #374151; color: #d1d5db; border: none; padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
@@ -70,7 +73,7 @@
 <header>
     <div class="header-top">
         <div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div>
-        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 12:29</div>
+        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 12:47</div>
     </div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
@@ -101,7 +104,7 @@
     <!-- DIARIO -->
     <div id="content-movimientos" class="section-content active">
         <div class="card">
-            <div class="text-block" id="bloque-movimientos"><div style='font-size: 1.1rem; margin-bottom: 8px;'>🛒 <b>COMPRAS:</b></div><ul style='list-style-type: none; padding-left: 8px;'><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> ha fichado a <b>Pepelu</b> por 2.531.009 €, gastando <span style='color:var(--danger)'>1.009 € más</span> sobre su valor original (2.530.000 €).</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> ha fichado a <b>Carlos Romero</b> por 2.079.009 €, gastando <span style='color:var(--danger)'>9.009 € más</span> sobre su valor original (2.070.000 €).</li></ul><br><div style='font-size: 1.1rem; margin-bottom: 8px;'>💰 <b>VENTAS:</b></div><div style='margin-bottom: 4px; color:var(--muted); padding-left: 8px;'><i>Ayer:</i></div><ul style='list-style-type: none; padding-left: 16px;'><li style='margin-bottom:8px;'>• <b>Iñaki</b> vendió a <b>Kubo</b> por 2.512.900 €. Lo compró por 2.202.000 € <span style='color:var(--accent)'>[ Ganando 310.900 €]</span>.</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> vendió a <b>Marcos Fernández</b> por 2.408.300 €. Lo compró por 839.909 € <span style='color:var(--accent)'>[ Ganando 1.568.391 €]</span>.</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> vendió a <b>Mariano Díaz</b> por 4.591.900 €. Lo compró por 5.859.009 € <span style='color:var(--danger)'>[ Perdiendo 1.267.109 €]</span>.</li></ul><br><div style='margin-bottom: 4px; color:var(--muted); padding-left: 8px;'><i>Hoy:</i></div><ul style='list-style-type: none; padding-left: 16px;'><li style='margin-bottom:8px;'>• <b>Gorka Bartu</b> ha vendido a <b>Luis Rioja</b> por 1.503.400 €. Lo compró por 1.440.000 € <span style='color:var(--accent)'>[ Ganando 63.400 €]</span>.</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> ha vendido a <b>César Tárrega</b> por 1.424.400 €. Lo compró por 940.001 € <span style='color:var(--accent)'>[ Ganando 484.399 €]</span>.</li></ul></div>
+            <div class="text-block" id="bloque-movimientos"><div style='font-size: 1.1rem; margin-bottom: 8px;'>🛒 <b>COMPRAS:</b></div><ul style='list-style-type: none; padding-left: 8px;'><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> ha fichado a <b>Pepelu</b> por 2.531.009 €, gastando <span style='color:var(--danger)'>1.009 € más</span> sobre su valor original (2.530.000 €).</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> ha fichado a <b>Carlos Romero</b> por 2.079.009 €, gastando <span style='color:var(--danger)'>9.009 € más</span> sobre su valor original (2.070.000 €).</li></ul><br><div style='font-size: 1.1rem; margin-bottom: 8px;'>💰 <b>VENTAS:</b></div><div style='margin-bottom: 4px; color:var(--muted); padding-left: 8px;'><i>Ayer:</i></div><ul style='list-style-type: none; padding-left: 16px;'><li style='margin-bottom:8px;'>• <b>Iñaki</b> vendió a <b>Kubo</b> por 2.512.900 €. Lo compró por 2.202.000 € <span style='color:var(--accent)'>[ Ganando 310.900 € ]</span>.</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> vendió a <b>Marcos Fernández</b> por 2.408.300 €. Lo compró por 839.909 € <span style='color:var(--accent)'>[ Ganando 1.568.391 € 🔥 ]</span>.</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> vendió a <b>Mariano Díaz</b> por 4.591.900 €. Lo compró por 5.859.009 € <span style='color:var(--danger)'>[ Perdiendo 1.267.109 € 💥 ]</span>.</li></ul><br><div style='margin-bottom: 4px; color:var(--muted); padding-left: 8px;'><i>Hoy:</i></div><ul style='list-style-type: none; padding-left: 16px;'><li style='margin-bottom:8px;'>• <b>Gorka Bartu</b> ha vendido a <b>Luis Rioja</b> por 1.503.400 €. Lo compró por 1.440.000 € <span style='color:var(--accent)'>[ Ganando 63.400 € ]</span>.</li><li style='margin-bottom:8px;'>• <b>Lord Rhal</b> ha vendido a <b>César Tárrega</b> por 1.424.400 €. Lo compró por 940.001 € <span style='color:var(--accent)'>[ Ganando 484.399 € ]</span>.</li></ul></div>
         </div>
     </div>
     
@@ -110,8 +113,8 @@
     </div>
     
     <div id="content-mercado" class="section-content">
-        <div class="card" style="margin-bottom: 0; background: transparent; border: none; padding: 0; box-shadow: none;">
-            <div class="card-title">📉 Subidas y bajadas del día</div>
+        <div style="margin-bottom: 0; background: transparent; border: none; padding: 0; box-shadow: none;">
+            <input type="text" id="buscador-mercado" class="search-input" placeholder="🔍 Buscar jugador..." oninput="renderMercado()">
             <div class="btn-filter-grp" id="filtros-mercado"></div>
             
             <div id="mercado-dinamico">
@@ -121,7 +124,7 @@
     </div>
     
     <div id="content-latentes" class="section-content">
-        <div class="card" style="margin-bottom: 0; background: transparent; border: none; padding: 0; box-shadow: none;">
+        <div style="margin-bottom: 0; background: transparent; border: none; padding: 0; box-shadow: none;">
             <input type="text" id="buscador" class="search-input" placeholder="🔍 Buscar jugador..." oninput="renderCatalogo()">
             <div class="btn-filter-grp" id="filtros-catalogo"></div>
             
@@ -147,7 +150,7 @@
     <div id="content-resultados" class="section-content">
         <div class="card">
             <div class="card-title">🏅 Clasificación y Crónica</div>
-            <div class="text-block">{'jornada<i>num': 10, 'fecha</i>cierre': '2026-10-13 12:27:47'}</div>
+            <div class="text-block">{'jornada<i>num': 10, 'fecha</i>cierre': '2026-10-13 12:46:23'}</div>
         </div>
     </div>
     <div id="content-alineaciones" class="section-content">
@@ -251,40 +254,66 @@
 
     function renderMercado() {
         const cont = document.getElementById('mercado-dinamico');
+        const q = document.getElementById('buscador-mercado').value.toLowerCase();
+        
         if (!mercado_full || mercado_full.length === 0) {
             cont.innerHTML = '<div class="card text-block"><i>⚖️ Sin variaciones destacables en el mercado hoy.</i></div>';
             return;
         }
 
         if (mercFilter === 'TOP 5') {
-            let topS = [...mercado_full].filter(i => i.diff > 0).sort((a,b) => b.diff - a.diff).slice(0,5);
-            let topB = [...mercado_full].filter(i => i.diff < 0).sort((a,b) => a.diff - b.diff).slice(0,5);
+            let filtrados = mercado_full.filter(i => i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q));
+            let topS = filtrados.filter(i => i.diff > 0).sort((a,b) => b.diff - a.diff).slice(0,5);
+            let topB = filtrados.filter(i => i.diff < 0).sort((a,b) => a.diff - b.diff).slice(0,5);
             
             let html = '<div class="card text-block">';
             if (topS.length > 0) {
-                html += "<div style='color:var(--accent); font-size: 1.05rem; font-weight:bold; margin-bottom:8px;'>🚀 Top 5 Subidas</div>";
-                topS.forEach(s => html += `⬆️ <b>${s.jugador}</b> (${s.manager}): +${fmtE(s.diff)}<br>`);
+                html += "<div style='color:var(--accent); font-size: 1.05rem; font-weight:bold; margin-bottom:8px;'>🚀 Subidas</div>";
+                topS.forEach(s => {
+                    let icono = s.diff >= 1000000 ? " 🔥" : "";
+                    html += `⬆️ <b>${s.jugador}</b> (${s.manager}): +${fmtE(s.diff)}${icono}<br>`;
+                });
             }
             if (topB.length > 0) {
-                html += "<div style='color:var(--danger); font-size: 1.05rem; font-weight:bold; margin-top:20px; margin-bottom:8px;'>🔻 Top 5 Bajadas</div>";
-                topB.forEach(b => html += `⬇️ <b>${b.jugador}</b> (${b.manager}): ${fmtE(b.diff)}<br>`);
+                html += "<div style='color:var(--danger); font-size: 1.05rem; font-weight:bold; margin-top:20px; margin-bottom:8px;'>🔻 Bajadas</div>";
+                topB.forEach(b => {
+                    let icono = b.diff <= -1000000 ? " 💥" : "";
+                    html += `⬇️ <b>${b.jugador}</b> (${b.manager}): ${fmtE(b.diff)}${icono}<br>`;
+                });
+            }
+            if (topS.length === 0 && topB.length === 0) {
+                html += "<i>No hay resultados para la búsqueda.</i>";
             }
             html += '</div>';
             cont.innerHTML = html;
         } else {
             // Vista por Manager
-            let filtrados = mercado_full.filter(i => i.manager === mercFilter).sort((a,b) => b.diff - a.diff);
+            let filtrados = mercado_full.filter(i => i.manager === mercFilter && i.jugador.toLowerCase().includes(q)).sort((a,b) => b.diff - a.diff);
             if (filtrados.length === 0) {
-                cont.innerHTML = `<div class="card text-block"><i>${mercFilter} no tiene jugadores que hayan variado de precio hoy.</i></div>`;
+                cont.innerHTML = `<div class="card text-block"><i>${mercFilter} no tiene jugadores que hayan variado de precio hoy (o que coincidan con la búsqueda).</i></div>`;
                 return;
             }
+            
+            let totalDif = filtrados.reduce((sum, item) => sum + item.diff, 0);
+            let tClass = totalDif >= 0 ? 'val-pos' : 'val-neg';
+            let tSign = totalDif > 0 ? '+' : '';
+            
             let filas = filtrados.map(i => {
                 let c = i.diff >= 0 ? 'val-pos' : 'val-neg';
                 let s = i.diff > 0 ? '+' : '';
                 return `<tr><td><b>${i.jugador}</b></td><td class="${c}">${s}${fmtE(i.diff)}</td></tr>`;
             }).join('');
             
-            cont.innerHTML = `<div class="card" style="padding:0;"><table style="width:100%;"><thead><tr><th>Jugador</th><th>Variación de hoy</th></tr></thead><tbody>${filas}</tbody></table></div>`;
+            cont.innerHTML = `
+                <div class="card" style="padding:16px;">
+                    <div style='margin-bottom:12px; font-size:1.05rem; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.1);'>
+                        <b>Balance global de hoy:</b> <span class='${tClass}'>${tSign}${fmtE(totalDif)}</span>
+                    </div>
+                    <table class="tabla-compacta" style="width:100%;">
+                        <thead><tr><th>Jugador</th><th>Variación</th></tr></thead>
+                        <tbody>${filas}</tbody>
+                    </table>
+                </div>`;
         }
     }
 
@@ -323,10 +352,18 @@
     function renderCatalogo() {
         const q = document.getElementById('buscador').value.toLowerCase();
         
-        const pelotazos = catalogo.filter(i => i.dif > 0 && (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q)));
+        // Pelotazos: Dif > 0 ordenados del mayor al menor pelotazo SIEMPRE
+        const pelotazos = catalogo
+            .filter(i => i.dif > 0 && (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q)))
+            .sort((a,b) => b.dif - a.dif);
+            
         document.getElementById('tabla-pelotazos').innerHTML = pelotazos.length ? pelotazos.map(i => generarFilaLatente(i, 'val-pos', '+')).join('') : '<tr><td class="muted" style="text-align:center;">Sin pelotazos</td></tr>';
         
-        const ruinas = catalogo.filter(i => i.dif < 0 && (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => a.dif - b.dif);
+        // Ruinas: Dif < 0 ordenados de la peor ruina (más negativa) a la menor ruina
+        const ruinas = catalogo
+            .filter(i => i.dif < 0 && (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q)))
+            .sort((a,b) => a.dif - b.dif);
+            
         document.getElementById('tabla-ruinas').innerHTML = ruinas.length ? ruinas.map(i => generarFilaLatente(i, 'val-neg', '')).join('') : '<tr><td class="muted" style="text-align:center;">Sin ruinas</td></tr>';
     }
 
