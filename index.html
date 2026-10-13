@@ -56,9 +56,9 @@
         
         .tabla-compacta th, .tabla-compacta td { padding: 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
         
-        .search-input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: #111827; color: var(--white); margin-bottom: 16px; font-size: 0.9rem; }
-        /* Estilo para la X de borrar en el buscador */
-        input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: searchfield-cancel-button; cursor: pointer; }
+        /* Buscador con X automática (type search) */
+        .search-input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: #111827; color: var(--white); margin-bottom: 16px; font-size: 0.9rem; outline: none; }
+        .search-input::-webkit-search-cancel-button { -webkit-appearance: searchfield-cancel-button; cursor: pointer; }
         
         .btn-filter-grp { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 8px; }
         .btn-filter { background: #374151; color: #d1d5db; border: none; padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
@@ -66,79 +66,80 @@
         
         .text-block { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; color: #d1d5db; line-height: 1.7; }
         
-        .lista-compacta { list-style-type: none; padding-left: 8px; line-height: 1.4; }
-        .lista-compacta li { margin-bottom: 6px; }
+        .lista-compacta { list-style-type: none; padding-left: 8px; line-height: 1.3; font-size: 0.95rem; }
+        .lista-compacta li { margin-bottom: 4px; }
         
         .latentes-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
         @media (min-width: 768px) { .latentes-grid { grid-template-columns: 1fr 1fr; } }
         
-        /* CSS JORNADA & CAMPO 2D TÁCTICO */
+        /* CSS JORNADA & CAMPO 2D COMUNIO */
         .flex-row-center { display: flex; align-items: center; gap: 6px; }
         .pos-badge { background: #0f172a; border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; color: var(--muted); width: 35px; text-align: center; display: inline-block; }
         .jug-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); }
         
-        /* EL NUEVO CAMPO 2D LIMPIO */
+        /* CAMPO 2D CLONADO DE TU IMAGEN */
         .pitch-2d {
-            background-color: #166534; /* Verde campo real */
-            border: 2px solid rgba(255,255,255,0.8);
+            background-color: #4ade80; /* Verde brillante tipo Comunio */
+            border: 2px solid rgba(255,255,255,0.6);
             border-radius: 4px;
             position: relative;
-            padding: 10px 0;
+            padding: 20px 0;
             display: flex;
             flex-direction: column-reverse; /* El portero siempre abajo */
             justify-content: space-around;
-            height: 400px;
+            height: 450px;
             overflow: hidden;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
         }
         /* Línea y círculo central */
         .pitch-2d::before {
-            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,255,255,0.6); transform: translateY(-50%); z-index: 1;
+            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,255,255,0.4); transform: translateY(-50%); z-index: 1;
         }
         .pitch-2d::after {
-            content: ''; position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;
+            content: ''; position: absolute; top: 50%; left: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;
         }
         /* Áreas de penalti */
         .area-abajo {
-            position: absolute; bottom: 0; left: 50%; width: 140px; height: 60px; border: 2px solid rgba(255,255,255,0.6); border-bottom: none; transform: translateX(-50%); z-index: 1;
+            position: absolute; bottom: 0; left: 50%; width: 160px; height: 70px; border: 2px solid rgba(255,255,255,0.4); border-bottom: none; transform: translateX(-50%); z-index: 1;
         }
         .area-abajo::after {
-            content: ''; position: absolute; top: -15px; left: 50%; width: 40px; height: 15px; border: 2px solid rgba(255,255,255,0.6); border-bottom: none; border-radius: 40px 40px 0 0; transform: translateX(-50%);
+            content: ''; position: absolute; top: -20px; left: 50%; width: 50px; height: 20px; border: 2px solid rgba(255,255,255,0.4); border-bottom: none; border-radius: 40px 40px 0 0; transform: translateX(-50%);
         }
         .area-arriba {
-            position: absolute; top: 0; left: 50%; width: 140px; height: 60px; border: 2px solid rgba(255,255,255,0.6); border-top: none; transform: translateX(-50%); z-index: 1;
+            position: absolute; top: 0; left: 50%; width: 160px; height: 70px; border: 2px solid rgba(255,255,255,0.4); border-top: none; transform: translateX(-50%); z-index: 1;
         }
         .area-arriba::after {
-            content: ''; position: absolute; bottom: -15px; left: 50%; width: 40px; height: 15px; border: 2px solid rgba(255,255,255,0.6); border-top: none; border-radius: 0 0 40px 40px; transform: translateX(-50%);
+            content: ''; position: absolute; bottom: -20px; left: 50%; width: 50px; height: 20px; border: 2px solid rgba(255,255,255,0.4); border-top: none; border-radius: 0 0 40px 40px; transform: translateX(-50%);
         }
         
         .linea-jugadores {
             display: flex; justify-content: space-evenly; align-items: center; width: 100%; z-index: 10;
         }
+        /* Ficha de Jugador estilo Comunio */
         .player-2d {
-            background: rgba(15,23,42,0.95);
-            border: 1px solid var(--accent);
-            border-radius: 6px;
-            padding: 4px 6px;
-            text-align: center;
-            min-width: 65px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .player-2d:hover { transform: scale(1.05); border-color: var(--white); }
-        .player-2d.mvp { border-color: var(--gold); background: rgba(245, 158, 11, 0.95); }
+        .player-2d .avatar-circle {
+            background: #1e293b; border: 2px solid white; border-radius: 50%;
+            width: 44px; height: 44px; display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; margin-bottom: -10px; z-index: 2;
+        }
+        .player-2d .info-box {
+            background: white; color: #111827; border-radius: 8px; padding: 12px 8px 4px 8px;
+            text-align: center; min-width: 70px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-size: 0.75rem; font-weight: bold; z-index: 1; line-height: 1.2;
+        }
+        .player-2d.mvp .avatar-circle { border-color: var(--gold); background: #f59e0b; }
+        .player-2d.mvp .info-box { background: #fef3c7; }
         
         /* LIVE BLINK */
         .live-blink {
-            animation: blinker 1.5s linear infinite;
-            background-color: var(--accent);
-            color: black;
-            font-weight: bold;
-            font-size: 0.75rem;
-            padding: 1px 6px;
-            border-radius: 3px;
+            animation: blinker 1s linear infinite;
+            background-color: var(--danger);
+            color: white; font-weight: bold; font-size: 0.75rem;
+            padding: 1px 6px; border-radius: 3px; letter-spacing: 1px;
         }
-        @keyframes blinker { 50% { opacity: 0.5; } }
+        @keyframes blinker { 50% { opacity: 0.4; } }
     </style>
 </head>
 <body>
@@ -146,7 +147,7 @@
 <header>
     <div class="header-top">
         <div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div>
-        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 14:50</div>
+        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 15:14</div>
     </div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
@@ -182,7 +183,7 @@
                 <button class="btn-filter active" onclick="filterMovs('Últimos', this)">🕒 Últimos</button>
                 <button class="btn-filter" onclick="filterMovs('Totales', this)">📊 Totales</button>
             </div>
-            <div id="movs-ultimos" class="card"><div class="text-block"><div style='font-size: 1.1rem; margin-bottom: 4px;'>🛒 <b>COMPRAS:</b></div><ul class='lista-compacta'><li>• <b>Lord Rhal</b> ha fichado a <b>Pepelu</b> por 2.531.009 €, gastando <span style='color:var(--danger)'>1.009 € más</span> sobre su valor original (2.530.000 €).</li><li>• <b>Lord Rhal</b> ha fichado a <b>Carlos Romero</b> por 2.079.009 €, gastando <span style='color:var(--danger)'>9.009 € más</span> sobre su valor original (2.070.000 €).</li></ul><br><div style='font-size: 1.1rem; margin-bottom: 4px;'>💰 <b>VENTAS:</b></div><div style='margin-bottom: 2px; color:var(--muted); padding-left: 8px;'><i>Ayer:</i></div><ul class='lista-compacta' style='padding-left: 16px;'><li>• <b>Iñaki</b> vendió a <b>Kubo</b> por 2.512.900 €. Lo compró por 2.202.000 € <span style='color:var(--accent)'>[ Ganando 310.900 € ]</span>.</li><li>• <b>Lord Rhal</b> vendió a <b>Marcos Fernández</b> por 2.408.300 €. Lo compró por 839.909 € <span style='color:var(--accent)'>[ Ganando 1.568.391 € 🔥 ]</span>.</li><li>• <b>Lord Rhal</b> vendió a <b>Mariano Díaz</b> por 4.591.900 €. Lo compró por 5.859.009 € <span style='color:var(--danger)'>[ Perdiendo 1.267.109 € 💥 ]</span>.</li></ul><br><div style='margin-bottom: 2px; color:var(--muted); padding-left: 8px;'><i>Hoy:</i></div><ul class='lista-compacta' style='padding-left: 16px;'><li>• <b>Gorka Bartu</b> ha vendido a <b>Luis Rioja</b> por 1.503.400 €. Lo compró por 1.440.000 € <span style='color:var(--accent)'>[ Ganando 63.400 € ]</span>.</li><li>• <b>Lord Rhal</b> ha vendido a <b>César Tárrega</b> por 1.424.400 €. Lo compró por 940.001 € <span style='color:var(--accent)'>[ Ganando 484.399 € ]</span>.</li></ul></div></div>
+            <div id="movs-ultimos" class="card"><div class="text-block" style="padding:16px;"><div style='font-size: 1.05rem; margin-bottom: 2px;'>🛒 <b>COMPRAS:</b></div><ul class='lista-compacta'><li>• <b>Lord Rhal</b> ha fichado a <b>Pepelu</b> por 2.531.009 €, gastando <span style='color:var(--danger)'>1.009 € más</span> sobre su valor original (2.530.000 €).</li><li>• <b>Lord Rhal</b> ha fichado a <b>Carlos Romero</b> por 2.079.009 €, gastando <span style='color:var(--danger)'>9.009 € más</span> sobre su valor original (2.070.000 €).</li></ul><br><div style='font-size: 1.05rem; margin-bottom: 2px;'>💰 <b>VENTAS:</b></div><div style='margin-bottom: 0px; color:var(--muted); padding-left: 8px;'><i>Ayer:</i></div><ul class='lista-compacta' style='padding-left: 16px;'><li>• <b>Iñaki</b> vendió a <b>Kubo</b> por 2.512.900 €. Lo compró por 2.202.000 € <span style='color:var(--accent)'>[ Ganando 310.900 € ]</span>.</li><li>• <b>Lord Rhal</b> vendió a <b>Marcos Fernández</b> por 2.408.300 €. Lo compró por 839.909 € <span style='color:var(--accent)'>[ Ganando 1.568.391 € 🔥 ]</span>.</li><li>• <b>Lord Rhal</b> vendió a <b>Mariano Díaz</b> por 4.591.900 €. Lo compró por 5.859.009 € <span style='color:var(--danger)'>[ Perdiendo 1.267.109 € 💥 ]</span>.</li></ul><br><div style='margin-bottom: 0px; color:var(--muted); padding-left: 8px;'><i>Hoy:</i></div><ul class='lista-compacta' style='padding-left: 16px;'><li>• <b>Gorka Bartu</b> ha vendido a <b>Luis Rioja</b> por 1.503.400 €. Lo compró por 1.440.000 € <span style='color:var(--accent)'>[ Ganando 63.400 € ]</span>.</li><li>• <b>Lord Rhal</b> ha vendido a <b>César Tárrega</b> por 1.424.400 €. Lo compró por 940.001 € <span style='color:var(--accent)'>[ Ganando 484.399 € ]</span>.</li></ul></div></div>
             <div id="movs-totales" class="card" style="display:none; padding:16px;">
                 <div style="overflow-x:auto;">
                     <table class="tabla-compacta" style="width:100%;">
@@ -290,7 +291,6 @@
     const mercado_full = [{"jugador": "Jonny", "manager": "Jon MARQUEZ PEREZ", "diff": 10000}, {"jugador": "Álex Berenguer", "manager": "Jon MARQUEZ PEREZ", "diff": -90000}, {"jugador": "Villalibre", "manager": "Jon MARQUEZ PEREZ", "diff": 40000}, {"jugador": "Vinícius Júnior", "manager": "Jon MARQUEZ PEREZ", "diff": 1670000}, {"jugador": "Le Normand", "manager": "Jon MARQUEZ PEREZ", "diff": 30000}, {"jugador": "Ander Barrenetxea", "manager": "Jon MARQUEZ PEREZ", "diff": -10000}, {"jugador": "Santiago Mouriño", "manager": "Jon MARQUEZ PEREZ", "diff": -10000}, {"jugador": "Sucic", "manager": "Jon MARQUEZ PEREZ", "diff": -720000}, {"jugador": "Huijsen", "manager": "Jon MARQUEZ PEREZ", "diff": -530000}, {"jugador": "Alemao", "manager": "Jon MARQUEZ PEREZ", "diff": -80000}, {"jugador": "Ugrinic", "manager": "Jon MARQUEZ PEREZ", "diff": 20000}, {"jugador": "Quagliata", "manager": "Jon MARQUEZ PEREZ", "diff": -40000}, {"jugador": "Alfonso Herrero", "manager": "Jon MARQUEZ PEREZ", "diff": 250000}, {"jugador": "David Larrubia", "manager": "Jon MARQUEZ PEREZ", "diff": -20000}, {"jugador": "Andrés García", "manager": "Jon MARQUEZ PEREZ", "diff": 80000}, {"jugador": "Koke", "manager": "Rolo Tomasi", "diff": -20000}, {"jugador": "Edu Expósito", "manager": "Rolo Tomasi", "diff": -120000}, {"jugador": "Sivera", "manager": "Rolo Tomasi", "diff": -250000}, {"jugador": "Djené", "manager": "Rolo Tomasi", "diff": 50000}, {"jugador": "Lucas Boyé", "manager": "Rolo Tomasi", "diff": 70000}, {"jugador": "Rodrigo Riquelme", "manager": "Rolo Tomasi", "diff": 40000}, {"jugador": "Omar El Hilali", "manager": "Rolo Tomasi", "diff": -10000}, {"jugador": "Olasagasti", "manager": "Rolo Tomasi", "diff": 20000}, {"jugador": "Lamine Yamal", "manager": "Rolo Tomasi", "diff": 40000}, {"jugador": "Bellingham", "manager": "Rolo Tomasi", "diff": -730000}, {"jugador": "Hancko", "manager": "Rolo Tomasi", "diff": 90000}, {"jugador": "Konaté", "manager": "Rolo Tomasi", "diff": -40000}, {"jugador": "Lejeune", "manager": "Gorka Bartu", "diff": -80000}, {"jugador": "Oyarzabal", "manager": "Gorka Bartu", "diff": -310000}, {"jugador": "Yangel Herrera", "manager": "Gorka Bartu", "diff": -270000}, {"jugador": "Budimir", "manager": "Gorka Bartu", "diff": -2110000}, {"jugador": "Nico Williams", "manager": "Gorka Bartu", "diff": 100000}, {"jugador": "Jesús Areso", "manager": "Gorka Bartu", "diff": -180000}, {"jugador": "Sorloth", "manager": "Gorka Bartu", "diff": -40000}, {"jugador": "Leo Román", "manager": "Gorka Bartu", "diff": -10000}, {"jugador": "Sergi Cardona", "manager": "Gorka Bartu", "diff": -220000}, {"jugador": "Unai Marrero", "manager": "Gorka Bartu", "diff": -10000}, {"jugador": "Rosier", "manager": "Gorka Bartu", "diff": -70000}, {"jugador": "Peio Canales", "manager": "Gorka Bartu", "diff": 10000}, {"jugador": "Nelson Deossa", "manager": "Gorka Bartu", "diff": -320000}, {"jugador": "Nathan Saliba", "manager": "Gorka Bartu", "diff": -400000}, {"jugador": "David Soria", "manager": "Lord Rhal", "diff": -590000}, {"jugador": "Javi Puado", "manager": "Lord Rhal", "diff": 220000}, {"jugador": "Fer Niño", "manager": "Lord Rhal", "diff": 80000}, {"jugador": "Juan Iglesias", "manager": "Lord Rhal", "diff": 100000}, {"jugador": "Ilaix Moriba", "manager": "Lord Rhal", "diff": 20000}, {"jugador": "Abde Ezzalzouli", "manager": "Lord Rhal", "diff": 180000}, {"jugador": "Pablo Ibáñez", "manager": "Lord Rhal", "diff": 60000}, {"jugador": "Kike Salas", "manager": "Lord Rhal", "diff": -80000}, {"jugador": "Yoel Lago", "manager": "Lord Rhal", "diff": 130000}, {"jugador": "Antony", "manager": "Lord Rhal", "diff": 830000}, {"jugador": "Johaneko", "manager": "Lord Rhal", "diff": 60000}, {"jugador": "Isco", "manager": "Alberto Garcia", "diff": 370000}, {"jugador": "Aïssa Mandi", "manager": "Alberto Garcia", "diff": 10000}, {"jugador": "Guedes", "manager": "Alberto Garcia", "diff": 30000}, {"jugador": "Kang-In Lee", "manager": "Alberto Garcia", "diff": -230000}, {"jugador": "Koundé", "manager": "Alberto Garcia", "diff": 40000}, {"jugador": "Jon Moncayola", "manager": "Alberto Garcia", "diff": -230000}, {"jugador": "Danjuma", "manager": "Alberto Garcia", "diff": 70000}, {"jugador": "Rüdiger", "manager": "Alberto Garcia", "diff": 60000}, {"jugador": "Tchouaméni", "manager": "Alberto Garcia", "diff": 40000}, {"jugador": "Pape Gueye", "manager": "Alberto Garcia", "diff": -40000}, {"jugador": "Álvaro Valles", "manager": "Alberto Garcia", "diff": 210000}, {"jugador": "Adrián de la Fuente", "manager": "Alberto Garcia", "diff": -390000}, {"jugador": "Gabriel Suazo", "manager": "Alberto Garcia", "diff": 30000}, {"jugador": "Nsongo", "manager": "Alberto Garcia", "diff": -110000}, {"jugador": "Laporte", "manager": "Iñaki", "diff": -430000}, {"jugador": "Borja Iglesias", "manager": "Iñaki", "diff": 20000}, {"jugador": "Ryan", "manager": "Iñaki", "diff": -260000}, {"jugador": "Militão", "manager": "Iñaki", "diff": 100000}, {"jugador": "Jorge de Frutos", "manager": "Iñaki", "diff": 310000}, {"jugador": "Aleix Febas", "manager": "Iñaki", "diff": 20000}, {"jugador": "Íñigo Vicente", "manager": "Iñaki", "diff": 10000}, {"jugador": "Bryan Zaragoza", "manager": "Iñaki", "diff": -30000}, {"jugador": "Alberto Moleiro", "manager": "Iñaki", "diff": 490000}, {"jugador": "Jon Martín", "manager": "Iñaki", "diff": 190000}, {"jugador": "Íñigo Arguibide", "manager": "Iñaki", "diff": -10000}, {"jugador": "Pablo Ramón", "manager": "Iñaki", "diff": -190000}, {"jugador": "Radu", "manager": "Iñaki", "diff": -150000}, {"jugador": "De Haas", "manager": "Iñaki", "diff": 240000}];
     const jornadaData = {"info": {"nombre": "Jornada 8", "estado": "cerrada"}, "clasif_jornada": [{"manager": "Alberto Garcia", "pts_j": 68, "pts_t": 467, "tv": 75370000, "uid": "21067327", "dist": 74, "tendencia": "="}, {"manager": "Iñaki", "pts_j": 63, "pts_t": 371, "tv": 47800000, "uid": "21067500", "dist": 170, "tendencia": "▲"}, {"manager": "Rolo Tomasi", "pts_j": 62, "pts_t": 541, "tv": 78170000, "uid": "21057989", "dist": 0, "tendencia": "="}, {"manager": "Lord Rhal", "pts_j": 50, "pts_t": 343, "tv": 54780000, "uid": "21058279", "dist": 198, "tendencia": "="}, {"manager": "Gorka Bartu", "pts_j": 37, "pts_t": 349, "tv": 53320000, "uid": "21058216", "dist": 192, "tendencia": "▼"}, {"manager": "Jon MARQUEZ PEREZ", "pts_j": 29, "pts_t": 298, "tv": 47700000, "uid": "21059980", "dist": 243, "tendencia": "="}], "clasif_general": [{"manager": "Rolo Tomasi", "pts_j": 62, "pts_t": 541, "tv": 78170000, "uid": "21057989", "dist": 0, "tendencia": "="}, {"manager": "Alberto Garcia", "pts_j": 68, "pts_t": 467, "tv": 75370000, "uid": "21067327", "dist": 74, "tendencia": "="}, {"manager": "Iñaki", "pts_j": 63, "pts_t": 371, "tv": 47800000, "uid": "21067500", "dist": 170, "tendencia": "▲"}, {"manager": "Gorka Bartu", "pts_j": 37, "pts_t": 349, "tv": 53320000, "uid": "21058216", "dist": 192, "tendencia": "▼"}, {"manager": "Lord Rhal", "pts_j": 50, "pts_t": 343, "tv": 54780000, "uid": "21058279", "dist": 198, "tendencia": "="}, {"manager": "Jon MARQUEZ PEREZ", "pts_j": 29, "pts_t": 298, "tv": 47700000, "uid": "21059980", "dist": 243, "tendencia": "="}], "medallero": [{"oros": 5, "platas": 1, "bronces": 2, "manager": "Rolo Tomasi"}, {"oros": 2, "platas": 5, "bronces": 1, "manager": "Alberto Garcia"}, {"oros": 1, "platas": 2, "bronces": 2, "manager": "Gorka Bartu"}, {"oros": 1, "platas": 2, "bronces": 0, "manager": "Iñaki"}, {"oros": 1, "platas": 0, "bronces": 3, "manager": "Lord Rhal"}, {"oros": 0, "platas": 0, "bronces": 2, "manager": "Jon MARQUEZ PEREZ"}], "alineaciones": [{"manager": "Rolo Tomasi", "formacion": "3-5-2", "keeper": [{"name": "Sivera", "pts": "-"}], "defender": [{"name": "Djené", "pts": "-"}, {"name": "Omar El Hilali", "pts": "-"}, {"name": "Konaté", "pts": "-"}], "midfielder": [{"name": "Koke", "pts": "-"}, {"name": "Edu Expósito", "pts": "-"}, {"name": "Rodrigo Riquelme", "pts": "-"}, {"name": "Olasagasti", "pts": "-"}, {"name": "Bellingham", "pts": "-"}], "striker": [{"name": "Lucas Boyé", "pts": "-"}, {"name": "Lamine Yamal", "pts": "-"}], "no_alineados": ["Moi Gómez", "Aitor Ruibal", "Adrián Rodríguez"], "huecos": 0}, {"manager": "Alberto Garcia", "formacion": "4-4-2", "keeper": [{"name": "Álvaro Valles", "pts": "-"}], "defender": [{"name": "Marcos Llorente", "pts": "-"}, {"name": "Aïssa Mandi", "pts": "-"}, {"name": "Rüdiger", "pts": "-"}, {"name": "Gabriel Suazo", "pts": "-"}], "midfielder": [{"name": "Isco", "pts": "-"}, {"name": "Kang-In Lee", "pts": "-"}, {"name": "Tchouaméni", "pts": "-"}, {"name": "Pape Gueye", "pts": "-"}], "striker": [{"name": "Nicolas Pépé", "pts": "-"}, {"name": "Nsongo", "pts": "-"}], "no_alineados": ["Jon Moncayola", "Matías Dituro", "Danjuma", "Adrián de la Fuente", "Aitor Mañas"], "huecos": 0}, {"manager": "Iñaki", "formacion": "3-5-2", "keeper": [{"name": "Ryan", "pts": "-"}], "defender": [{"name": "Laporte", "pts": "-"}, {"name": "Pablo Ramón", "pts": "-"}, {"name": "De Haas", "pts": "-"}], "midfielder": [{"name": "Jorge de Frutos", "pts": "-"}, {"name": "Aleix Febas", "pts": "-"}, {"name": "Íñigo Vicente", "pts": "-"}, {"name": "Bryan Zaragoza", "pts": "-"}, {"name": "Alberto Moleiro", "pts": "-"}], "striker": [{"name": "Borja Iglesias", "pts": "-"}, {"name": "Adrián Niño", "pts": "-"}], "no_alineados": ["Sancet", "Militão", "Kubo", "Íñigo Arguibide", "Radu", "Guliashvili"], "huecos": 0}, {"manager": "Gorka Bartu", "formacion": "3-4-3", "keeper": [{"name": "Leo Román", "pts": "-"}], "defender": [{"name": "Lejeune", "pts": "-"}, {"name": "Jesús Areso", "pts": "-"}, {"name": "Sergi Cardona", "pts": "-"}], "midfielder": [{"name": "Yangel Herrera", "pts": "-"}, {"name": "Peio Canales", "pts": "-"}, {"name": "Nelson Deossa", "pts": "-"}, {"name": "Nathan Saliba", "pts": "-"}], "striker": [{"name": "Oyarzabal", "pts": "-"}, {"name": "Budimir", "pts": "-"}, {"name": "Sorloth", "pts": "-"}], "no_alineados": ["Nico Williams", "Unai Marrero", "Rosier"], "huecos": 0}, {"manager": "Lord Rhal", "formacion": "3-4-3", "keeper": [{"name": "David Soria", "pts": "-"}], "defender": [{"name": "Juan Iglesias", "pts": "-"}, {"name": "Kike Salas", "pts": "-"}, {"name": "Yoel Lago", "pts": "-"}], "midfielder": [{"name": "Ilaix Moriba", "pts": "-"}, {"name": "Abde Ezzalzouli", "pts": "-"}, {"name": "Pablo Ibáñez", "pts": "-"}, {"name": "Antony", "pts": "-"}], "striker": [{"name": "Mariano Díaz", "pts": "-"}, {"name": "Fer Niño", "pts": "-"}, {"name": "Marcos Fernández", "pts": "-"}], "no_alineados": ["Javi Puado", "César Tárrega", "Johaneko"], "huecos": 0}, {"manager": "Jon MARQUEZ PEREZ", "formacion": "3-5-2", "keeper": [{"name": "Alfonso Herrero", "pts": "-"}], "defender": [{"name": "Jonny", "pts": "-"}, {"name": "Quagliata", "pts": "-"}, {"name": "Andrés García", "pts": "-"}], "midfielder": [{"name": "Álex Berenguer", "pts": "-"}, {"name": "Ander Barrenetxea", "pts": "-"}, {"name": "Antonio Blanco", "pts": "-"}, {"name": "Sucic", "pts": "-"}, {"name": "David Larrubia", "pts": "-"}], "striker": [{"name": "Vinícius Júnior", "pts": "-"}, {"name": "Alemao", "pts": "-"}], "no_alineados": ["Villalibre", "Le Normand", "Santiago Mouriño", "Ugrinic", "Hjulmand", "Dmitrovic"], "huecos": 0}], "once_ideal": {"formacion": "3-5-2", "puntos": 111, "valor": 67250000, "jugadores": [{"id": "3428", "name": "Álvaro Valles", "position": "keeper", "points": 5, "manager_id": "21067327", "manager_name": "Alberto Garcia", "precio": 7350000}, {"id": "3243", "name": "Rüdiger", "position": "defender", "points": 8, "manager_id": "21067327", "manager_name": "Alberto Garcia", "precio": 2810000}, {"id": "3349", "name": "Kike Salas", "position": "defender", "points": 7, "manager_id": "21058279", "manager_name": "Lord Rhal", "precio": 1480000}, {"id": "3619", "name": "Yoel Lago", "position": "defender", "points": 6, "manager_id": "21058279", "manager_name": "Lord Rhal", "precio": 2550000}, {"id": "1249", "name": "Isco", "position": "midfielder", "points": 18, "manager_id": "21067327", "manager_name": "Alberto Garcia", "precio": 7610000}, {"id": "3426", "name": "Bryan Zaragoza", "position": "midfielder", "points": 14, "manager_id": "21067500", "manager_name": "Iñaki", "precio": 3580000}, {"id": "3010", "name": "Íñigo Vicente", "position": "midfielder", "points": 12, "manager_id": "21067500", "manager_name": "Iñaki", "precio": 4180000}, {"id": "1083", "name": "Koke", "position": "midfielder", "points": 10, "manager_id": "21057989", "manager_name": "Rolo Tomasi", "precio": 4610000}, {"id": "3180", "name": "Abde Ezzalzouli", "position": "midfielder", "points": 10, "manager_id": "21058279", "manager_name": "Lord Rhal", "precio": 7950000}, {"id": "3537", "name": "Adrián Niño", "position": "striker", "points": 11, "manager_id": "21067500", "manager_name": "Iñaki", "precio": 1010000}, {"id": "3409", "name": "Lamine Yamal", "position": "striker", "points": 10, "manager_id": "21057989", "manager_name": "Rolo Tomasi", "precio": 24120000}]}, "heroes": {"mvp": {"name": "Isco", "points": 18, "manager": "Alberto Garcia", "precio": 8240000}, "peor": {"name": "Vinícius Júnior", "points": -3, "manager": "Jon MARQUEZ PEREZ", "precio": 17320000}}, "paguitas": [{"manager": "Jon MARQUEZ PEREZ", "premio": 2000000}, {"manager": "Gorka Bartu", "premio": 1200000}, {"manager": "Lord Rhal", "premio": 800000}]};
     
-    // Emojis de Mánagers (El toque de personalidad)
     const emoMgr = {
         "Rolo": "🎩", "Rolo Tomasi": "🎩",
         "Alberto": "😭", "Alberto Garcia": "😭",
@@ -302,7 +302,7 @@
 
     let currentMain = 'diario';
     let currentSub = { 'diario': 'movimientos', 'jornada': 'resultados', 'historico': 'evolucion' };
-    let mgrFilter = 'TODOS';
+    let mgrFilter = 'TOP 5';
     let mercFilter = 'TOP 5';
 
     function fmtE(n) { return Number(n).toLocaleString('es-ES') + ' €'; }
@@ -413,13 +413,13 @@
             let topS = filtrados.filter(i => i.diff > 0).sort((a,b) => b.diff - a.diff).slice(0,5);
             let topB = filtrados.filter(i => i.diff < 0).sort((a,b) => a.diff - b.diff).slice(0,5);
             
-            let html = '<div class="card text-block">';
+            let html = '<div class="card text-block" style="padding:16px;">';
             if (topS.length > 0) {
                 html += "<div style='color:var(--accent); font-size: 1.05rem; font-weight:bold; margin-bottom:8px;'>🚀 Subidas</div>";
                 topS.forEach(s => html += `⬆️ <b>${s.jugador}</b> (${s.manager}): +${fmtE(s.diff)}${s.diff >= 1000000 ? " 🔥" : ""}<br>`);
             }
             if (topB.length > 0) {
-                html += "<div style='color:var(--danger); font-size: 1.05rem; font-weight:bold; margin-top:20px; margin-bottom:8px;'>🔻 Bajadas</div>";
+                html += "<div style='color:var(--danger); font-size: 1.05rem; font-weight:bold; margin-top:16px; margin-bottom:8px;'>🔻 Bajadas</div>";
                 topB.forEach(b => html += `⬇️ <b>${b.jugador}</b> (${b.manager}): ${fmtE(b.diff)}${b.diff <= -1000000 ? " 💥" : ""}<br>`);
             }
             if (topS.length === 0 && topB.length === 0) html += "<i>No hay resultados para la búsqueda.</i>";
@@ -452,8 +452,8 @@
 
     // --- DIARIO: LATENTES ---
     function initCatalogo() {
-        const mNames = ['TODOS', ...new Set(catalogo.map(i => i.manager))];
-        document.getElementById('filtros-catalogo').innerHTML = mNames.map(m => `<button class="btn-filter ${m === 'TODOS' ? 'active' : ''}" onclick="filterCat('${m}', this)">${m}</button>`).join('');
+        const mNames = ['TOP 5', ...new Set(catalogo.map(i => i.manager))];
+        document.getElementById('filtros-catalogo').innerHTML = mNames.map(m => `<button class="btn-filter ${m === 'TOP 5' ? 'active' : ''}" onclick="filterCat('${m}', this)">${m}</button>`).join('');
         renderCatalogo();
     }
     function filterCat(m, btn) {
@@ -464,22 +464,22 @@
     }
     function generarFilaLatente(i, colorClass, signo) {
         let cartelMaximo = i.maximo > i.compra ? `<div class="muted" style="font-size: 0.82rem;">↳ 📈 Llegó a valer: ${fmtE(i.maximo)} el ${i.fecha_max}</div>` : '';
-        return `<tr><td style="padding: 14px 12px;">
-            <div style="font-size: 1.05rem; margin-bottom: 4px;"><b>${i.jugador}</b> <small class="muted">(${i.manager})</small>: <span class="${colorClass}">${signo}${fmtE(i.dif)}</span></div>
-            <div class="muted" style="font-size: 0.85rem; display:flex; align-items:center; margin-bottom:2px;">↳ Últimos 7 días: <span style="margin-left:4px; letter-spacing:2px;">${i.flechas || '➖'}</span></div>
-            <div class="muted" style="font-size: 0.82rem; margin-bottom:2px;">↳ Compra: ${fmtE(i.compra)} | Actual: ${fmtE(i.actual)}</div>
+        return `<tr><td style="padding: 10px 12px;">
+            <div style="font-size: 1.05rem; margin-bottom: 2px;"><b>${i.jugador}</b> <small class="muted">(${i.manager})</small>: <span class="${colorClass}">${signo}${fmtE(i.dif)}</span></div>
+            <div class="muted" style="font-size: 0.85rem; display:flex; align-items:center; margin-bottom:0px;">↳ Últimos 7 días: <span style="margin-left:4px; letter-spacing:2px;">${i.flechas || '➖'}</span></div>
+            <div class="muted" style="font-size: 0.82rem; margin-bottom:0px;">↳ Compra: ${fmtE(i.compra)} | Actual: ${fmtE(i.actual)}</div>
             ${cartelMaximo}
         </td></tr>`;
     }
     function renderCatalogo() {
         const q = document.getElementById('buscador-latentes').value.toLowerCase();
         
-        let pelotazos = catalogo.filter(i => i.dif > 0 && (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => b.dif - a.dif);
-        if(mgrFilter === 'TODOS' && q === '') pelotazos = pelotazos.slice(0,5); // Solo Top 5 en general si no hay búsqueda
+        let pelotazos = catalogo.filter(i => i.dif > 0 && (mgrFilter === 'TOP 5' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => b.dif - a.dif);
+        if(mgrFilter === 'TOP 5' && q === '') pelotazos = pelotazos.slice(0,5); 
         document.getElementById('tabla-pelotazos').innerHTML = pelotazos.length ? pelotazos.map(i => generarFilaLatente(i, 'val-pos', '+')).join('') : '<tr><td class="muted" style="text-align:center;">Sin pelotazos</td></tr>';
         
-        let ruinas = catalogo.filter(i => i.dif < 0 && (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => a.dif - b.dif);
-        if(mgrFilter === 'TODOS' && q === '') ruinas = ruinas.slice(0,5); // Solo Top 5 en general si no hay búsqueda
+        let ruinas = catalogo.filter(i => i.dif < 0 && (mgrFilter === 'TOP 5' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => a.dif - b.dif);
+        if(mgrFilter === 'TOP 5' && q === '') ruinas = ruinas.slice(0,5);
         document.getElementById('tabla-ruinas').innerHTML = ruinas.length ? ruinas.map(i => generarFilaLatente(i, 'val-neg', '')).join('') : '<tr><td class="muted" style="text-align:center;">Sin ruinas</td></tr>';
     }
 
@@ -492,7 +492,6 @@
         let htmlJ = jornadaData.clasif_jornada.map((d, i) => `<tr><td>${i<3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td><td><b>${d.manager}</b></td><td class="val-accent">${d.pts_j}</td></tr>`).join('');
         document.getElementById('tabla-jornada-res').innerHTML = htmlJ;
         
-        // Flechas Pro para la clasificación general
         let htmlG = jornadaData.clasif_general.map((d, i) => {
             let c_tend = "muted";
             if (d.tendencia === '▲') c_tend = "val-pos";
@@ -513,6 +512,14 @@
         if(jornadaData.alineaciones && jornadaData.alineaciones.length) {
             jornadaData.alineaciones.forEach(a => {
                 let warn = a.huecos > 0 ? `<div class="alert-mini" style="margin-top:12px;">⚠️ Faltan ${a.huecos} jugadores (-${a.huecos*4} pts)</div>` : '';
+                
+                let renderPos = (jugs, bColor) => jugs.map(j => {
+                    let ptsHTML = '';
+                    if (j.pts === 'LIVE') ptsHTML = `<span class="live-blink">LIVE</span>`;
+                    else if (j.pts === '-') ptsHTML = `<span class="muted">-</span>`;
+                    else ptsHTML = `<span class="val-white">${j.pts} pts</span>`;
+                    return `<div class="jug-row"><div class="flex-row-center"><span class="pos-badge" style="border-left: 3px solid ${bColor};">POR</span><span style="font-weight:600;">${j.name}</span></div>${ptsHTML}</div>`;
+                }).join('');
                 
                 let kHtml = a.keeper.map(j => `<div class="jug-row"><div class="flex-row-center"><span class="pos-badge" style="border-left: 3px solid #eab308;">POR</span><span style="font-weight:600;">${j.name}</span></div>${j.pts === 'LIVE' ? '<span class="live-blink">LIVE</span>' : (j.pts === '-' ? '<span class="muted">-</span>' : '<span class="val-white">'+j.pts+' pts</span>')}</div>`).join('');
                 let dHtml = a.defender.map(j => `<div class="jug-row"><div class="flex-row-center"><span class="pos-badge" style="border-left: 3px solid #3b82f6;">DEF</span><span style="font-weight:600;">${j.name}</span></div>${j.pts === 'LIVE' ? '<span class="live-blink">LIVE</span>' : (j.pts === '-' ? '<span class="muted">-</span>' : '<span class="val-white">'+j.pts+' pts</span>')}</div>`).join('');
@@ -561,9 +568,11 @@
                     let isMvp = (he && he.mvp && he.mvp.name === j.name) ? 'mvp' : '';
                     let emo = emoMgr[j.manager_name] || '👤';
                     pitchHTML += `<div class="player-2d ${isMvp}">
-                        <div style="font-size:1.1rem; margin-bottom:-2px;">${emo}</div>
-                        <div style="font-size:0.65rem; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:white;">${j.name.substring(0,10)}</div>
-                        <div style="font-size:0.85rem; color:var(--white); font-weight:bold;">${j.points}</div>
+                        <div class="avatar-circle">${emo}</div>
+                        <div class="info-box">
+                            <span style="display:block; overflow:hidden; text-overflow:ellipsis;">${j.name.substring(0,10)}</span>
+                            <span style="color:#64748b;">(${j.points} P.)</span>
+                        </div>
                     </div>`;
                 });
                 pitchHTML += `</div>`;
@@ -579,21 +588,20 @@
             </div>`;
         }
         
-        // Héroes y Paguitas más juntos
         if(he && he.mvp) {
             htmlE += `<div class="card" style="padding: 16px;">
-                <div class="card-title" style="color:var(--white); margin-bottom: 12px;">🌟 Héroes y Villanos</div>
-                <div class="jug-row" style="margin-bottom:4px; font-size:1.05rem;"><span>👑 <b>MVP:</b> ${he.mvp.name} <small class="muted">(${he.mvp.manager})</small></span> <span class="val-pos">${he.mvp.points} pts</span></div>
-                <div class="jug-row" style="font-size:1.05rem; border-bottom: none; padding-bottom:0;"><span>🥄 <b>Cuchara de madera:</b> ${he.peor.name} <small class="muted">(${he.peor.manager})</small></span> <span class="val-neg">${he.peor.points} pts</span></div>
+                <div class="card-title" style="color:var(--white); margin-bottom: 6px;">🌟 Héroes y Villanos</div>
+                <div style="font-size:1.05rem; padding: 2px 0;">👑 <b>MVP:</b> ${he.mvp.name} <small class="muted">(${he.mvp.manager})</small> <span class="val-pos" style="float:right;">${he.mvp.points} pts</span></div>
+                <div style="font-size:1.05rem; padding: 2px 0;">🥄 <b>Cuchara de madera:</b> ${he.peor.name} <small class="muted">(${he.peor.manager})</small> <span class="val-neg" style="float:right;">${he.peor.points} pts</span></div>
             </div>`;
         }
         
         if(pa && pa.length > 0) {
             htmlE += `<div class="card" style="padding: 16px;">
-                <div class="card-title" style="color:var(--white); margin-bottom: 12px;">🏹 Paguitas</div>
-                <div class="jug-row" style="margin-bottom:4px; font-size:1rem;"><span>🩸 Último: <b>${pa[0].manager}</b></span> <span class="val-pos">+${fmtE(pa[0].premio)}</span></div>
-                <div class="jug-row" style="margin-bottom:4px; font-size:1rem;"><span>🛟 Penúltimo: <b>${pa[1].manager}</b></span> <span class="val-pos">+${fmtE(pa[1].premio)}</span></div>
-                <div class="jug-row" style="font-size:1rem; border-bottom: none; padding-bottom:0;"><span>🛶 Antepenúltimo: <b>${pa[2].manager}</b></span> <span class="val-pos">+${fmtE(pa[2].premio)}</span></div>
+                <div class="card-title" style="color:var(--white); margin-bottom: 6px;">🏹 Paguitas</div>
+                <div style="font-size:1rem; padding: 2px 0;">🩸 Último: <b>${pa[0].manager}</b> <span class="val-pos" style="float:right;">+${fmtE(pa[0].premio)}</span></div>
+                <div style="font-size:1rem; padding: 2px 0;">🛟 Penúltimo: <b>${pa[1].manager}</b> <span class="val-pos" style="float:right;">+${fmtE(pa[1].premio)}</span></div>
+                <div style="font-size:1rem; padding: 2px 0;">🛶 Antepenúltimo: <b>${pa[2].manager}</b> <span class="val-pos" style="float:right;">+${fmtE(pa[2].premio)}</span></div>
             </div>`;
         }
         
