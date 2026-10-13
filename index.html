@@ -6,15 +6,15 @@
     <title>Estadísticas Komuniotarrak</title>
     <style>
         :root {
-            --bg: #111827; /* Fondo general tipo CS */
-            --surface: #1e293b; /* Fondo cabecera */
-            --card: #1f2937; /* Fondo tarjetas */
-            --border: #374151; /* Bordes */
-            --accent: #10b981; /* Verde esmeralda */
-            --gold: #f59e0b; /* Dorado para pujas */
-            --danger: #ef4444; /* Rojo peligro */
-            --text: #f3f4f6; /* Texto principal */
-            --muted: #9ca3af; /* Texto secundario */
+            --bg: #111827;
+            --surface: #1e293b;
+            --card: #1f2937;
+            --border: #374151;
+            --accent: #10b981;
+            --gold: #f59e0b;
+            --danger: #ef4444;
+            --text: #f3f4f6;
+            --muted: #9ca3af;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 40px; }
@@ -24,19 +24,18 @@
         .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: 1px; color: #fff; }
         .subtitle { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
         
-        /* PESTAÑAS PRINCIPALES (Diseño píldora CS) */
+        /* PESTAÑAS PRINCIPALES */
         .main-nav { display: flex; justify-content: center; gap: 8px; max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 12px; }
         .main-tab { background: #374151; color: #d1d5db; border: none; padding: 10px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border-radius: 999px; transition: all 0.2s; white-space: nowrap; }
         .main-tab:hover { background: #4b5563; color: #fff; }
         .main-tab.active { background: #fff; color: #000; }
 
-        /* SUB NAVEGACIÓN (Diseño texto con barra inferior CS) */
-        .sub-nav-container { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; padding: 0; }
-        .sub-nav { display: none; justify-content: flex-start; gap: 24px; max-width: 1100px; margin: 0 auto; overflow-x: auto; padding: 0 16px; }
+        /* SUB NAVEGACIÓN TIPO PÍLDORAS (Restauradas) */
+        .sub-nav-container { background: #0f172a; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; padding: 10px 0; }
+        .sub-nav { display: none; justify-content: center; gap: 8px; max-width: 1100px; margin: 0 auto; overflow-x: auto; padding: 0 16px; }
         .sub-nav.active { display: flex; }
-        .sub-tab { background: transparent; color: var(--muted); border: none; border-bottom: 3px solid transparent; padding: 14px 0; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
-        .sub-tab:hover { color: var(--text); }
-        .sub-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .sub-tab { background: var(--card); color: var(--muted); border: 1px solid var(--border); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+        .sub-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
         /* CONTENEDOR Y TARJETAS */
         .container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
@@ -47,17 +46,17 @@
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .card-title { font-size: 1.15rem; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px; color: #fff; display: flex; align-items: center; gap: 8px; }
         
-        /* DASHBOARD MANAGER AJUSTADO */
+        /* DASHBOARD MANAGER AJUSTADO (Compacto) */
         .grid-managers { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-        .mgr-header { font-weight: 800; font-size: 1.2rem; margin-bottom: 14px; color: #fff; }
-        .kpi-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+        .mgr-header { font-weight: 800; font-size: 1.2rem; margin-bottom: 8px; color: #fff; }
+        .kpi-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 1px 0; }
         .kpi-label { color: var(--muted); }
         .val-pos { color: var(--accent); font-weight: 700; }
         .val-neg { color: var(--danger); font-weight: 700; }
         .val-gold { color: var(--gold); font-weight: 700; }
         .val-neutral { color: #fff; font-weight: 700; }
         
-        .alert-mini { background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--danger); padding: 12px; margin-top: 14px; font-size: 0.85rem; border-radius: 4px; color: #fca5a5; }
+        .alert-mini { background: rgba(239, 68, 68, 0.15); border-left: 4px solid var(--danger); padding: 8px; margin-top: 10px; font-size: 0.85rem; border-radius: 4px; color: #fca5a5; font-weight: 600; }
 
         /* TABLAS Y BUSCADORES */
         table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
@@ -77,7 +76,7 @@
 <header>
     <div class="header-top">
         <div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div>
-        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 11:22</div>
+        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 11:32</div>
     </div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
@@ -105,11 +104,10 @@
 </div>
 
 <div class="container">
-    <!-- DIARIO -->
     <div id="content-movimientos" class="section-content active">
         <div class="card">
             <div class="card-title">🔄 Compras y ventas</div>
-            <div class="text-block" id="bloque-movimientos">Procesando movimientos del día...</div>
+            <div class="text-block" id="bloque-movimientos">Cargando movimientos...</div>
         </div>
     </div>
     <div id="content-cuentas" class="section-content">
@@ -118,7 +116,7 @@
     <div id="content-mercado" class="section-content">
         <div class="card">
             <div class="card-title">📉 Subidas y bajadas</div>
-            <div class="text-block" id="bloque-mercado">Revisando variaciones de mercado...</div>
+            <div class="text-block" id="bloque-mercado">Los datos del mercado están incluidos en la pestaña de Movimientos.</div>
         </div>
     </div>
     <div id="content-latentes" class="section-content">
@@ -135,11 +133,10 @@
         </div>
     </div>
 
-    <!-- JORNADA -->
     <div id="content-resultados" class="section-content">
         <div class="card">
             <div class="card-title">🏅 Clasificación y Crónica</div>
-            <div class="text-block">{'jornada<i>num': 10, 'fecha</i>cierre': '2026-10-13 11:21:28'}</div>
+            <div class="text-block">{'jornada<i>num': 10, 'fecha</i>cierre': '2026-10-13 11:32:16'}</div>
         </div>
     </div>
     <div id="content-alineaciones" class="section-content">
@@ -149,7 +146,6 @@
         <div class="card"><div class="card-title">🚨 Revisiones VAR</div><div class="text-block muted">Próximamente...</div></div>
     </div>
 
-    <!-- HISTÓRICO -->
     <div id="content-evolucion" class="section-content">
         <div class="card"><div class="card-title">📈 Evolución de Equipos</div><div class="text-block muted">Próximamente...</div></div>
     </div>
@@ -166,7 +162,6 @@
     const alertas = ["👤 <b><b>Jon MARQUEZ PEREZ</b></b> (17 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -788.417 €<br>", "👤 <b><b>Rolo Tomasi</b></b> (15 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -2.868.135 €<br>", "👤 <b><b>Gorka Bartu</b></b> (14 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Lord Rhal</b></b> (13 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Alberto Garcia</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Iñaki</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>"];
     const catalogo = [{"manager": "Iñaki", "jugador": "Julián Álvarez", "compra": 10000000, "actual": 10000000, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Iñaki", "jugador": "Íñigo Vicente", "compra": 5502000, "actual": 5502000, "dif": 0, "porc": 0.0, "fecha": "2026-07-28"}, {"manager": "Iñaki", "jugador": "Borja Iglesias", "compra": 8000004, "actual": 8000004, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Iñaki", "jugador": "Alberto Moleiro", "compra": 8000002, "actual": 8000002, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Iñaki", "jugador": "Laporte", "compra": 6666668, "actual": 6666668, "dif": 0, "porc": 0.0, "fecha": "2026-08-06"}, {"manager": "Iñaki", "jugador": "Guliashvili", "compra": 2000002, "actual": 2000002, "dif": 0, "porc": 0.0, "fecha": "2026-08-07"}, {"manager": "Iñaki", "jugador": "De Haas", "compra": 3260000, "actual": 3260000, "dif": 0, "porc": 0.0, "fecha": "2026-08-18"}, {"manager": "Iñaki", "jugador": "Pablo Ramón", "compra": 752100, "actual": 752100, "dif": 0, "porc": 0.0, "fecha": "2026-08-18"}, {"manager": "Iñaki", "jugador": "Jorge de Frutos", "compra": 8888889, "actual": 8888889, "dif": 0, "porc": 0.0, "fecha": "2026-08-19"}, {"manager": "Iñaki", "jugador": "Radu", "compra": 3250002, "actual": 3250002, "dif": 0, "porc": 0.0, "fecha": "2026-08-25"}, {"manager": "Iñaki", "jugador": "Sancet", "compra": 7741002, "actual": 7741002, "dif": 0, "porc": 0.0, "fecha": "2026-08-25"}, {"manager": "Iñaki", "jugador": "Adrián Niño", "compra": 2525000, "actual": 2525000, "dif": 0, "porc": 0.0, "fecha": "2026-08-26"}, {"manager": "Iñaki", "jugador": "Íñigo Arguibide", "compra": 1802000, "actual": 1802000, "dif": 0, "porc": 0.0, "fecha": "2026-09-05"}, {"manager": "Iñaki", "jugador": "Militão", "compra": 2222224, "actual": 2222224, "dif": 0, "porc": 0.0, "fecha": "2026-09-07"}, {"manager": "Iñaki", "jugador": "Ryan", "compra": 3140001, "actual": 3140001, "dif": 0, "porc": 0.0, "fecha": "2026-09-09"}, {"manager": "Iñaki", "jugador": "Bryan Zaragoza", "compra": 5000500, "actual": 5000500, "dif": 0, "porc": 0.0, "fecha": "2026-09-10"}, {"manager": "Iñaki", "jugador": "Aleix Febas", "compra": 1802001, "actual": 1802001, "dif": 0, "porc": 0.0, "fecha": "2026-09-29"}, {"manager": "Iñaki", "jugador": "Jon Martín", "compra": 2000003, "actual": 2000003, "dif": 0, "porc": 0.0, "fecha": "2026-10-11"}, {"manager": "Rolo Tomasi", "jugador": "Herrando", "compra": 555235, "actual": 555235, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Rolo Tomasi", "jugador": "Hugo Sotelo", "compra": 625789, "actual": 625789, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Rolo Tomasi", "jugador": "Villares", "compra": 1234856, "actual": 1234856, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Rolo Tomasi", "jugador": "Omar El Hilali", "compra": 1444444, "actual": 1444444, "dif": 0, "porc": 0.0, "fecha": "2026-07-27"}, {"manager": "Rolo Tomasi", "jugador": "Bellingham", "compra": 17759759, "actual": 17759759, "dif": 0, "porc": 0.0, "fecha": "2026-07-29"}, {"manager": "Rolo Tomasi", "jugador": "Djené", "compra": 759009, "actual": 759009, "dif": 0, "porc": 0.0, "fecha": "2026-08-01"}, {"manager": "Rolo Tomasi", "jugador": "Sivera", "compra": 3111111, "actual": 3111111, "dif": 0, "porc": 0.0, "fecha": "2026-08-06"}, {"manager": "Rolo Tomasi", "jugador": "Koke", "compra": 4555555, "actual": 4555555, "dif": 0, "porc": 0.0, "fecha": "2026-08-21"}, {"manager": "Rolo Tomasi", "jugador": "Lamine Yamal", "compra": 26259001, "actual": 26259001, "dif": 0, "porc": 0.0, "fecha": "2026-08-24"}, {"manager": "Rolo Tomasi", "jugador": "Rodrigo Riquelme", "compra": 2971009, "actual": 2971009, "dif": 0, "porc": 0.0, "fecha": "2026-08-29"}, {"manager": "Rolo Tomasi", "jugador": "Aitor Ruibal", "compra": 859859, "actual": 859859, "dif": 0, "porc": 0.0, "fecha": "2026-09-01"}, {"manager": "Rolo Tomasi", "jugador": "Moi Gómez", "compra": 1459459, "actual": 1459459, "dif": 0, "porc": 0.0, "fecha": "2026-09-06"}, {"manager": "Rolo Tomasi", "jugador": "Olasagasti", "compra": 3539009, "actual": 3539009, "dif": 0, "porc": 0.0, "fecha": "2026-09-12"}, {"manager": "Rolo Tomasi", "jugador": "Edu Expósito", "compra": 5111111, "actual": 5111111, "dif": 0, "porc": 0.0, "fecha": "2026-09-16"}, {"manager": "Rolo Tomasi", "jugador": "Adrián Rodríguez", "compra": 176009, "actual": 176009, "dif": 0, "porc": 0.0, "fecha": "2026-09-16"}, {"manager": "Rolo Tomasi", "jugador": "Konaté", "compra": 7359009, "actual": 7359009, "dif": 0, "porc": 0.0, "fecha": "2026-09-25"}, {"manager": "Rolo Tomasi", "jugador": "Lucas Boyé", "compra": 6330009, "actual": 6330009, "dif": 0, "porc": 0.0, "fecha": "2026-10-06"}, {"manager": "Rolo Tomasi", "jugador": "Hancko", "compra": 4902009, "actual": 4902009, "dif": 0, "porc": 0.0, "fecha": "2026-10-10"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Zakharyan", "compra": 350000, "actual": 350000, "dif": 0, "porc": 0.0, "fecha": "2026-07-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Jon Moncayola", "compra": 2000000, "actual": 2000000, "dif": 0, "porc": 0.0, "fecha": "2026-07-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Le Normand", "compra": 2200000, "actual": 2200000, "dif": 0, "porc": 0.0, "fecha": "2026-07-30"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Antonio Blanco", "compra": 2200000, "actual": 2200000, "dif": 0, "porc": 0.0, "fecha": "2026-08-10"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Jonny", "compra": 1650009, "actual": 1650009, "dif": 0, "porc": 0.0, "fecha": "2026-08-12"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Vinícius Júnior", "compra": 23310009, "actual": 23310009, "dif": 0, "porc": 0.0, "fecha": "2026-08-13"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Quagliata", "compra": 2000000, "actual": 2000000, "dif": 0, "porc": 0.0, "fecha": "2026-08-24"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Álex Berenguer", "compra": 3600000, "actual": 3600000, "dif": 0, "porc": 0.0, "fecha": "2026-09-04"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Santiago Mouriño", "compra": 2830000, "actual": 2830000, "dif": 0, "porc": 0.0, "fecha": "2026-09-14"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Andrés García", "compra": 1950000, "actual": 1950000, "dif": 0, "porc": 0.0, "fecha": "2026-09-16"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Sucic", "compra": 4100000, "actual": 4100000, "dif": 0, "porc": 0.0, "fecha": "2026-09-20"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "David Larrubia", "compra": 3250000, "actual": 3250000, "dif": 0, "porc": 0.0, "fecha": "2026-09-20"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Hjulmand", "compra": 5730000, "actual": 5730000, "dif": 0, "porc": 0.0, "fecha": "2026-09-21"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Alfonso Herrero", "compra": 2650000, "actual": 2650000, "dif": 0, "porc": 0.0, "fecha": "2026-09-24"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Ander Barrenetxea", "compra": 3500000, "actual": 3500000, "dif": 0, "porc": 0.0, "fecha": "2026-09-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Alemao", "compra": 1680000, "actual": 1680000, "dif": 0, "porc": 0.0, "fecha": "2026-09-26"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Villalibre", "compra": 710000, "actual": 710000, "dif": 0, "porc": 0.0, "fecha": "2026-10-01"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Ugrinic", "compra": 770000, "actual": 770000, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Huijsen", "compra": 4510000, "actual": 4510000, "dif": 0, "porc": 0.0, "fecha": "2026-10-10"}, {"manager": "Alberto Garcia", "jugador": "Le Normand", "compra": 1518000, "actual": 1518000, "dif": 0, "porc": 0.0, "fecha": "2026-07-25"}, {"manager": "Alberto Garcia", "jugador": "Aïssa Mandi", "compra": 1390000, "actual": 1390000, "dif": 0, "porc": 0.0, "fecha": "2026-07-29"}, {"manager": "Alberto Garcia", "jugador": "Jon Moncayola", "compra": 1780000, "actual": 1780000, "dif": 0, "porc": 0.0, "fecha": "2026-07-30"}, {"manager": "Alberto Garcia", "jugador": "Tchouaméni", "compra": 8217000, "actual": 8217000, "dif": 0, "porc": 0.0, "fecha": "2026-08-02"}, {"manager": "Alberto Garcia", "jugador": "Álvaro Valles", "compra": 3300100, "actual": 3300100, "dif": 0, "porc": 0.0, "fecha": "2026-08-04"}, {"manager": "Alberto Garcia", "jugador": "Nsongo", "compra": 3890000, "actual": 3890000, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Alberto Garcia", "jugador": "Danjuma", "compra": 1330000, "actual": 1330000, "dif": 0, "porc": 0.0, "fecha": "2026-08-05"}, {"manager": "Alberto Garcia", "jugador": "Kang-In Lee", "compra": 7744000, "actual": 7744000, "dif": 0, "porc": 0.0, "fecha": "2026-08-07"}, {"manager": "Alberto Garcia", "jugador": "Matías Dituro", "compra": 2279000, "actual": 2279000, "dif": 0, "porc": 0.0, "fecha": "2026-08-18"}, {"manager": "Alberto Garcia", "jugador": "Adrián de la Fuente", "compra": 3511000, "actual": 3511000, "dif": 0, "porc": 0.0, "fecha": "2026-08-27"}, {"manager": "Alberto Garcia", "jugador": "Gabriel Suazo", "compra": 2190000, "actual": 2190000, "dif": 0, "porc": 0.0, "fecha": "2026-08-28"}, {"manager": "Alberto Garcia", "jugador": "Rüdiger", "compra": 3040000, "actual": 3040000, "dif": 0, "porc": 0.0, "fecha": "2026-09-12"}, {"manager": "Alberto Garcia", "jugador": "Marcos Llorente", "compra": 6200000, "actual": 6200000, "dif": 0, "porc": 0.0, "fecha": "2026-09-15"}, {"manager": "Alberto Garcia", "jugador": "Isco", "compra": 8655000, "actual": 8655000, "dif": 0, "porc": 0.0, "fecha": "2026-09-19"}, {"manager": "Alberto Garcia", "jugador": "Pape Gueye", "compra": 8450000, "actual": 8450000, "dif": 0, "porc": 0.0, "fecha": "2026-09-23"}, {"manager": "Alberto Garcia", "jugador": "Aitor Mañas", "compra": 350000, "actual": 350000, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Alberto Garcia", "jugador": "Guedes", "compra": 4600000, "actual": 4600000, "dif": 0, "porc": 0.0, "fecha": "2026-10-11"}, {"manager": "Alberto Garcia", "jugador": "Koundé", "compra": 2563000, "actual": 2563000, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Gorka Bartu", "jugador": "Logan Costa", "compra": 666666, "actual": 666666, "dif": 0, "porc": 0.0, "fecha": "2026-07-26"}, {"manager": "Gorka Bartu", "jugador": "Budimir", "compra": 12501000, "actual": 12501000, "dif": 0, "porc": 0.0, "fecha": "2026-08-02"}, {"manager": "Gorka Bartu", "jugador": "Nico Williams", "compra": 14551551, "actual": 14551551, "dif": 0, "porc": 0.0, "fecha": "2026-08-12"}, {"manager": "Gorka Bartu", "jugador": "Sergi Cardona", "compra": 1080000, "actual": 1080000, "dif": 0, "porc": 0.0, "fecha": "2026-09-04"}, {"manager": "Gorka Bartu", "jugador": "Nathan Saliba", "compra": 2010101, "actual": 2010101, "dif": 0, "porc": 0.0, "fecha": "2026-09-05"}, {"manager": "Gorka Bartu", "jugador": "Leo Román", "compra": 3651000, "actual": 3651000, "dif": 0, "porc": 0.0, "fecha": "2026-09-09"}, {"manager": "Gorka Bartu", "jugador": "Yangel Herrera", "compra": 3501000, "actual": 3501000, "dif": 0, "porc": 0.0, "fecha": "2026-09-10"}, {"manager": "Gorka Bartu", "jugador": "Unai Marrero", "compra": 201000, "actual": 201000, "dif": 0, "porc": 0.0, "fecha": "2026-09-18"}, {"manager": "Gorka Bartu", "jugador": "Lejeune", "compra": 3081000, "actual": 3081000, "dif": 0, "porc": 0.0, "fecha": "2026-09-19"}, {"manager": "Gorka Bartu", "jugador": "Sorloth", "compra": 4155555, "actual": 4155555, "dif": 0, "porc": 0.0, "fecha": "2026-09-19"}, {"manager": "Gorka Bartu", "jugador": "Jesús Areso", "compra": 2001001, "actual": 2001001, "dif": 0, "porc": 0.0, "fecha": "2026-09-22"}, {"manager": "Gorka Bartu", "jugador": "Nelson Deossa", "compra": 3010101, "actual": 3010101, "dif": 0, "porc": 0.0, "fecha": "2026-09-23"}, {"manager": "Gorka Bartu", "jugador": "Rosier", "compra": 451000, "actual": 451000, "dif": 0, "porc": 0.0, "fecha": "2026-09-24"}, {"manager": "Gorka Bartu", "jugador": "Oyarzabal", "compra": 11151000, "actual": 11151000, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Gorka Bartu", "jugador": "Peio Canales", "compra": 4001001, "actual": 4001001, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Lord Rhal", "jugador": "Antony", "compra": 12501009, "actual": 12501009, "dif": 0, "porc": 0.0, "fecha": "2026-07-28"}, {"manager": "Lord Rhal", "jugador": "Abde Ezzalzouli", "compra": 12000109, "actual": 12000109, "dif": 0, "porc": 0.0, "fecha": "2026-07-29"}, {"manager": "Lord Rhal", "jugador": "Pablo Ibáñez", "compra": 1380009, "actual": 1380009, "dif": 0, "porc": 0.0, "fecha": "2026-07-30"}, {"manager": "Lord Rhal", "jugador": "Kike Salas", "compra": 4001390, "actual": 4001390, "dif": 0, "porc": 0.0, "fecha": "2026-08-01"}, {"manager": "Lord Rhal", "jugador": "Javi Puado", "compra": 2509909, "actual": 2509909, "dif": 0, "porc": 0.0, "fecha": "2026-08-04"}, {"manager": "Lord Rhal", "jugador": "David Soria", "compra": 4699009, "actual": 4699009, "dif": 0, "porc": 0.0, "fecha": "2026-09-06"}, {"manager": "Lord Rhal", "jugador": "Juan Iglesias", "compra": 1739009, "actual": 1739009, "dif": 0, "porc": 0.0, "fecha": "2026-09-11"}, {"manager": "Lord Rhal", "jugador": "Yoel Lago", "compra": 1559009, "actual": 1559009, "dif": 0, "porc": 0.0, "fecha": "2026-09-14"}, {"manager": "Lord Rhal", "jugador": "Ilaix Moriba", "compra": 1841009, "actual": 1841009, "dif": 0, "porc": 0.0, "fecha": "2026-09-20"}, {"manager": "Lord Rhal", "jugador": "Fer Niño", "compra": 6113099, "actual": 6113099, "dif": 0, "porc": 0.0, "fecha": "2026-09-23"}, {"manager": "Lord Rhal", "jugador": "Johaneko", "compra": 1730009, "actual": 1730009, "dif": 0, "porc": 0.0, "fecha": "2026-10-01"}, {"manager": "Lord Rhal", "jugador": "Pepelu", "compra": 2531009, "actual": 2531009, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}, {"manager": "Lord Rhal", "jugador": "Carlos Romero", "compra": 2079009, "actual": 2079009, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}, {"manager": "Mánager 1", "jugador": "Pedri", "compra": 14357000, "actual": 14357000, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Mánager 1", "jugador": "Josan", "compra": 318800, "actual": 318800, "dif": 0, "porc": 0.0, "fecha": "2026-10-05"}, {"manager": "Mánager 1", "jugador": "Gorrotxategi", "compra": 751200, "actual": 751200, "dif": 0, "porc": 0.0, "fecha": "2026-10-06"}, {"manager": "Mánager 1", "jugador": "Yago Santiago", "compra": 178300, "actual": 178300, "dif": 0, "porc": 0.0, "fecha": "2026-10-06"}, {"manager": "Mánager 1", "jugador": "Buchanan", "compra": 2353500, "actual": 2353500, "dif": 0, "porc": 0.0, "fecha": "2026-10-07"}, {"manager": "Mánager 1", "jugador": "Renato Veiga", "compra": 4990000, "actual": 4990000, "dif": 0, "porc": 0.0, "fecha": "2026-10-07"}, {"manager": "Mánager 1", "jugador": "Sergio Camello", "compra": 13035200, "actual": 13035200, "dif": 0, "porc": 0.0, "fecha": "2026-10-07"}, {"manager": "Mánager 1", "jugador": "Cucurella", "compra": 8792700, "actual": 8792700, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Miguel Sierra", "compra": 5691000, "actual": 5691000, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Eric García", "compra": 6198000, "actual": 6198000, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Fermín López", "compra": 15212900, "actual": 15212900, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Lookman", "compra": 9812600, "actual": 9812600, "dif": 0, "porc": 0.0, "fecha": "2026-10-08"}, {"manager": "Mánager 1", "jugador": "Rockson Yeboah", "compra": 1140200, "actual": 1140200, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Alexander-Arnold", "compra": 2476800, "actual": 2476800, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Guridi", "compra": 967000, "actual": 967000, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Dmitrovic", "compra": 1941100, "actual": 1941100, "dif": 0, "porc": 0.0, "fecha": "2026-10-09"}, {"manager": "Mánager 1", "jugador": "Nicolas Pépé", "compra": 8541200, "actual": 8541200, "dif": 0, "porc": 0.0, "fecha": "2026-10-11"}, {"manager": "Mánager 1", "jugador": "Kubo", "compra": 2512900, "actual": 2512900, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Mánager 1", "jugador": "Marcos Fernández", "compra": 2408300, "actual": 2408300, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Mánager 1", "jugador": "Mariano Díaz", "compra": 4591900, "actual": 4591900, "dif": 0, "porc": 0.0, "fecha": "2026-10-12"}, {"manager": "Mánager 1", "jugador": "Luis Rioja", "compra": 1503400, "actual": 1503400, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}, {"manager": "Mánager 1", "jugador": "César Tárrega", "compra": 1424400, "actual": 1424400, "dif": 0, "porc": 0.0, "fecha": "2026-10-13"}];
     const textosMovs = ["Sin operaciones recientes en las últimas horas."];
-    const textosMercado = [];
     
     let currentMain = 'diario';
     let currentSub = { 'diario': 'movimientos', 'jornada': 'resultados', 'historico': 'evolucion' };
@@ -206,23 +201,25 @@
         grid.innerHTML = managers.map(m => {
             const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg';
             
-            // Buscar alertas (solo mostramos si tienen la palabra INFRACCIÓN)
+            // Recortador de Alertas: Quita los nombres y se queda solo con "INFRACCIÓN..."
             let alertaHTML = '';
             const suAlerta = alertas.find(a => a.includes(m.manager) && a.includes('INFRACCIÓN'));
             if (suAlerta) {
-                // Limpiamos el asterisco de inicio y fin si lo hay
-                const textoAlerta = suAlerta.replace(/<[^>]*>?/gm, '').replace(/\n/g, ' ').substring(0, 100);
-                alertaHTML = `<div class="alert-mini">⚠️ Infracciones: ${textoAlerta}...</div>`;
+                let txtLimpio = suAlerta.replace(/<[^>]*>?/gm, ''); // Quita HTML
+                let idx = txtLimpio.indexOf('INFRACCIÓN');
+                if(idx !== -1) {
+                    alertaHTML = `<div class="alert-mini">⚠️ ${txtLimpio.substring(idx).trim()}</div>`;
+                }
             }
 
-            // NUEVO ORDEN DE DATOS EN LA TARJETA
+            // ORDEN EXACTO Y COMPACTO
             return `<div class="card">
                 <div class="mgr-header">👤 ${m.manager}</div>
-                <div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-neutral">${m.total_jugadores || 0}</span></div>
                 <div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-neutral">${fmtE(m.patrimonio_total)}</span></div>
                 <div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-neutral">${fmtE(m.valor_plantilla)}</span></div>
                 <div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div>
                 <div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div>
+                <div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-neutral">${m.total_jugadores || 0}</span></div>
                 ${alertaHTML}
             </div>`;
         }).join('');
@@ -263,13 +260,6 @@
             document.getElementById('bloque-movimientos').innerHTML = textosMovs.join('<br><br>');
         } else {
             document.getElementById('bloque-movimientos').innerHTML = '<i>Sin movimientos de compras y ventas reportados.</i>';
-        }
-        
-        if(textosMercado.length > 0) {
-            document.getElementById('bloque-mercado').innerHTML = textosMercado.join('<br><br>');
-        } else {
-            // Si el script de Python nos pasa el mercado general todo junto, avisamos de que se lea en movimientos.
-            document.getElementById('bloque-mercado').innerHTML = '<i>Los datos de subidas y bajadas se encuentran integrados en el informe principal (ver pestaña Movimientos).</i>';
         }
     }
 
