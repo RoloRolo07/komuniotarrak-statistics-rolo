@@ -8,19 +8,20 @@
         :root {
             --bg: #111827; --surface: #1e293b; --card: #1f2937; --border: #374151;
             --accent: #10b981; --gold: #f59e0b; --danger: #ef4444; --text: #f3f4f6; --muted: #9ca3af;
+            --blue: #3b82f6; --white: #ffffff;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 40px; }
         
         header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 20px 0; }
         .header-top { max-width: 1100px; margin: 0 auto 16px; text-align: center; }
-        .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: 1px; color: #fff; }
+        .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: 1px; color: var(--white); }
         .subtitle { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
         
         .main-nav { display: flex; justify-content: center; gap: 8px; max-width: 1100px; margin: 0 auto; overflow-x: auto; padding-bottom: 12px; }
         .main-tab { background: #374151; color: #d1d5db; border: none; padding: 10px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border-radius: 999px; transition: all 0.2s; white-space: nowrap; }
-        .main-tab:hover { background: #4b5563; color: #fff; }
-        .main-tab.active { background: #fff; color: #000; }
+        .main-tab:hover { background: #4b5563; color: var(--white); }
+        .main-tab.active { background: var(--white); color: #000; }
 
         .sub-nav-container { background: #0f172a; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; padding: 10px 0; }
         .sub-nav { display: none; justify-content: center; gap: 8px; max-width: 1100px; margin: 0 auto; overflow-x: auto; padding: 0 16px; }
@@ -34,19 +35,20 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .card-title { font-size: 1.15rem; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .card-title { font-size: 1.15rem; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px; color: var(--white); display: flex; align-items: center; gap: 8px; }
         
-        /* DASHBOARD MANAGER */
+        /* DASHBOARD MANAGER TWEAKS */
         .grid-managers { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-        .mgr-header { font-weight: 800; font-size: 1.2rem; margin-bottom: 8px; color: #fff; }
+        .mgr-header { font-weight: 800; font-size: 1.2rem; margin-bottom: 8px; color: var(--white); }
         .kpi-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 1px 0; }
         .kpi-label { color: var(--muted); }
         .val-pos { color: var(--accent); font-weight: 700; }
         .val-neg { color: var(--danger); font-weight: 700; }
         .val-gold { color: var(--gold); font-weight: 700; }
-        .val-neutral { color: #fff; font-weight: 700; }
+        .val-blue { color: var(--blue); font-weight: 700; }
+        .val-white { color: var(--white); font-weight: 700; }
         
-        .alert-mini { background: rgba(239, 68, 68, 0.15); border-left: 4px solid var(--danger); padding: 8px; margin-top: 10px; font-size: 0.85rem; border-radius: 4px; color: #fca5a5; font-weight: 600; }
+        .alert-mini { background: rgba(239, 68, 68, 0.15); border-left: 4px solid var(--danger); padding: 8px; margin-top: 10px; font-size: 0.85rem; border-radius: 4px; color: #fca5a5; font-weight: 600; line-height: 1.4; }
 
         /* LATENTES (Dos columnas) */
         .latentes-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -57,9 +59,9 @@
         th { color: var(--muted); text-transform: uppercase; font-size: 0.75rem; background: rgba(0,0,0,0.2); }
         tr:hover td { background: rgba(255,255,255,0.02); }
         
-        .search-input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: #111827; color: #fff; margin-bottom: 16px; font-size: 0.9rem; }
+        .search-input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: #111827; color: var(--white); margin-bottom: 16px; font-size: 0.9rem; }
         .btn-filter-grp { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 8px; }
-        .btn-filter { background: #374151; color: #d1d5db; border: none; padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; cursor: pointer; }
+        .btn-filter { background: #374151; color: #d1d5db; border: none; padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
         .btn-filter.active { background: var(--accent); color: #000; font-weight: bold; }
         
         .text-block { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; color: #d1d5db; line-height: 1.7; }
@@ -70,7 +72,7 @@
 <header>
     <div class="header-top">
         <div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div>
-        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 11:45</div>
+        <div class="subtitle">Generado por Rolo | Actualizado: 13/10/2026 12:07</div>
     </div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
@@ -102,7 +104,7 @@
     <div id="content-movimientos" class="section-content active">
         <div class="card">
             <div class="card-title">🔄 Compras y ventas</div>
-            <div class="text-block" id="bloque-movimientos"><i>Esperando nuevos movimientos... (Revisa si se acaban de publicar)</i></div>
+            <div class="text-block" id="bloque-movimientos">💰 <b>Iñaki</b> vende a <b>Kubo</b> por 2.512.900 € <span style='color:var(--accent)'>(Beneficio: +310.900 €)</span><br>💰 <b>Lord Rhal</b> vende a <b>Marcos Fernández</b> por 2.408.300 € <span style='color:var(--accent)'>(Beneficio: +1.568.391 €)</span><br>💰 <b>Lord Rhal</b> vende a <b>Mariano Díaz</b> por 4.591.900 € <span style='color:var(--danger)'>(Pérdida: -1.267.109 €)</span><br>🛒 <b>Lord Rhal</b> ficha a <b>Pepelu</b> por 2.531.009 € <span style='color:var(--danger)'>(Sobrepuja: +1.009 €)</span><br>🛒 <b>Lord Rhal</b> ficha a <b>Carlos Romero</b> por 2.079.009 € <span style='color:var(--danger)'>(Sobrepuja: +9.009 €)</span><br>💰 <b>Gorka Bartu</b> vende a <b>Luis Rioja</b> por 1.503.400 € <span style='color:var(--accent)'>(Beneficio: +63.400 €)</span><br>💰 <b>Lord Rhal</b> vende a <b>César Tárrega</b> por 1.424.400 € <span style='color:var(--accent)'>(Beneficio: +484.399 €)</span></div>
         </div>
     </div>
     <div id="content-cuentas" class="section-content">
@@ -111,7 +113,7 @@
     <div id="content-mercado" class="section-content">
         <div class="card">
             <div class="card-title">📉 Subidas y bajadas</div>
-            <div class="text-block" id="bloque-mercado"><i>Esperando cierre de mercado...</i></div>
+            <div class="text-block" id="bloque-mercado"><div style='color:var(--accent); font-size: 1.05rem; font-weight:bold; margin-bottom:8px;'>🚀 Top 5 Subidas</div><br>⬆️ <b>Vinícius Júnior</b> (Jon MARQUEZ PEREZ): +1.670.000 €<br>⬆️ <b>Antony</b> (Lord Rhal): +830.000 €<br>⬆️ <b>Alberto Moleiro</b> (Iñaki): +490.000 €<br>⬆️ <b>Isco</b> (Alberto Garcia): +370.000 €<br>⬆️ <b>Jorge de Frutos</b> (Iñaki): +310.000 €<br><div style='color:var(--danger); font-size: 1.05rem; font-weight:bold; margin-top:20px; margin-bottom:8px;'>🔻 Top 5 Bajadas</div><br>⬇️ <b>Budimir</b> (Gorka Bartu): -2.110.000 €<br>⬇️ <b>Bellingham</b> (Rolo Tomasi): -730.000 €<br>⬇️ <b>Sucic</b> (Jon MARQUEZ PEREZ): -720.000 €<br>⬇️ <b>David Soria</b> (Lord Rhal): -590.000 €<br>⬇️ <b>Huijsen</b> (Jon MARQUEZ PEREZ): -530.000 €</div>
         </div>
     </div>
     
@@ -123,7 +125,7 @@
             <div class="latentes-grid">
                 <!-- COLUMNA PELOTAZOS -->
                 <div class="card" style="margin-bottom: 0;">
-                    <div class="card-title" style="color: var(--accent);">🚀 Pelotazos Latentes</div>
+                    <div class="card-title" style="color: var(--accent);">🚀 Pelotazos</div>
                     <div style="overflow-x:auto;">
                         <table>
                             <thead><tr><th>Jugador</th><th>Balance</th></tr></thead>
@@ -134,7 +136,7 @@
                 
                 <!-- COLUMNA RUINAS -->
                 <div class="card" style="margin-bottom: 0;">
-                    <div class="card-title" style="color: var(--danger);">📉 Ruinas Latentes</div>
+                    <div class="card-title" style="color: var(--danger);">📉 Ruinas</div>
                     <div style="overflow-x:auto;">
                         <table>
                             <thead><tr><th>Jugador</th><th>Balance</th></tr></thead>
@@ -143,12 +145,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- EXPLICACIÓN SI ESTÁ VACÍO -->
-            <p id="aviso-catalogo-vacio" class="muted" style="text-align: center; margin-top: 20px; font-size: 0.9rem; display: none;">
-                ⚠️ Si no aparecen jugadores aquí, asegúrate de que la función <b>construir_catalogo_completo_jugadores()</b> 
-                está leyendo correctamente de <i>cartera_data</i> en tu archivo Python (actualmente detecta que compra y actual son idénticos).
-            </p>
         </div>
     </div>
 
@@ -156,7 +152,7 @@
     <div id="content-resultados" class="section-content">
         <div class="card">
             <div class="card-title">🏅 Clasificación y Crónica</div>
-            <div class="text-block">{'jornada<i>num': 10, 'fecha</i>cierre': '2026-10-13 11:44:04'}</div>
+            <div class="text-block">{'jornada<i>num': 10, 'fecha</i>cierre': '2026-10-13 12:06:15'}</div>
         </div>
     </div>
     <div id="content-alineaciones" class="section-content">
@@ -180,8 +176,8 @@
 
 <script>
     const managers = [{"manager": "Rolo Tomasi", "valor_plantilla": 83250000, "presupuesto_liquido": -2868135, "patrimonio_total": 80381865, "puja_maxima": 17944365, "total_jugadores": 15, "compras_realizadas": 52, "ventas_realizadas": 37, "puntos": 541}, {"manager": "Alberto Garcia", "valor_plantilla": 74690000, "presupuesto_liquido": 2204300, "patrimonio_total": 76894300, "puja_maxima": 20876800, "total_jugadores": 17, "compras_realizadas": 40, "ventas_realizadas": 23, "puntos": 467}, {"manager": "Iñaki", "valor_plantilla": 46880000, "presupuesto_liquido": 9553083, "patrimonio_total": 56433083, "puja_maxima": 21273083, "total_jugadores": 17, "compras_realizadas": 50, "ventas_realizadas": 33, "puntos": 371}, {"manager": "Gorka Bartu", "valor_plantilla": 53320000, "presupuesto_liquido": 606326, "patrimonio_total": 53926326, "puja_maxima": 13936326, "total_jugadores": 14, "compras_realizadas": 69, "ventas_realizadas": 55, "puntos": 349}, {"manager": "Lord Rhal", "valor_plantilla": 50750000, "presupuesto_liquido": 4410467, "patrimonio_total": 55160467, "puja_maxima": 17097967, "total_jugadores": 13, "compras_realizadas": 38, "ventas_realizadas": 25, "puntos": 343}, {"manager": "Jon MARQUEZ PEREZ", "valor_plantilla": 50040000, "presupuesto_liquido": -788417, "patrimonio_total": 49251583, "puja_maxima": 11721583, "total_jugadores": 17, "compras_realizadas": 46, "ventas_realizadas": 29, "puntos": 298}];
-    const alertas = ["👤 <b><b>Jon MARQUEZ PEREZ</b></b> (17 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -788.417 €<br>", "👤 <b><b>Rolo Tomasi</b></b> (15 jugadores):<br>    • 💰 <b><b>INFRACCIÓN SALDO NEGATIVO:</b></b> -2.868.135 €<br>", "👤 <b><b>Gorka Bartu</b></b> (14 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Lord Rhal</b></b> (13 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Alberto Garcia</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>", "👤 <b><b>Iñaki</b></b> (17 jugadores):<br>    • ✅ <i>Sin incidencias.</i><br>"];
-    const catalogo = [];
+    const alertas = ["👤 <b>*Jon MARQUEZ PEREZ*</b> (17 jugadores):\n    • 💰 <b>*INFRACCIÓN SALDO NEGATIVO:*</b> -788.417 €\n", "👤 <b>*Rolo Tomasi*</b> (15 jugadores):\n    • 💰 <b>*INFRACCIÓN SALDO NEGATIVO:*</b> -2.868.135 €\n", "👤 <b>*Gorka Bartu*</b> (14 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n", "👤 <b>*Lord Rhal*</b> (13 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n", "👤 <b>*Alberto Garcia*</b> (17 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n", "👤 <b>*Iñaki*</b> (17 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n"];
+    const catalogo = [{"manager": "Alberto Garcia", "jugador": "Kang-In Lee", "compra": 7744000.0, "actual": 14750000.0, "dif": 7006000.0, "porc": 90.5}, {"manager": "Alberto Garcia", "jugador": "Álvaro Valles", "compra": 3300100.0, "actual": 7470000.0, "dif": 4169900.0, "porc": 126.4}, {"manager": "Gorka Bartu", "jugador": "Nathan Saliba", "compra": 2010101.0, "actual": 4860000.0, "dif": 2849899.0, "porc": 141.8}, {"manager": "Alberto Garcia", "jugador": "Danjuma", "compra": 1330000.0, "actual": 2790000.0, "dif": 1460000.0, "porc": 109.8}, {"manager": "Alberto Garcia", "jugador": "Aïssa Mandi", "compra": 1390000.0, "actual": 2770000.0, "dif": 1380000.0, "porc": 99.3}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Jonny", "compra": 1650009.0, "actual": 2670000.0, "dif": 1019991.0, "porc": 61.8}, {"manager": "Lord Rhal", "jugador": "Juan Iglesias", "compra": 1739009.0, "actual": 2690000.0, "dif": 950991.0, "porc": 54.7}, {"manager": "Lord Rhal", "jugador": "Ilaix Moriba", "compra": 1841009.0, "actual": 2790000.0, "dif": 948991.0, "porc": 51.5}, {"manager": "Iñaki", "jugador": "Militão", "compra": 2222224.0, "actual": 3150000.0, "dif": 927776.0, "porc": 41.7}, {"manager": "Lord Rhal", "jugador": "Yoel Lago", "compra": 1559009.0, "actual": 2480000.0, "dif": 920991.0, "porc": 59.1}, {"manager": "Gorka Bartu", "jugador": "Sorloth", "compra": 4155555.0, "actual": 5050000.0, "dif": 894445.0, "porc": 21.5}, {"manager": "Rolo Tomasi", "jugador": "Omar El Hilali", "compra": 1444444.0, "actual": 2300000.0, "dif": 855556.0, "porc": 59.2}, {"manager": "Lord Rhal", "jugador": "Fer Niño", "compra": 6113099.0, "actual": 6790000.0, "dif": 676901.0, "porc": 11.1}, {"manager": "Lord Rhal", "jugador": "Pablo Ibáñez", "compra": 1380009.0, "actual": 2010000.0, "dif": 629991.0, "porc": 45.7}, {"manager": "Alberto Garcia", "jugador": "Gabriel Suazo", "compra": 2190000.0, "actual": 2810000.0, "dif": 620000.0, "porc": 28.3}, {"manager": "Iñaki", "jugador": "Pablo Ramón", "compra": 752100.0, "actual": 1370000.0, "dif": 617900.0, "porc": 82.2}, {"manager": "Rolo Tomasi", "jugador": "Djené", "compra": 759009.0, "actual": 1330000.0, "dif": 570991.0, "porc": 75.2}, {"manager": "Rolo Tomasi", "jugador": "Rodrigo Riquelme", "compra": 2971009.0, "actual": 3480000.0, "dif": 508991.0, "porc": 17.1}, {"manager": "Iñaki", "jugador": "Alberto Moleiro", "compra": 8000002.0, "actual": 8420000.0, "dif": 419998.0, "porc": 5.2}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Alfonso Herrero", "compra": 2650000.0, "actual": 2960000.0, "dif": 310000.0, "porc": 11.7}, {"manager": "Rolo Tomasi", "jugador": "Lucas Boyé", "compra": 6330009.0, "actual": 6640000.0, "dif": 309991.0, "porc": 4.9}, {"manager": "Rolo Tomasi", "jugador": "Moi Gómez", "compra": 1459459.0, "actual": 1750000.0, "dif": 290541.0, "porc": 19.9}, {"manager": "Gorka Bartu", "jugador": "Sergi Cardona", "compra": 1080000.0, "actual": 1370000.0, "dif": 290000.0, "porc": 26.9}, {"manager": "Iñaki", "jugador": "Aleix Febas", "compra": 1802001.0, "actual": 2040000.0, "dif": 237999.0, "porc": 13.2}, {"manager": "Alberto Garcia", "jugador": "Guedes", "compra": 4600000.0, "actual": 4810000.0, "dif": 210000.0, "porc": 4.6}, {"manager": "Rolo Tomasi", "jugador": "Edu Expósito", "compra": 5111111.0, "actual": 5310000.0, "dif": 198889.0, "porc": 3.9}, {"manager": "Rolo Tomasi", "jugador": "Hancko", "compra": 4902009.0, "actual": 5080000.0, "dif": 177991.0, "porc": 3.6}, {"manager": "Rolo Tomasi", "jugador": "Sivera", "compra": 3111111.0, "actual": 3270000.0, "dif": 158889.0, "porc": 5.1}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Sucic", "compra": 4100000.0, "actual": 4230000.0, "dif": 130000.0, "porc": 3.2}, {"manager": "Gorka Bartu", "jugador": "Rosier", "compra": 451000.0, "actual": 560000.0, "dif": 109000.0, "porc": 24.2}, {"manager": "Alberto Garcia", "jugador": "Adrián de la Fuente", "compra": 3511000.0, "actual": 3610000.0, "dif": 99000.0, "porc": 2.8}, {"manager": "Lord Rhal", "jugador": "Carlos Romero", "compra": 2079009.0, "actual": 2150000.0, "dif": 70991.0, "porc": 3.4}, {"manager": "Alberto Garcia", "jugador": "Rüdiger", "compra": 3040000.0, "actual": 3080000.0, "dif": 40000.0, "porc": 1.3}, {"manager": "Gorka Bartu", "jugador": "Unai Marrero", "compra": 201000.0, "actual": 220000.0, "dif": 19000.0, "porc": 9.5}, {"manager": "Rolo Tomasi", "jugador": "Adrián Rodríguez", "compra": 176009.0, "actual": 160000.0, "dif": -16009.0, "porc": -9.1}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Ugrinic", "compra": 770000.0, "actual": 720000.0, "dif": -50000.0, "porc": -6.5}, {"manager": "Alberto Garcia", "jugador": "Aitor Mañas", "compra": 350000.0, "actual": 270000.0, "dif": -80000.0, "porc": -22.9}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Villalibre", "compra": 710000.0, "actual": 600000.0, "dif": -110000.0, "porc": -15.5}, {"manager": "Lord Rhal", "jugador": "David Soria", "compra": 4699009.0, "actual": 4560000.0, "dif": -139009.0, "porc": -3.0}, {"manager": "Alberto Garcia", "jugador": "Koundé", "compra": 2563000.0, "actual": 2370000.0, "dif": -193000.0, "porc": -7.5}, {"manager": "Lord Rhal", "jugador": "Johaneko", "compra": 1730009.0, "actual": 1500000.0, "dif": -230009.0, "porc": -13.3}, {"manager": "Rolo Tomasi", "jugador": "Koke", "compra": 4555555.0, "actual": 4310000.0, "dif": -245555.0, "porc": -5.4}, {"manager": "Rolo Tomasi", "jugador": "Aitor Ruibal", "compra": 859859.0, "actual": 570000.0, "dif": -289859.0, "porc": -33.7}, {"manager": "Iñaki", "jugador": "Jon Martín", "compra": 2000003.0, "actual": 1710000.0, "dif": -290003.0, "porc": -14.5}, {"manager": "Iñaki", "jugador": "Ryan", "compra": 3140001.0, "actual": 2830000.0, "dif": -310001.0, "porc": -9.9}, {"manager": "Lord Rhal", "jugador": "Pepelu", "compra": 2531009.0, "actual": 2220000.0, "dif": -311009.0, "porc": -12.3}, {"manager": "Alberto Garcia", "jugador": "Nsongo", "compra": 3890000.0, "actual": 3530000.0, "dif": -360000.0, "porc": -9.3}, {"manager": "Gorka Bartu", "jugador": "Jesús Areso", "compra": 2001001.0, "actual": 1610000.0, "dif": -391001.0, "porc": -19.5}, {"manager": "Rolo Tomasi", "jugador": "Bellingham", "compra": 17759759.0, "actual": 17350000.0, "dif": -409759.0, "porc": -2.3}, {"manager": "Alberto Garcia", "jugador": "Isco", "compra": 8655000.0, "actual": 8240000.0, "dif": -415000.0, "porc": -4.8}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Huijsen", "compra": 4510000.0, "actual": 4050000.0, "dif": -460000.0, "porc": -10.2}, {"manager": "Alberto Garcia", "jugador": "Jon Moncayola", "compra": 1780000.0, "actual": 1320000.0, "dif": -460000.0, "porc": -25.8}, {"manager": "Lord Rhal", "jugador": "Javi Puado", "compra": 2509909.0, "actual": 2000000.0, "dif": -509909.0, "porc": -20.3}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Álex Berenguer", "compra": 3600000.0, "actual": 3070000.0, "dif": -530000.0, "porc": -14.7}, {"manager": "Gorka Bartu", "jugador": "Budimir", "compra": 12501000.0, "actual": 11960000.0, "dif": -541000.0, "porc": -4.3}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Andrés García", "compra": 1950000.0, "actual": 1380000.0, "dif": -570000.0, "porc": -29.2}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Ander Barrenetxea", "compra": 3500000.0, "actual": 2890000.0, "dif": -610000.0, "porc": -17.4}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Alemao", "compra": 1680000.0, "actual": 1050000.0, "dif": -630000.0, "porc": -37.5}, {"manager": "Iñaki", "jugador": "Radu", "compra": 3250002.0, "actual": 2490000.0, "dif": -760002.0, "porc": -23.4}, {"manager": "Gorka Bartu", "jugador": "Peio Canales", "compra": 4001001.0, "actual": 3200000.0, "dif": -801001.0, "porc": -20.0}, {"manager": "Iñaki", "jugador": "Bryan Zaragoza", "compra": 5000500.0, "actual": 4180000.0, "dif": -820500.0, "porc": -16.4}, {"manager": "Iñaki", "jugador": "Íñigo Arguibide", "compra": 1802000.0, "actual": 980000.0, "dif": -822000.0, "porc": -45.6}, {"manager": "Gorka Bartu", "jugador": "Yangel Herrera", "compra": 3501000.0, "actual": 2620000.0, "dif": -881000.0, "porc": -25.2}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Quagliata", "compra": 2000000.0, "actual": 1100000.0, "dif": -900000.0, "porc": -45.0}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Antonio Blanco", "compra": 2200000.0, "actual": 1200000.0, "dif": -1000000.0, "porc": -45.5}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Le Normand", "compra": 2200000.0, "actual": 1180000.0, "dif": -1020000.0, "porc": -46.4}, {"manager": "Iñaki", "jugador": "Íñigo Vicente", "compra": 5502000.0, "actual": 4480000.0, "dif": -1022000.0, "porc": -18.6}, {"manager": "Gorka Bartu", "jugador": "Lejeune", "compra": 3081000.0, "actual": 1970000.0, "dif": -1111000.0, "porc": -36.1}, {"manager": "Rolo Tomasi", "jugador": "Olasagasti", "compra": 3539009.0, "actual": 2390000.0, "dif": -1149009.0, "porc": -32.5}, {"manager": "Gorka Bartu", "jugador": "Nelson Deossa", "compra": 3010101.0, "actual": 1860000.0, "dif": -1150101.0, "porc": -38.2}, {"manager": "Iñaki", "jugador": "Adrián Niño", "compra": 2525000.0, "actual": 1350000.0, "dif": -1175000.0, "porc": -46.5}, {"manager": "Gorka Bartu", "jugador": "Leo Román", "compra": 3651000.0, "actual": 2450000.0, "dif": -1201000.0, "porc": -32.9}, {"manager": "Rolo Tomasi", "jugador": "Konaté", "compra": 7359009.0, "actual": 6060000.0, "dif": -1299009.0, "porc": -17.7}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "David Larrubia", "compra": 3250000.0, "actual": 1920000.0, "dif": -1330000.0, "porc": -40.9}, {"manager": "Alberto Garcia", "jugador": "Matías Dituro", "compra": 2279000.0, "actual": 820000.0, "dif": -1459000.0, "porc": -64.0}, {"manager": "Iñaki", "jugador": "De Haas", "compra": 3260000.0, "actual": 1780000.0, "dif": -1480000.0, "porc": -45.4}, {"manager": "Alberto Garcia", "jugador": "Marcos Llorente", "compra": 6200000.0, "actual": 4670000.0, "dif": -1530000.0, "porc": -24.7}, {"manager": "Iñaki", "jugador": "Guliashvili", "compra": 2000002.0, "actual": 380000.0, "dif": -1620002.0, "porc": -81.0}, {"manager": "Alberto Garcia", "jugador": "Pape Gueye", "compra": 8450000.0, "actual": 6710000.0, "dif": -1740000.0, "porc": -20.6}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Santiago Mouriño", "compra": 2830000.0, "actual": 1060000.0, "dif": -1770000.0, "porc": -62.5}, {"manager": "Lord Rhal", "jugador": "Antony", "compra": 12501009.0, "actual": 10400000.0, "dif": -2101009.0, "porc": -16.8}, {"manager": "Lord Rhal", "jugador": "Kike Salas", "compra": 4001390.0, "actual": 1890000.0, "dif": -2111390.0, "porc": -52.8}, {"manager": "Lord Rhal", "jugador": "Abde Ezzalzouli", "compra": 12000109.0, "actual": 9270000.0, "dif": -2730109.0, "porc": -22.8}, {"manager": "Rolo Tomasi", "jugador": "Lamine Yamal", "compra": 26259001.0, "actual": 23250000.0, "dif": -3009001.0, "porc": -11.5}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Hjulmand", "compra": 5730000.0, "actual": 2640000.0, "dif": -3090000.0, "porc": -53.9}, {"manager": "Iñaki", "jugador": "Laporte", "compra": 6666668.0, "actual": 3140000.0, "dif": -3526668.0, "porc": -52.9}, {"manager": "Alberto Garcia", "jugador": "Tchouaméni", "compra": 8217000.0, "actual": 4670000.0, "dif": -3547000.0, "porc": -43.2}, {"manager": "Gorka Bartu", "jugador": "Oyarzabal", "compra": 11151000.0, "actual": 7560000.0, "dif": -3591000.0, "porc": -32.2}, {"manager": "Iñaki", "jugador": "Sancet", "compra": 7741002.0, "actual": 2700000.0, "dif": -5041002.0, "porc": -65.1}, {"manager": "Iñaki", "jugador": "Borja Iglesias", "compra": 8000004.0, "actual": 2930000.0, "dif": -5070004.0, "porc": -63.4}, {"manager": "Iñaki", "jugador": "Jorge de Frutos", "compra": 8888889.0, "actual": 2950000.0, "dif": -5938889.0, "porc": -66.8}, {"manager": "Jon MARQUEZ PEREZ", "jugador": "Vinícius Júnior", "compra": 23310009.0, "actual": 17320000.0, "dif": -5990009.0, "porc": -25.7}, {"manager": "Gorka Bartu", "jugador": "Nico Williams", "compra": 14551551.0, "actual": 8030000.0, "dif": -6521551.0, "porc": -44.8}];
     
     let currentMain = 'diario';
     let currentSub = { 'diario': 'movimientos', 'jornada': 'resultados', 'historico': 'evolucion' };
@@ -221,34 +217,33 @@
         grid.innerHTML = managers.map(m => {
             const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg';
             
+            // Recortador mágico de Alertas para mostrar solo "INFRACCIÓN..."
             let alertaHTML = '';
-            const suAlerta = alertas.find(a => a.includes(m.manager) && a.includes('INFRACCIÓN'));
-            if (suAlerta) {
-                let txtLimpio = suAlerta.replace(/<[^>]*>?/gm, ''); 
-                let idx = txtLimpio.indexOf('INFRACCIÓN');
-                if(idx !== -1) {
-                    alertaHTML = `<div class="alert-mini">⚠️ ${txtLimpio.substring(idx).trim()}</div>`;
+            // Buscamos en los textos crudos la alerta de este manager que tenga la palabra INFRACCIÓN
+            const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN'));
+            if (textoM) {
+                // Limpiamos los asteriscos y dividimos por líneas
+                let lineas = textoM.replace(/\*/g, "").split('\n');
+                let infracciones = lineas.filter(l => l.includes('INFRACCIÓN'));
+                if (infracciones.length > 0) {
+                    let limpio = infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>');
+                    alertaHTML = `<div class="alert-mini">⚠️ ${limpio}</div>`;
                 }
             }
 
             return `<div class="card">
                 <div class="mgr-header">👤 ${m.manager}</div>
-                <div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-neutral">${fmtE(m.patrimonio_total)}</span></div>
-                <div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-neutral">${fmtE(m.valor_plantilla)}</span></div>
+                <div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div>
+                <div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div>
                 <div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div>
                 <div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div>
-                <div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-neutral">${m.total_jugadores || 0}</span></div>
+                <div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>
                 ${alertaHTML}
             </div>`;
         }).join('');
     }
 
     function initCatalogo() {
-        // Si no hay nadie con diferencia en el catálogo, mostramos el aviso
-        if (catalogo.length === 0) {
-            document.getElementById('aviso-catalogo-vacio').style.display = 'block';
-        }
-        
         const mNames = ['TODOS', ...new Set(catalogo.map(i => i.manager))];
         document.getElementById('filtros-catalogo').innerHTML = mNames.map(m => 
             `<button class="btn-filter ${m === 'TODOS' ? 'active' : ''}" onclick="filterCat('${m}', this)">${m}</button>`
@@ -276,8 +271,7 @@
             </tr>
         `).join('') : '<tr><td colspan="2" class="muted" style="text-align:center;">Sin pelotazos</td></tr>';
         
-        // Ruinas (Dif < 0)
-        // Les damos la vuelta para que las peores ruinas (más negativas) salgan arriba
+        // Ruinas (Dif < 0) - Las peores arriba
         const ruinas = catalogo.filter(i => i.dif < 0 && (mgrFilter === 'TODOS' || i.manager === mgrFilter) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => a.dif - b.dif);
         
         document.getElementById('tabla-ruinas').innerHTML = ruinas.length ? ruinas.map(i => `
