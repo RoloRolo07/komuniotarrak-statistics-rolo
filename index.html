@@ -71,8 +71,7 @@
         
         .text-block { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; color: #d1d5db; line-height: 1.7; }
         
-        .lista-compacta { list-style-type: none; padding-left: 8px; line-height: 1.3; font-size: 0.95rem; }
-        .lista-compacta li { margin-bottom: 4px; }
+        .lista-compacta { list-style-type: none; padding-left: 8px; line-height: 1.3; font-size: 0.95rem; margin: 0; }
         
         .latentes-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
         @media (min-width: 768px) { .latentes-grid { grid-template-columns: 1fr 1fr; } }
@@ -145,7 +144,7 @@
 <header>
     <div class="header-top">
         <div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div>
-        <div class="subtitle">Generado por Rolo | Actualizado: 14/10/2026 14:49</div>
+        <div class="subtitle">Generado por Rolo | Actualizado: 14/10/2026 15:09</div>
     </div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
@@ -186,7 +185,11 @@
                 <button class="btn-filter active" onclick="filterMovs('Últimos', this)">🕒 Últimos</button>
                 <button class="btn-filter" onclick="filterMovs('Totales', this)">📊 Totales</button>
             </div>
-            <div id="movs-ultimos" class="card"><div class="text-block" style="padding:16px;"><div style='font-size: 1.05rem; margin-bottom: 2px;'>🛒 <b>COMPRAS:</b></div><ul class='lista-compacta'><li>• <b>Gorka Bartu</b> ha fichado a <b>Alfon González</b> por 551.000 €. gastando <span style='color:var(--danger)'>161.000 € más</span> sobre su valor original (390.000 €).</li></ul><br><div style='font-size: 1.05rem; margin-bottom: 2px;'>💰 <b>VENTAS:</b></div><div style='margin-bottom: 0px; color:var(--muted); padding-left: 8px;'><i>Ayer:</i></div><ul class='lista-compacta' style='padding-left: 16px;'><li>• <b>Gorka Bartu</b> vendió a <b>Luis Rioja</b> por 1.503.400 €. Lo compró por 1.440.000 € <span style='color:var(--accent)'>[ Ganando 63.400 € ]</span>.</li><li>• <b>Lord Rhal</b> vendió a <b>César Tárrega</b> por 1.424.400 €. Lo compró por 940.001 € <span style='color:var(--accent)'>[ Ganando 484.399 € ]</span>.</li></ul><br></div></div>
+            
+            <div id="movs-ultimos" class="card">
+                <div class="text-block" style="padding:16px;"><div style='font-size: 1.05rem; margin-bottom: 2px;'>🛒 <b>COMPRAS:</b></div><ul class='lista-compacta'><li>• <b>Gorka Bartu</b> ha fichado a <b>Alfon González</b> por 551.000 €. gastando <span style='color:var(--danger)'>161.000 € más</span> sobre su valor original (390.000 €).</li></ul><br><div style='font-size: 1.05rem; margin-bottom: 2px;'>💰 <b>VENTAS:</b></div><div style='margin-bottom: 0px; color:var(--muted); padding-left: 8px;'><i>Ayer:</i></div><ul class='lista-compacta' style='padding-left: 16px;'><li>• <b>Gorka Bartu</b> vendió a <b>Luis Rioja</b> por 1.503.400 €. Lo compró por 1.440.000 € <span style='color:var(--accent)'>[ Ganando 63.400 € ]</span>.</li><li>• <b>Lord Rhal</b> vendió a <b>César Tárrega</b> por 1.424.400 €. Lo compró por 940.001 € <span style='color:var(--accent)'>[ Ganando 484.399 € ]</span>.</li></ul><br></div>
+            </div>
+            
             <div id="movs-totales" class="card" style="display:none; padding:16px;">
                 <div style="overflow-x:auto;">
                     <table class="tabla-compacta" style="width:100%;">
@@ -202,6 +205,7 @@
         <div class="grid-managers" id="grid-dashboard"></div>
     </div>
     
+    <!-- MERCADO EN 2 COLUMNAS -->
     <div id="content-mercado" class="section-content">
         <div style="margin-bottom: 0; background: transparent; border: none; padding: 0; box-shadow: none;">
             <div class="btn-filter-grp" id="filtros-mercado"></div>
@@ -228,6 +232,7 @@
         </div>
     </div>
     
+    <!-- LATENTES -->
     <div id="content-latentes" class="section-content">
         <div style="margin-bottom: 0; background: transparent; border: none; padding: 0; box-shadow: none;">
             <div class="btn-filter-grp" id="filtros-catalogo"></div>
@@ -486,6 +491,7 @@
             }
         }
         
+        // Mostrar línea "No sufren movimiento" si no es Top 5
         if (iguales.length > 0 && mercFilter !== 'TOP 5') {
             sinMovDiv.innerHTML = `<b>No sufren movimiento:</b> ${iguales.join(', ')}`;
             sinMovDiv.style.display = 'block';
@@ -608,7 +614,7 @@
                     let ptsHTML = '';
                     if (j.pts === 'LIVE') ptsHTML = `<span class="live-blink">LIVE</span>`;
                     else if (j.pts === '-') ptsHTML = `<span class="muted">-</span>`;
-                    else ptsHTML = `<span class="val-white">${j.pts} pts</span>`;
+                    else ptsHTML = `<span class="val-white">${j.pts}</span>`;
                     return `<div class="jug-row"><div class="flex-row-center"><span class="pos-badge" style="border-left: 3px solid ${bColor};">POR</span><span style="font-weight:600;">${j.name}</span></div>${ptsHTML}</div>`;
                 }).join('');
                 
@@ -707,49 +713,43 @@
         document.getElementById('paguitas-content').innerHTML = htmlP;
         
         let htmlS = `<div class="card" style="padding: 16px;"><div class="card-title" style="color:var(--white); margin-bottom: 6px;">🚨 Sanciones VAR</div>`;
-        let infracciones = alertas.filter(txt => txt.includes('INFRACCIÓN') || txt.includes('SANCION'));
-        if (isLast && infracciones.length > 0) {
-            let limpio = infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br><br>');
+        
+        let infraccionesVAR = alertas.filter(txt => {
+            let t = txt.toLowerCase();
+            return (t.includes('infracción') || t.includes('sancion') || t.includes('sanción') || t.includes('var') || t.includes('multa')) && !t.includes('saldo') && !t.includes('presupuesto');
+        });
+        
+        if (isLast && infraccionesVAR.length > 0) {
+            let limpio = infraccionesVAR.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br><br>');
             htmlS += `<div class="alert-mini" style="font-size:0.95rem;">${limpio}</div>`;
         } else {
-            htmlS += `<div class="muted" style="text-align:center; padding:10px;">✅ El VAR no ha detectado ninguna irregularidad en esta jornada.</div>`;
+            htmlS += `<div class="muted" style="text-align:center; padding:10px;">🔍 Sin sanciones registradas o revisión aún pendiente.</div>`;
         }
         htmlS += `</div>`;
         document.getElementById('sanciones-content').innerHTML = htmlS;
         
         // Curiosidades
-        let htmlC_Heroes = '';
-        if(he && he.mvp) {
-            htmlC_Heroes += `<div class="card" style="padding: 16px;">
-                <div class="card-title" style="color:var(--white); margin-bottom: 12px;">🌟 Héroes y Villanos</div>
-                <div style="font-size:1.05rem; padding: 2px 0; margin-bottom: 4px;">👑 <b>MVP:</b> ${he.mvp.name} <small class="muted">(${he.mvp.manager})</small> <span class="val-pos" style="float:right;">${he.mvp.points} pts</span></div>
-                <div style="font-size:1.05rem; padding: 2px 0;">🥄 <b>Cuchara de madera:</b> ${he.peor.name} <small class="muted">(${he.peor.manager})</small> <span class="val-neg" style="float:right;">${he.peor.points} pts</span></div>
-            </div>`;
-        } else {
-            htmlC_Heroes += `<div class="card text-block">No hay datos de Héroes y Villanos.</div>`;
-        }
-        document.getElementById('heroes-content').innerHTML = htmlC_Heroes;
+        let htmlOlimpo = `<div class="card" style="padding: 16px;">
+            <div class="card-title" style="color:var(--accent); margin-bottom: 12px;">😇 El Olimpo</div>
+            <ul class="lista-compacta" style="font-size:1rem; line-height:1.8;">`;
+        let countOlimpo = 0;
+        if(he && he.mvp) { htmlOlimpo += `<li style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; margin-bottom:6px;">👑 <b>MVP:</b> ${he.mvp.name} <small class="muted">(${he.mvp.manager})</small> <span class="val-pos" style="float:right;">${he.mvp.points} pts</span></li>`; countOlimpo++; }
+        if(cur && cur.chollo) { htmlOlimpo += `<li style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; margin-bottom:6px;">💸 <b>El Chollo:</b> ${cur.chollo.name} <small class="muted">(${cur.chollo.manager})</small> <span class="val-pos" style="float:right;">${cur.chollo.points} pts</span><br><small class="muted">Costó: ${fmtE(cur.chollo.precio)}</small></li>`; countOlimpo++; }
+        if(cur && cur.carrito) { htmlOlimpo += `<li>🦸 <b>El Carrito:</b> ${cur.carrito.jugador.name} <small class="muted">(${cur.carrito.jugador.manager})</small><br><small class="muted">Aportó el <span class="val-accent">${cur.carrito.pct}%</span> de los puntos</small></li>`; countOlimpo++; }
+        htmlOlimpo += `</ul></div>`;
+
+        let htmlInframundo = `<div class="card" style="padding: 16px;">
+            <div class="card-title" style="color:var(--danger); margin-bottom: 12px;">😈 El Inframundo</div>
+            <ul class="lista-compacta" style="font-size:1rem; line-height:1.8;">`;
+        let countInfra = 0;
+        if(he && he.peor) { htmlInframundo += `<li style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; margin-bottom:6px;">🥄 <b>Cuchara de madera:</b> ${he.peor.name} <small class="muted">(${he.peor.manager})</small> <span class="val-neg" style="float:right;">${he.peor.points} pts</span></li>`; countInfra++; }
+        if(cur && cur.ruina) { htmlInframundo += `<li style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; margin-bottom:6px;">📉 <b>La Ruina:</b> ${cur.ruina.name} <small class="muted">(${cur.ruina.manager})</small> <span class="val-neg" style="float:right;">${cur.ruina.points} pts</span><br><small class="muted">Costó: ${fmtE(cur.ruina.precio)}</small></li>`; countInfra++; }
+        if(cur && cur.mr_gafas && cur.mr_gafas.puntos > 0) { htmlInframundo += `<li style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; margin-bottom:6px;">👓 <b>Mr. Gafas (Banquillo de oro):</b> ${cur.mr_gafas.manager}<br><small class="muted">Dejó <span class="val-gold">${cur.mr_gafas.puntos} pts</span> sentados</small></li>`; countInfra++; }
+        if(cur && cur.agujero && cur.agujero.cantidad > 0) { htmlInframundo += `<li>🕳️ <b>El Agujero Negro:</b> ${cur.agujero.manager}<br><small class="muted">Se comió <span class="val-neg">${cur.agujero.cantidad} negativos/ceros</span></small></li>`; countInfra++; }
+        htmlInframundo += `</ul></div>`;
         
-        let htmlC_Datos = '';
-        if (cur) {
-            let list = [];
-            if (cur.mr_gafas && cur.mr_gafas.puntos > 0) list.push(`👓 <b>Mr. Gafas (Banquillo de oro):</b> ${cur.mr_gafas.manager} dejó <span class="val-gold">${cur.mr_gafas.puntos} pts</span> sentados en el banquillo.`);
-            if (cur.chollo) list.push(`💸 <b>El Chollo:</b> ${cur.chollo.name} <small class="muted">(${cur.chollo.manager})</small> dio <span class="val-pos">${cur.chollo.points} pts</span> costando solo ${fmtE(cur.chollo.precio)}.`);
-            if (cur.ruina) list.push(`📉 <b>La Ruina:</b> ${cur.ruina.name} <small class="muted">(${cur.ruina.manager})</small> hizo <span class="val-neg">${cur.ruina.points} pts</span> costando la friolera de ${fmtE(cur.ruina.precio)}.`);
-            if (cur.agujero && cur.agujero.cantidad > 0) list.push(`🕳️ <b>El Agujero Negro:</b> ${cur.agujero.manager} se comió <span class="val-neg">${cur.agujero.cantidad} negativos/ceros</span> en su once titular.`);
-            if (cur.carrito) list.push(`🦸 <b>El Carrito (Salvador):</b> ${cur.carrito.jugador.name} aportó él solo el <span class="val-accent">${cur.carrito.pct}%</span> de los puntos de ${cur.carrito.jugador.manager}.`);
-            
-            if(list.length > 0) {
-                htmlC_Datos += `<div class="card" style="padding: 16px;">
-                    <div class="card-title" style="color:var(--white); margin-bottom: 12px;">📊 Análisis y Salseo</div>
-                    <ul class="lista-compacta" style="font-size:1rem; line-height:1.8;">
-                        ${list.map(l => `<li style="border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; margin-bottom:6px;">${l}</li>`).join('')}
-                    </ul>
-                </div>`;
-            }
-        }
-        if(!htmlC_Datos) htmlC_Datos = `<div class="card text-block">Aún no hay suficientes datos para sacar curiosidades.</div>`;
-        document.getElementById('datos-curiosos-content').innerHTML = htmlC_Datos;
+        document.getElementById('heroes-content').innerHTML = countOlimpo ? htmlOlimpo : '<div class="card text-block">Aún no hay datos suficientes.</div>';
+        document.getElementById('datos-curiosos-content').innerHTML = countInfra ? htmlInframundo : '<div class="card text-block">Aún no hay datos suficientes.</div>';
     }
 
     renderDashboard();
