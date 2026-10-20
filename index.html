@@ -89,7 +89,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 21:51</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 21:58</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -149,22 +149,22 @@
         <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">💰 Picos y Media de Plantilla <small class="muted" style="margin-left:4px; font-size:0.85rem; font-weight:normal;">(Por jornada)</small></div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Mánager</th><th style="text-align:right;">Media</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th></tr></thead><tbody id="totales-finanzas-resumen"></tbody></table></div></div>
         <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">💰 Ranking de Paguitas</div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Pos</th><th>Mánager</th><th>Total Ingresado</th><th style="text-align:center;">Último</th><th style="text-align:center;">Penúltimo</th><th style="text-align:center;">Antepenúltimo</th></tr></thead><tbody id="totales-paguitas-tabla"></tbody></table></div></div>
 
-    <div class="card" style="padding:10px; margin-top:20px;">
-        <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">⚖️ Ranking de Sancionados</div>
-        <div style="overflow-x:auto;">
-            <table class="tabla-compacta" style="width:100%;">
-                <thead>
-                    <tr>
-                        <th style="width: 70px;">Pos</th>
-                        <th style="width: 200px;">Mánager</th>
-                        <th style="text-align:right; width: 150px;">Valor Sanción</th>
-                        <th></th><th></th><th></th>
-                    </tr>
-                </thead>
-                <tbody id="totales-sancionados-tabla"></tbody>
-            </table>
+        <div class="card" style="padding:10px; margin-top:20px;">
+            <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">⚖️ Ranking de Sancionados</div>
+            <div style="overflow-x:auto;">
+                <table class="tabla-compacta" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">Pos</th>
+                            <th style="width: 180px;">Mánager</th>
+                            <th style="width: 160px; padding-left: 12px;">Valor Sanción</th>
+                            <th></th><th></th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="totales-sancionados-tabla"></tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
     </div>
     
@@ -519,7 +519,7 @@
                 let badgeMin = data.min === worstMin && worstMin > 0 ? `<span class="badge-rec-min">${fmtE(data.min)}</span>` : fmtE(data.min);
                 
                 // Pastilla naranja solo para el que tenga la media máxima; los demás texto normal sin círculo
-                let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; padding: 3px 10px; border-radius: 12px; font-weight: bold; border: 1px solid rgba(239, 68, 68, 0.4); font-size: 0.9rem;">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));                
+                let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span style="background: rgba(249, 115, 22, 0.15); color: #fb923c; padding: 3px 10px; border-radius: 12px; font-weight: bold; border: 1px solid rgba(249, 115, 22, 0.4); font-size: 0.9rem;">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));
 
                 return `<tr><td><b>${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
             }).join('');
@@ -543,9 +543,9 @@
             let listaSancionados = globalStats.sancionados || globalStats.clasif_general_actual.map(d => ({ manager: d.manager, valor: 0 }));
             document.getElementById('totales-sancionados-tabla').innerHTML = listaSancionados.map((d, i) => `
                 <tr>
-                    <td>${i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td>
-                    <td><b>${d.manager}</b></td>
-                    <td style="text-align:right;" class="val-neg">${fmtE(d.valor || 0)}</td>
+                    <td style="width: 50px;">${i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td>
+                    <td style="width: 180px;"><b>${d.manager}</b></td>
+                    <td style="width: 160px; padding-left: 12px;" class="val-neg">${fmtE(d.valor || 0)}</td>
                     <td></td><td></td><td></td>
                 </tr>
             `).join('');
