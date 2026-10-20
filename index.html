@@ -89,7 +89,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 21:26</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 21:41</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -148,22 +148,24 @@
         <div class="card"><div class="card-title">💶 Evolución Valor de Plantillas (Por jornada)</div><div style="position: relative; height:450px; width:100%;"><canvas id="chart-valor"></canvas></div></div>
         <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">💰 Picos y Media de Plantilla <small class="muted" style="margin-left:4px; font-size:0.85rem; font-weight:normal;">(Por jornada)</small></div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Mánager</th><th style="text-align:right;">Media</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th></tr></thead><tbody id="totales-finanzas-resumen"></tbody></table></div></div>
         <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">💰 Ranking de Paguitas</div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Pos</th><th>Mánager</th><th>Total Ingresado</th><th style="text-align:center;">Último</th><th style="text-align:center;">Penúltimo</th><th style="text-align:center;">Antepenúltimo</th></tr></thead><tbody id="totales-paguitas-tabla"></tbody></table></div></div>
-        <div class="card" style="padding:10px; margin-top:20px;">
-            <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">⚖️ Ranking de Sancionados</div>
-            <div style="overflow-x:auto;">
-                <table class="tabla-compacta" style="width:100%;">
-                    <thead>
-                        <tr>
-                            <th style="width: 70px;">Pos</th>
-                            <th>Mánager</th>
-                            <th style="text-align:right;">Valor Sanción</th>
-                            <th></th><th></th><th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="totales-sancionados-tabla"></tbody>
-                </table>
-            </div>
+
+    <div class="card" style="padding:10px; margin-top:20px;">
+        <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">⚖️ Ranking de Sancionados</div>
+        <div style="overflow-x:auto;">
+            <table class="tabla-compacta" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th style="width: 70px;">Pos</th>
+                        <th style="width: 200px;">Mánager</th>
+                        <th style="text-align:right; width: 150px;">Valor Sanción</th>
+                        <th></th><th></th><th></th>
+                    </tr>
+                </thead>
+                <tbody id="totales-sancionados-tabla"></tbody>
+            </table>
         </div>
+    </div>
+
     </div>
     
     <div id="content-totales-jugadores" class="section-content">
@@ -198,7 +200,7 @@
 
     let selectedJornadaIdx = jornadasData.length - 1; let chartPosInit = false; let chartPtsInit = false; let chartFinInit = false;
     const emoMgr = { "Rolo": "🎩", "Rolo Tomasi": "🎩", "Alberto": "😭", "Alberto Garcia": "😭", "Gorka": "🍀", "Gorka Bartu": "🍀", "Iñaki": "📢", "Lord Rhal": "🤐", "Jon": "💅", "Jon MARQUEZ PEREZ": "💅" };
-    let currentMain = 'diario'; let currentSub = { 'diario': 'movimientos', 'jornada': 'alineaciones', 'totales': 'totales-clasif' }; let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
+    let currentMain = 'diario'; let currentSub = { 'diario': 'movimientos', 'jornada': 'resultados', 'totales': 'totales-clasif' }; let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
     
     function fmtE(n) { return Number(n).toLocaleString('es-ES') + ' €'; }
     function setMainTab(tab) { currentMain = tab; document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active')); event.currentTarget.classList.add('active'); document.querySelectorAll('.sub-nav').forEach(n => n.classList.remove('active')); document.getElementById('sub-' + tab).classList.add('active'); document.getElementById('jornada-header').style.display = tab === 'jornada' ? 'flex' : 'none'; showContent(currentSub[tab]); if (tab === 'totales') triggerTotalesRender(currentSub['totales']); if (tab === 'jornada') renderJornada(); }
@@ -517,8 +519,8 @@
                 let badgeMin = data.min === worstMin && worstMin > 0 ? `<span class="badge-rec-min">${fmtE(data.min)}</span>` : fmtE(data.min);
                 
                 // Pastilla naranja solo para el que tenga la media máxima; los demás texto normal sin círculo
-                let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span class="badge-orange">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));
-                
+                let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; padding: 3px 10px; border-radius: 12px; font-weight: bold; border: 1px solid rgba(239, 68, 68, 0.4); font-size: 0.9rem;">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));                
+
                 return `<tr><td><b>${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
             }).join('');
         }
