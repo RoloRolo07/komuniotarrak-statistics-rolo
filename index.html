@@ -89,7 +89,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 17:48</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 18:08</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -109,7 +109,7 @@
         <button class="sub-tab" id="subbtn-curiosidades" onclick="setSubTab('jornada', 'curiosidades')">Curiosidades</button>
     </div>
     <div id="sub-totales" class="sub-nav">
-        <button class="sub-tab active" onclick="setSubTab('totales', 'totales-clasif')">Clasificación</button><button class="sub-tab" onclick="setSubTab('totales', 'totales-puntos')">Puntuación</button><button class="sub-tab" onclick="setSubTab('totales', 'totales-finanzas')">Finanzas</button><button class="sub-tab" onclick="setSubTab('totales', 'totales-jugadores')">Jugadores</button><button class="sub-tab" onclick="setSubTab('totales', 'totales-managers')">Mánagers</button><button class="sub-tab" onclick="setSubTab('totales', 'totales-once-ideal')">Once Ideal</button><button class="sub-tab" onclick="setSubTab('totales', 'totales-once-ideal')">Once Ideal</button><button class="sub-tab" onclick="setSubTab('totales', 'totales-normativa')">Normativa</button>
+        <button class="sub-tab" onclick="setSubTab('totales', 'totales-once-ideal')">Once Ideal</button>
     </div>
 </div>
 <div class="container">
@@ -585,6 +585,18 @@
             mHtmlS += `<div class="card" style="padding:16px;"><div class="card-title" style="color:var(--muted); margin-bottom: 4px;">🛑 El Moroso</div><div class="muted" style="font-size:0.8rem; margin-bottom: 12px;">Más jornadas sin puntuar por saldo negativo</div><div style="font-size:1.1rem;"><b>${morMgr}</b></div><div class="val-white" style="font-size:1.1rem; margin-top:4px;">${morVal} roscos</div></div>`;
 
             document.getElementById('totales-mgr-salseo').innerHTML = mHtmlS || '<div class="card text-block">Sin datos suficientes.</div>';
+        }
+        // Bloque del Once Ideal Histórico:
+        if(globalStats.once_ideal_historico) {
+            document.getElementById('totales-once-ideal-tabla').innerHTML = globalStats.once_ideal_historico.map((d, i) => `
+                <tr>
+                    <td>${i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td>
+                    <td><b>${d.nombre}</b></td>
+                    <td>${d.manager}</td>
+                    <td style="text-align:center;"><span class="badge-rec-max">${d.apariciones}</span></td>
+                    <td style="text-align:right;" class="val-blue"><b>${d.puntos_totales_once} pts</b></td>
+                </tr>
+            `).join('');
         }
     }
 
