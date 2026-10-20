@@ -89,7 +89,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 20:24</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 20:40</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -450,8 +450,12 @@
     }
 
     function renderTotalesHTML() {
-        if(globalStats.clasif_general_actual) document.getElementById('totales-clasif-tabla').innerHTML = globalStats.clasif_general_actual.map((d, i) => `<tr><td>${i<3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td><td><b>${d.manager}</b></td><td class="val-blue">${d.pts_t}</td><td class="muted" style="white-space:nowrap;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td><td class="muted" style="white-space:nowrap;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td><td style="text-align:right; font-weight:bold; font-size:1.1rem;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td></tr>`).join('');
-        
+        if(globalStats.clasif_general_actual) {
+            document.getElementById('totales-clasif-tabla').innerHTML = globalStats.clasif_general_actual.map((d, i) => {
+                let ptsStyle = i === 0 ? `<span class="badge-rec-max">${d.pts_t}</span>` : `<span class="val-white">${d.pts_t}</span>`;
+                return `<tr><td>${i<3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td><td><b>${d.manager}</b></td><td style="text-align:left;">${ptsStyle}</td><td class="muted" style="white-space:nowrap;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td><td class="muted" style="white-space:nowrap;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td><td style="text-align:right; font-weight:bold; font-size:1.1rem;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td></tr>`;
+            }).join('');
+        }
         if(globalStats.medallero_actual) { 
             let jd = globalStats.medallero_actual; 
             let maxOros = jd.length ? Math.max(...jd.map(d => d.oros)) : 0; 
@@ -478,12 +482,22 @@
         }).join('');
         
         if(globalStats.finanzas_resumen) {
-            let fr = Object.values(globalStats.finanzas_resumen); let bestMedia = Math.max(...fr.map(d => d.media)); let bestMax = Math.max(...fr.map(d => d.max)); let worstMin = Math.min(...fr.map(d => d.min).filter(v => v > 0)); if (worstMin === Infinity) worstMin = 0;
+            let fr = Object.values(globalStats.finanzas_resumen); 
+            let bestMedia = Math.max(...fr.map(d => d.media)); 
+            let bestMax = Math.max(...fr.map(d => d.max)); 
+            let worstMin = Math.min(...fr.map(d => d.min).filter(v => v > 0)); 
+            if (worstMin === Infinity) worstMin = 0;
+
+            // Actualizamos los encabezados de la tabla para que coincidan con el orden (Máximo, Mínimo, Media)
+            document.querySelector('#content-totales-finanzas table thead tr').innerHTML = `<th>Mánager</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th><th style="text-align:right;">Media</th>`;
+
             document.getElementById('totales-finanzas-resumen').innerHTML = Object.entries(globalStats.finanzas_resumen).sort((a,b) => b[1].media - a[1].media).map(([mgr, data]) => {
-                let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span class="badge-rec-max">${fmtE(data.media)}</span>` : fmtE(data.media);
                 let badgeMax = data.max === bestMax && bestMax > 0 ? `<span class="badge-rec-max">${fmtE(data.max)}</span>` : fmtE(data.max);
                 let badgeMin = data.min === worstMin && worstMin > 0 ? `<span class="badge-rec-min">${fmtE(data.min)}</span>` : fmtE(data.min);
-                return `<tr><td><b>${mgr}</b></td><td style="text-align:right;">${badgeMedia}</td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td></tr>`;
+                // Pintamos la media con la pastilla anaranjada (badge-orange ya viene definida en tu CSS)
+                let badgeMedia = `<span class="badge-orange">${fmtE(data.media)}</span>`;
+                
+                return `<tr><td><b>${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
             }).join('');
         }
         
