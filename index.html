@@ -89,7 +89,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 18:35</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 20/10/2026 18:46</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -166,23 +166,7 @@
         <div class="latentes-grid" id="totales-mgr-salseo"></div>
     </div>
     <div id="content-totales-once-ideal" class="section-content">
-        <div class="card" style="padding:10px;">
-            <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">🌟 Rey del Once Ideal (Histórico)</div>
-            <div style="overflow-x:auto;">
-                <table class="tabla-compacta" style="width:100%;">
-                    <thead>
-                        <tr>
-                            <th>Pos</th>
-                            <th>Jugador</th>
-                            <th>Mánager</th>
-                            <th style="text-align:center;">Apariciones</th>
-                            <th style="text-align:right;">Pts en Onces</th>
-                        </tr>
-                    </thead>
-                    <tbody id="totales-once-ideal-tabla"></tbody>
-                </table>
-            </div>
-        </div>
+        <div id="totales-once-ideal-container"></div>
     </div>
     <div id="content-totales-normativa" class="section-content"><div class="card"><div class="card-title">📜 Normativa Oficial Komuniotarrak</div><div class="text-block" style="font-size:0.95rem; line-height:1.8;"><b>1. SALDOS Y PRESUPUESTOS</b><br>- Prohibido estar en negativo al inicio del primer partido de la jornada.<br>- Las multas por saldo negativo se aplicarán sobre el valor de la plantilla o puntos según dictamine la asamblea.<br><br><b>2. MERCADO DE FICHAJES</b><br>- Las sobrepujas son libres. El que más paga, se lo lleva.<br>- Prohibido comprar y vender al mismo jugador a otro mánager de la liga en la misma semana para evadir impuestos (Fair Play Financiero).<br><br><b>3. PAGUITAS</b><br>- Solo se entregan en jornadas completas (sin partidos aplazados).<br>- Último: 2.000.000 €<br>- Penúltimo: 1.200.000 €<br>- Antepenúltimo: 800.000 €<br><br><b>4. SANCIONES</b><br>- Toda venta de un jugador después del pitido inicial que altere el saldo para evitar un negativo será severamente castigada.<br>- El VAR actúa de oficio.</div></div></div>
 </div>
@@ -592,17 +576,27 @@
 
             document.getElementById('totales-mgr-salseo').innerHTML = mHtmlS || '<div class="card text-block">Sin datos suficientes.</div>';
         }
-        // Bloque del Once Ideal Histórico:
-        if(globalStats.once_ideal_historico) {
-            document.getElementById('totales-once-ideal-tabla').innerHTML = globalStats.once_ideal_historico.map((d, i) => `
-                <tr>
-                    <td>${i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td>
-                    <td><b>${d.nombre}</b></td>
-                    <td>${d.manager}</td>
-                    <td style="text-align:center;"><span class="badge-rec-max">${d.apariciones}</span></td>
-                    <td style="text-align:right;" class="val-blue"><b>${d.puntos_totales_once} pts</b></td>
-                </tr>
-            `).join('');
+        if(globalStats.once_ideal_historico_pitch && globalStats.once_ideal_historico_pitch.jugadores.length > 0) {
+            let oiHist = globalStats.once_ideal_historico_pitch;
+            let pitchHTML = `<div class="pitch-2d"><div class="area-arriba"></div><div class="area-abajo"></div>`;
+            ['striker', 'midfielder', 'defender', 'keeper'].forEach(pos => {
+                pitchHTML += `<div class="linea-jugadores">`;
+                oiHist.jugadores.filter(j => j.position === pos).forEach(j => {
+                    let emo = emoMgr[j.manager_name] || '👤';
+                    pitchHTML += `<div class="player-2d"><div class="avatar-circle">${emo}</div><div class="info-box"><div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${j.name}</div><div style="margin-top:2px; font-weight:normal; color:#4b5563;">(${j.points} P.)</div></div></div>`;
+                });
+                pitchHTML += `</div>`;
+            });
+            pitchHTML += `</div>`;
+
+            document.getElementById('totales-once-ideal-container').innerHTML = `
+                <div class="card" style="padding:16px; overflow-x:auto;">
+                    <div class="card-title" style="margin-bottom:8px; justify-content:center;">🌟 Once de Gala Histórico <span class="muted" style="font-size:0.9rem; margin-left:8px;">(${oiHist.formacion})</span></div>
+                    <div style="margin-bottom:16px; font-size:0.9rem; text-align:center;"><b>Puntos acumulados:</b> <span class="val-accent" style="font-size:1.1rem;">${oiHist.puntos} pts</span> | <b>Valor total:</b> ${fmtE(oiHist.valor)}</div>
+                    ${pitchHTML}
+                </div>`;
+        } else {
+            document.getElementById('totales-once-ideal-container').innerHTML = `<div class="card text-block">No hay datos suficientes para calcular el Once Histórico.</div>`;
         }
     }
 
