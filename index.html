@@ -111,7 +111,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 23/10/2026 17:07</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 23/10/2026 17:16</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -258,7 +258,7 @@
     function setMainTab(tab) { currentMain = tab; document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active')); event.currentTarget.classList.add('active'); document.querySelectorAll('.sub-nav').forEach(n => n.classList.remove('active')); document.getElementById('sub-' + tab).classList.add('active'); document.getElementById('jornada-header').style.display = tab === 'jornada' ? 'flex' : 'none'; showContent(currentSub[tab]); if (tab === 'totales') triggerTotalesRender(currentSub['totales']); if (tab === 'jornada') renderJornada(); }
     function setSubTab(parent, target) { currentSub[parent] = target; const subNav = document.getElementById('sub-' + parent); subNav.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active')); event.currentTarget.classList.add('active'); showContent(target); if (parent === 'totales') triggerTotalesRender(target); }
     function showContent(id) { document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active')); document.getElementById('content-' + id).classList.add('active'); }
-    function triggerTotalesRender(target) { renderTotalesHTML(); if (target === 'totales-clasif') initChartPosiciones(); if (target === 'totales-puntos') initChartPuntos(); if (target === 'totales-finanzas') initChartFinanzas(); }
+function triggerTotalesRender(target) { renderTotalesHTML(); if (target === 'totales-clasif') { initChartPosiciones(); initChartPuntos(); } if (target === 'totales-finanzas') initChartFinanzas(); }
     function filterMovs(modo, btn) { document.getElementById('filtros-movs').querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active')); btn.classList.add('active'); if(modo === 'Últimos') { document.getElementById('movs-ultimos').style.display = 'block'; document.getElementById('movs-totales').style.display = 'none'; } else { document.getElementById('movs-ultimos').style.display = 'none'; document.getElementById('movs-totales').style.display = 'block'; renderMovsTotales(); } }
     function renderMovsTotales() { 
         let ordenados = [...managers].sort((a,b) => (b.compras_realizadas + b.ventas_realizadas) - (a.compras_realizadas + a.ventas_realizadas)); 
