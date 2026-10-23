@@ -85,11 +85,33 @@
         .player-2d.mvp .avatar-circle { border-color: var(--gold); background: #fef3c7; }
         .live-blink { animation: blinker 1.5s linear infinite; background-color: var(--danger); color: white; font-weight: bold; font-size: 0.75rem; padding: 1px 6px; border-radius: 3px; }
         @keyframes blinker { 50% { opacity: 0.4; } }
+
+        /* ==========================================================
+       ESTILOS MOBILE-FIRST Y ADAPTABILIDAD DE CLASIFICACIÓN / MEDALLERO
+       ========================================================== */
+        .clasificacion-wrapper {
+            display: flex;
+            flex-direction: column; /* Por defecto en móvil: uno encima de otro */
+            gap: 16px;
+        }
+
+        @media (min-width: 1024px) {
+            .clasificacion-wrapper {
+                flex-direction: row; /* En pantallas grandes: lado a lado */
+                align-items: flex-start;
+            }
+            .clasificacion-main {
+                flex: 1.6; /* Mayor espacio para la tabla general */
+            }
+            .clasificacion-side {
+                flex: 1; /* Espacio para el medallero */
+            }
+        }
     </style>
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 23/10/2026 15:04</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 23/10/2026 17:07</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -110,7 +132,6 @@
     </div>
     <div id="sub-totales" class="sub-nav">
             <button class="sub-tab active" onclick="setSubTab('totales', 'totales-clasif')">Clasificación</button>
-            <button class="sub-tab" onclick="setSubTab('totales', 'totales-puntos')">Puntuación</button>
             <button class="sub-tab" onclick="setSubTab('totales', 'totales-finanzas')">Finanzas</button>
             <button class="sub-tab" onclick="setSubTab('totales', 'totales-jugadores')">Jugadores</button>
             <button class="sub-tab" onclick="setSubTab('totales', 'totales-managers')">Mánagers</button>
@@ -133,14 +154,11 @@
         <div class="latentes-grid" id="jornada-managers-curiosidades"></div>
     </div>
     
-    <div id="content-totales-clasif" class="section-content">
+    <div id="content-totales-clasif" class="section-content active">
         <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">📊 Clasificación General</div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Pos</th><th>Mánager</th><th>Pts Totales</th><th>Dist. Líder</th><th>Dist. Anterior</th><th style="text-align:right;">Tend.</th></tr></thead><tbody id="totales-clasif-tabla"></tbody></table></div></div>
         <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">🏅 Medallero</div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Pos</th><th>Mánager</th><th style="text-align:center;">🥇</th><th style="text-align:center;">🥈</th><th style="text-align:center;">🥉</th></tr></thead><tbody id="totales-medallero-tabla"></tbody></table></div></div>
         <div class="card"><div class="card-title">📊 Evolución de Posiciones</div><div style="position: relative; height:400px; width:100%;"><canvas id="chart-posiciones"></canvas></div></div>
-    </div>
-    
-    <div id="content-totales-puntos" class="section-content">
-        <div class="card"><div class="card-title">📈 Gráfica de Puntos</div><div style="position: relative; height:400px; width:100%;"><canvas id="chart-puntos"></canvas></div></div>
+        <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">📈 Gráfica de Puntos</div><div style="position: relative; height:400px; width:100%;"><canvas id="chart-puntos"></canvas></div></div>
         <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">🌟 Récords Personales</div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Mánager</th><th style="color:var(--white); text-align:center;">Récord Máx</th><th style="color:var(--white); text-align:center;">Récord Mín <br><small class="muted" style="font-size:0.7rem; font-weight:normal;">(Completa)</small></th><th style="color:var(--white); text-align:center;">Récord Mín <br><small class="muted" style="font-size:0.7rem; font-weight:normal;">(Incompleta, ≥1 jug.)</small></th></tr></thead><tbody id="totales-records-tabla"></tbody></table></div></div>
     </div>
     
