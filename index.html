@@ -111,7 +111,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 24/10/2026 12:23</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 24/10/2026 13:25</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -200,7 +200,24 @@
     
     <div id="content-totales-finanzas" class="section-content">
         <div class="card"><div class="card-title">💶 Evolución Valor de Plantillas (Por jornada)</div><div style="position: relative; height:450px; width:100%;"><canvas id="chart-valor"></canvas></div></div>
-        <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">💰 Picos y Media de Plantilla <small class="muted" style="margin-left:4px; font-size:0.85rem; font-weight:normal;">(Por jornada)</small></div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Mánager</th><th style="text-align:right;">Media</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th></tr></thead><tbody id="totales-finanzas-resumen"></tbody></table></div></div>
+        <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">💰 Picos y Media de Plantilla <small class="muted" style="margin-left:4px; font-size:0.85rem; font-weight:normal;">(Por jornada)</small></div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Mánager</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th><th style="text-align:right;">Media</th></tr></thead><tbody id="totales-finanzas-resumen"></tbody></table></div></div>
+        <div class="card" style="padding:10px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">💰 Ranking de Paguitas</div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><colgroup><col style="width: 8%;"><col style="width: 32%;"><col style="width: 25%;"><col style="width: 11%;"><col style="width: 12%;"><col style="width: 12%;"></colgroup><thead><tr><th>Pos</th><th>Mánager</th><th>Total Ingresado</th><th style="text-align:center;">Último</th><th style="text-align:center;">Penúltimo</th><th style="text-align:center;">Antepenúltimo</th></tr></thead><tbody id="totales-paguitas-tabla"></tbody></table></div></div>
+        <div class="card" style="padding:10px; margin-top:20px;"><div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">⚖️ Ranking de Sancionados</div><div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><colgroup><col style="width: 8%;"><col style="width: 32%;"><col style="width: 25%;"><col style="width: 11%;"><col style="width: 12%;"><col style="width: 12%;"></colgroup><thead><tr><th>Pos</th><th>Mánager</th><th style="text-align:left; padding-left: 0;">Valor Sanción</th><th></th><th></th><th></th></tr></thead><tbody id="totales-sancionados-tabla"></tbody></table></div></div>
+    </div>
+    
+    <div id="content-totales-fichajes" class="section-content">
+        <div class="card" style="padding:10px;">
+            <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">📊 Total Movimientos de Mercado</div>
+            <div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;"><thead><tr><th>Mánager</th><th>Total Movs.</th><th>🛒 Compras</th><th>💰 Ventas</th></tr></thead><tbody id="totales-movs-tabla"></tbody></table></div>
+        </div>
+        <div class="card" style="padding:10px; margin-top:16px;">
+            <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">📖 Historial de Fichajes</div>
+            <select id="selector-fichajes" class="search-input" onchange="renderHistorialManager(this.value)">
+                <option value="">Selecciona un mánager para auditar...</option>
+            </select>
+            <div id="historial-manager-content"></div>
+        </div>
+    </div>
 
     <div class="card" style="padding:10px;">
         <div class="card-title" style="font-size:1.1rem; padding-bottom:8px;">📊 Total Movimientos de Mercado</div>
@@ -453,9 +470,14 @@
         let subidas = filtrados.filter(i => i.diff > 0).sort((a,b) => b.diff - a.diff); let bajadas = filtrados.filter(i => i.diff < 0).sort((a,b) => a.diff - b.diff); let iguales = filtrados.filter(i => i.diff === 0).map(i => i.jugador); 
         if(mercFilter === 'TOP 5' && !q) { 
             subidas = subidas.slice(0,5); bajadas = bajadas.slice(0,5); 
-            document.getElementById('tit-mercado-subidas').innerText = "🚀 Subidas"; document.getElementById('tit-mercado-bajadas').innerText = "🔻 Bajadas"; balDiv.style.display = 'none'; 
-            document.getElementById('tabla-mercado-subidas').innerHTML = subidas.length ? subidas.map((i, idx) => `<tr><td><b>${i.jugador}</b> <small class="muted">(${i.manager})</small></td><td style="text-align:right;" class="val-pos">${idx === 0 ? `<span class="badge-rec-max" style="padding:2px 8px;">+${fmtE(i.diff)}</span>` : `+${fmtE(i.diff)}`}${i.diff >= 1000000 ? " 🔥" : ""}</td></tr>`).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
-            document.getElementById('tabla-mercado-bajadas').innerHTML = bajadas.length ? bajadas.map((i, idx) => `<tr><td><b>${i.jugador}</b> <small class="muted">(${i.manager})</small></td><td style="text-align:right;" class="val-neg">${idx === 0 ? `<span class="badge-rec-min" style="padding:2px 8px;">${fmtE(i.diff)}</span>` : `${fmtE(i.diff)}`}${i.diff <= -1000000 ? " 💥" : ""}</td></tr>`).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
+            document.getElementById('tit-mercado-subidas').innerText = "🚀 Subidas"; document.getElementById('tit-mercado-bajadas').innerText = "🔻 Bajadas"; 
+            if(balDiv) balDiv.style.display = 'none'; 
+            
+            let tms = document.getElementById('tabla-mercado-subidas');
+            if(tms) tms.innerHTML = subidas.length ? subidas.map((i, idx) => `<tr><td><b>${i.jugador}</b> <small class="muted">(${i.manager})</small></td><td style="text-align:right;" class="val-pos">${idx === 0 ? `<span class="badge-rec-max" style="padding:2px 8px;">+${fmtE(i.diff)}</span>` : `+${fmtE(i.diff)}`}${i.diff >= 1000000 ? " 🔥" : ""}</td></tr>`).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
+            
+            let tmb = document.getElementById('tabla-mercado-bajadas');
+            if(tmb) tmb.innerHTML = bajadas.length ? bajadas.map((i, idx) => `<tr><td><b>${i.jugador}</b> <small class="muted">(${i.manager})</small></td><td style="text-align:right;" class="val-neg">${idx === 0 ? `<span class="badge-rec-min" style="padding:2px 8px;">${fmtE(i.diff)}</span>` : `${fmtE(i.diff)}`}${i.diff <= -1000000 ? " 💥" : ""}</td></tr>`).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
         } else {
             document.getElementById('tit-mercado-subidas').innerText = "🚀 Subidas"; document.getElementById('tit-mercado-bajadas').innerText = "🔻 Bajadas"; 
             if(mercFilter !== 'TODOS') { let totalDif = filtrados.reduce((sum, item) => sum + item.diff, 0); balDiv.innerHTML = `<b>Balance global de hoy:</b> <span class='${totalDif >= 0 ? 'val-pos' : 'val-neg'}'>${totalDif > 0 ? '+' : ''}${fmtE(totalDif)}</span>`; balDiv.style.display = 'block'; } else balDiv.style.display = 'none'; 
@@ -520,14 +542,18 @@
             if (btnPag) btnPag.style.display = 'none';
             if (btnCur) btnCur.style.display = 'none';
             let btnDue = document.getElementById('subbtn-duelo'); if (btnDue) btnDue.style.display = 'none';
-            if (currentSub['jornada'] !== 'alineaciones') setSubTab('jornada', 'alineaciones');
+            // Fuerza la vista a alineaciones y pinta el botón
+            setSubTab('jornada', 'alineaciones');
+            if (document.getElementById('subbtn-alineaciones')) document.getElementById('subbtn-alineaciones').classList.add('active');
         } else {
             if (btnRes) btnRes.style.display = 'inline-block';
             if (btnEq) btnEq.style.display = 'inline-block';
             if (btnPag) btnPag.style.display = 'inline-block';
             if (btnCur) btnCur.style.display = 'inline-block';
             let btnDue = document.getElementById('subbtn-duelo'); if (btnDue) btnDue.style.display = 'inline-block';
-            if (currentSub['jornada'] !== 'resultados' && document.getElementById('content-resultados')?.style.display !== 'block' && currentMain === 'jornada') setSubTab('jornada', 'resultados');
+            // Fuerza la vista a resultados y pinta el botón
+            setSubTab('jornada', 'resultados');
+            if (btnRes) btnRes.classList.add('active');
         }
 
         document.getElementById('tabla-jornada-res').innerHTML = jd.clasif_jornada.map((d, i) => `<tr><td>${i<3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º'}</td><td><b>${d.manager}</b></td><td class="val-blue">${d.pts_j}</td></tr>`).join('');
