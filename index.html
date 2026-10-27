@@ -101,10 +101,9 @@
         .avatar-2d { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: #1e293b; box-sizing: border-box; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 3px solid; transition: all 0.2s; }
         .avatar-2d img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); }
         
-        /* Botón Central devuelto a su tamaño original (42%) */
-        .center-btn-2d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42%; height: 42%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b 60%, #b45309 100%); border: 3px solid #111827; box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 4px 6px rgba(255,255,255,0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; overflow: hidden; text-align: center; transition: all 0.15s ease-out; cursor: pointer; }
-        .center-btn-2d:active { transform: translate(-50%, -50%) scale(0.92); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 1px 3px rgba(255,255,255,0.2); filter: brightness(1.2); }
-        .center-btn-2d .stars-layer { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)); background-repeat: repeat; background-size: 100px 100px; animation: spinStars 25s linear infinite; opacity: 0.4; pointer-events: none; }
+        /* Botón Central Blanco Puro (El Reactor) */
+        .center-btn-2d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42%; height: 42%; border-radius: 50%; background: #ffffff; border: 3px solid #e2e8f0; box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; overflow: hidden; text-align: center; transition: all 0.15s ease-out; cursor: pointer; }
+        .center-btn-2d:active { transform: translate(-50%, -50%) scale(0.92); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 2px 6px rgba(0,0,0,0.1); }
         
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 12px; animation: fadeIn 0.3s ease; }
         .modal-content { background: var(--surface); width: 100%; max-width: 480px; max-height: 95vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); padding: 20px; overflow-y: auto; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
@@ -114,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 18:43</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 18:58</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -271,12 +270,11 @@
                     <!-- JS inyecta la ruleta aquí -->
                 </div>
                 
-                <!-- Núcleo Central (Salón de la Fama) -->
+                <!-- Núcleo Central (Salón de la Fama en Blanco Mate) -->
                 <div class="center-btn-2d" onclick="abrirModalFama(); event.stopPropagation();">
-                    <div class="stars-layer"></div>
                     <div class="center-content">
-                        <div style="font-size: 2rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5)); margin-bottom: 2px;">🏆</div>
-                        <div style="font-size: 0.75rem; font-weight:900; color:#fff; letter-spacing: 1px; line-height: 1.1;">SALÓN DE<br>LA FAMA</div>
+                        <div style="font-size: 2rem; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15)); margin-bottom: 2px;">🏆</div>
+                        <div style="font-size: 0.75rem; font-weight:900; color:#0f172a; letter-spacing: 1px; line-height: 1.1;">SALÓN DE<br>LA FAMA</div>
                     </div>
                 </div>
             </div>
@@ -569,38 +567,30 @@
         });
         svgHtml += `</defs>`;
         
-        mgrDataRuleta.forEach((mgr, i) => {
+        // FUNCIÓN AUXILIAR: Genera un quesito en formato "Donut"
+        const generarWedge = (mgr, i) => {
             let rotation = i * 60; 
-            let color = coloresMgrUID[mgr.uid] || '#ffffff';
             let fotoId = fotosMgrUID[mgr.uid];
             let contenido = fotoId ? `<img src="${getFotoUrl(fotoId)}" alt="${mgr.nombre}" loading="lazy" />` : (emoMgr[mgr.nombre] || '👤');
             
-            // LÓGICA DEL PODIO (Oro, Plata, Bronce para Foto, Chapita Y Quesito)
             let posColor = '#1e293b'; 
-            let strokeQuesito = '#111827'; // Borde oscuro por defecto para la ruleta
-            let grosorQuesito = '3'; // Grosor normal
+            let strokeQuesito = '#111827'; 
+            let grosorQuesito = '3'; 
             let glowShadow = 'box-shadow: 0 4px 8px rgba(0,0,0,0.5);';
 
-            if (mgr.pos === 1) { 
-                posColor = '#eab308'; strokeQuesito = '#eab308'; grosorQuesito = '5'; // Oro y más grueso
-                glowShadow = `box-shadow: 0 0 20px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
-            } 
-            else if (mgr.pos === 2) { 
-                posColor = '#9ca3af'; strokeQuesito = '#9ca3af'; grosorQuesito = '4'; // Plata
-                glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
-            } 
-            else if (mgr.pos === 3) { 
-                posColor = '#b45309'; strokeQuesito = '#b45309'; grosorQuesito = '4'; // Bronce
-                glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
-            }
+            if (mgr.pos === 1) { posColor = '#eab308'; strokeQuesito = '#eab308'; grosorQuesito = '5.5'; glowShadow = `box-shadow: 0 0 20px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; } 
+            else if (mgr.pos === 2) { posColor = '#9ca3af'; strokeQuesito = '#9ca3af'; grosorQuesito = '4.5'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; } 
+            else if (mgr.pos === 3) { posColor = '#b45309'; strokeQuesito = '#b45309'; grosorQuesito = '4.5'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; }
 
-            svgHtml += `
+            // MATEMÁTICAS DONUT: Empieza en radio interior 69, arco a radio exterior 160.
+            let donutPath = `M -34.5,-59.75 L -80,-138.56 A 160,160 0 0,1 80,-138.56 L 34.5,-59.75 A 69,69 0 0,0 -34.5,-59.75 Z`;
+
+            return `
                 <g transform="rotate(${rotation})">
                     <g class="wedge-group" onclick="clickWedgeRuleta(${i})">
-                        <!-- El quesito con su borde dinámico inyectado en el style -->
-                        <path id="wedge-${i}" class="wedge-path" d="M 0,0 L -80,-138.56 A 160,160 0 0,1 80,-138.56 Z" fill="url(#grad-${i})" style="stroke: ${strokeQuesito}; stroke-width: ${grosorQuesito}px; stroke-linejoin: round;" />
+                        <!-- El quesito hueco -->
+                        <path id="wedge-${i}" class="wedge-path" d="${donutPath}" fill="url(#grad-${i})" style="stroke: ${strokeQuesito}; stroke-width: ${grosorQuesito}px; stroke-linejoin: round;" />
                         
-                        <!-- La foto -->
                         <foreignObject x="-35" y="-138" width="70" height="70">
                             <div xmlns="http://www.w3.org/1999/xhtml" class="avatar-wrapper" style="transform: rotate(${-rotation}deg);">
                                 <div class="avatar-2d" style="border-color: ${posColor}; ${glowShadow}">
@@ -616,22 +606,27 @@
                                 <text x="0" y="5" fill="#fff" font-size="13" font-weight="900" text-anchor="middle" font-family="sans-serif">${mgr.pos}</text>
                             </g>
                         </g>
-
                     </g>
                 </g>
             `;
-        });
+        };
+
+        // RENDERIZADO EN 2 PASADAS PARA Z-INDEX PERFECTO
+        // 1º Pasada: Dibujamos a los "mortales" (posiciones 4, 5 y 6)
+        mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos > 3) svgHtml += generarWedge(mgr, i); });
+        
+        // 2º Pasada: Dibujamos el Podio (1, 2 y 3) al final para que sus bordes pisen y sobreescriban al resto
+        mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos <= 3) svgHtml += generarWedge(mgr, i); });
+
         svgHtml += `</svg>`;
         container.innerHTML = svgHtml;
         ruletaInicializada = true;
     }
-    
-    // Al hacer clic: Suena, se hunde visualmente por CSS y te saca la pantalla de Mánager
+
+    // Funciones de click (Se mantienen igual)
     window.clickWedgeRuleta = function(idx) {
         reproducirClic();
-        setTimeout(() => { 
-            abrirModalManager(idx); 
-        }, 150);
+        setTimeout(() => { abrirModalManager(idx); }, 150);
     }
     
     function abrirModalManager(idx) {
@@ -664,7 +659,7 @@
 
     function abrirModalFama() { document.getElementById('modal-fama').style.display = 'flex'; }
     function cerrarModal(e) { if(e.target.classList.contains('modal-overlay')) e.target.style.display = 'none'; }
-                    
+                        
     function renderDashboard() { 
         const grid = document.getElementById('grid-dashboard'); 
         if(!grid) return;
