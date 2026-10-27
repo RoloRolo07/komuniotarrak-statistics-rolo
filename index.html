@@ -101,9 +101,9 @@
         .avatar-2d { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: #1e293b; box-sizing: border-box; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 3px solid; transition: all 0.2s; }
         .avatar-2d img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); }
         
-        /* Botón Central Blanco Puro (El Reactor) */
-        .center-btn-2d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42%; height: 42%; border-radius: 50%; background: #ffffff; border: 3px solid #e2e8f0; box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; overflow: hidden; text-align: center; transition: all 0.15s ease-out; cursor: pointer; }
-        .center-btn-2d:active { transform: translate(-50%, -50%) scale(0.92); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 2px 6px rgba(0,0,0,0.1); }
+        /* Botón Central Marfil Mate (Adiós al deslumbramiento) */
+        .center-btn-2d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42%; height: 42%; border-radius: 50%; background: #fdfbf7; border: 3px solid #e2e8f0; box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 4px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; overflow: hidden; text-align: center; transition: all 0.15s ease-out; cursor: pointer; }
+        .center-btn-2d:active { transform: translate(-50%, -50%) scale(0.92); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 2px 6px rgba(0,0,0,0.08); background: #f1f5f9; }
         
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 12px; animation: fadeIn 0.3s ease; }
         .modal-content { background: var(--surface); width: 100%; max-width: 480px; max-height: 95vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); padding: 20px; overflow-y: auto; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 18:58</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 19:15</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -582,13 +582,11 @@
             else if (mgr.pos === 2) { posColor = '#9ca3af'; strokeQuesito = '#9ca3af'; grosorQuesito = '4.5'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; } 
             else if (mgr.pos === 3) { posColor = '#b45309'; strokeQuesito = '#b45309'; grosorQuesito = '4.5'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; }
 
-            // MATEMÁTICAS DONUT: Empieza en radio interior 69, arco a radio exterior 160.
             let donutPath = `M -34.5,-59.75 L -80,-138.56 A 160,160 0 0,1 80,-138.56 L 34.5,-59.75 A 69,69 0 0,0 -34.5,-59.75 Z`;
 
             return `
                 <g transform="rotate(${rotation})">
                     <g class="wedge-group" onclick="clickWedgeRuleta(${i})">
-                        <!-- El quesito hueco -->
                         <path id="wedge-${i}" class="wedge-path" d="${donutPath}" fill="url(#grad-${i})" style="stroke: ${strokeQuesito}; stroke-width: ${grosorQuesito}px; stroke-linejoin: round;" />
                         
                         <foreignObject x="-35" y="-138" width="70" height="70">
@@ -599,7 +597,6 @@
                             </div>
                         </foreignObject>
 
-                        <!-- La chapita de posición -->
                         <g transform="translate(38, -125)">
                             <g transform="rotate(${-rotation})">
                                 <circle cx="0" cy="0" r="14" fill="#0f172a" stroke="${posColor}" stroke-width="2.5" />
@@ -611,18 +608,25 @@
             `;
         };
 
-        // RENDERIZADO EN 2 PASADAS PARA Z-INDEX PERFECTO
-        // 1º Pasada: Dibujamos a los "mortales" (posiciones 4, 5 y 6)
+        // RENDERIZADO CON JERARQUÍA ESTRICTA (Z-INDEX PERFECTO)
+        
+        // 1º: Dibujamos a los "Mortales" (posiciones 4, 5 y 6)
         mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos > 3) svgHtml += generarWedge(mgr, i); });
         
-        // 2º Pasada: Dibujamos el Podio (1, 2 y 3) al final para que sus bordes pisen y sobreescriban al resto
-        mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos <= 3) svgHtml += generarWedge(mgr, i); });
+        // 2º: Dibujamos el Bronce (Pisa a los mortales por la izquierda/derecha)
+        mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos === 3) svgHtml += generarWedge(mgr, i); });
+        
+        // 3º: Dibujamos la Plata (Pisa al Bronce y a los mortales)
+        mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos === 2) svgHtml += generarWedge(mgr, i); });
+        
+        // 4º: Dibujamos el Oro (El Rey. Se dibuja el último para pisar absolutamente a todos sus vecinos)
+        mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos === 1) svgHtml += generarWedge(mgr, i); });
 
         svgHtml += `</svg>`;
         container.innerHTML = svgHtml;
         ruletaInicializada = true;
     }
-
+    
     // Funciones de click (Se mantienen igual)
     window.clickWedgeRuleta = function(idx) {
         reproducirClic();
