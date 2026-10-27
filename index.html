@@ -105,7 +105,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 12:36</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 13:48</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -255,36 +255,27 @@
 
     <div id="content-totales-ruleta" class="section-content">
         <div class="card" style="text-align: center; padding: 20px;">
-            <div class="card-title" style="justify-content: center; font-size: 1.5rem; color: var(--gold);">Laboratorio: La Gran Ruleta</div>
+            <div class="card-title" style="justify-content: center; font-size: 1.5rem; color: var(--gold);">La Gran Ruleta</div>
             
-            <div class="ruleta-ui-wrapper" style="position: relative; max-width: 400px; margin: 0 auto; text-align: center; margin-top: 20px; touch-action: pan-y;">
+            <div class="ruleta-ui-wrapper" style="position: relative; max-width: 400px; margin: 0 auto; text-align: center; margin-top: 20px;">
                 <!-- Flecha indicadora superior -->
                 <div style="font-size: 2rem; color: var(--gold); margin-bottom: -15px; position: relative; z-index: 20; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">▼</div>
 
-                <!-- Contenedor táctil -->
-                <div class="donut-container" id="ruleta-container" style="cursor: grab; height: 320px;">
+                <!-- Contenedor Ruleta (Ahora se toca directo en los colores) -->
+                <div class="donut-container" style="height: 320px; cursor: pointer;">
                     <canvas id="ruleta-vip"></canvas>
+                    <!-- Centro del Salón de la Fama -->
                     <div class="donut-center-btn" onclick="abrirModalFama(); event.stopPropagation();">
                         <span style="font-size: 2.2rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.4));">🏆</span>
                         <span style="font-size: 0.8rem; letter-spacing: 1px;">SALÓN DE<br>LA FAMA</span>
                     </div>
                 </div>
-
-                <!-- Controles ordenador y Nombre/Foto dinámica -->
-                <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 15px;">
-                    <button onclick="girarRuleta(-1)" style="background: var(--surface); border: 1px solid var(--border); color: var(--white); font-size: 1.5rem; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">◀</button>
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 150px; cursor: pointer;" onclick="abrirModalManager()">
-                        <div id="ruleta-mgr-avatar" style="font-size: 3rem; margin-bottom: 5px; line-height: 1; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));">📸</div>
-                        <div id="ruleta-mgr-name" style="font-size: 1.4rem; font-weight: 900; color: var(--blue); text-transform: uppercase; letter-spacing: 1px;">MÁNAGER</div>
-                    </div>
-                    <button onclick="girarRuleta(1)" style="background: var(--surface); border: 1px solid var(--border); color: var(--white); font-size: 1.5rem; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">▶</button>
-                </div>
-                <p class="muted" style="font-size: 0.8rem; margin-top: 15px;">👆 Desliza el dedo para girar. Toca la foto para abrir su Cromo VIP.</p>
+                <p class="muted" style="font-size: 0.85rem; margin-top: 10px;">👆 Toca un color para ver la tarjeta del Mánager.</p>
             </div>
         </div>
     </div>
 
-    <!-- MODAL SALÓN DE LA FAMA (El de la carta 3D que ya tenías) -->
+    <!-- MODAL SALÓN DE LA FAMA (Se mantiene igual) -->
     <div id="modal-fama" class="modal-overlay" onclick="cerrarModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-modal" onclick="document.getElementById('modal-fama').style.display='none'">✖</button>
@@ -313,86 +304,64 @@
         </div>
     </div>
 
-    <!-- MODAL CROMO MÁNAGER VIP (CON IDENTIFICADORES DINÁMICOS) -->
+    <!-- SÚPER CROMO MÁNAGER VIP (ESTRUCTURA REAL) -->
     <div id="modal-manager" class="modal-overlay" onclick="document.getElementById('modal-manager').style.display='none'">
-        <div class="modal-content" style="max-width: 450px; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); padding: 24px;" onclick="event.stopPropagation()">
+        <div class="modal-content" style="max-width: 480px; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); padding: 24px;" onclick="event.stopPropagation()">
             <button class="close-modal" style="z-index: 1000; padding: 10px;" onclick="document.getElementById('modal-manager').style.display='none'">✖</button>
             
-            <!-- Cabecera Dinámica -->
+            <!-- Cabecera -->
             <div style="text-align: center; margin-bottom: 24px;">
-                <div id="mockup-border" style="width: 110px; height: 110px; border-radius: 50%; background: #4b5563; border: 4px solid var(--blue); margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 3rem; transition: border-color 0.3s;">📸</div>
-                <div id="mockup-name" style="font-size: 2.2rem; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 2px; line-height: 1;">ROLO</div>
-                <div class="val-gold" style="font-size: 1.1rem; font-weight: bold; margin-top: 8px;">1º Clasificado <span class="val-pos" style="font-size: 1.2rem; margin: 0 4px;">▲</span> 845 pts</div>
+                <div id="mgr-card-avatar" style="width: 100px; height: 100px; border-radius: 50%; background: #4b5563; border: 4px solid var(--border); margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 3rem; transition: border-color 0.3s;">👤</div>
+                <div id="mgr-card-name" style="font-size: 2.2rem; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 2px; line-height: 1; margin-bottom: 12px;">MÁNAGER</div>
+                <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 20px; font-size: 0.95rem; font-weight: bold;">
+                    <span id="mgr-card-pos" style="color: var(--white);">--º Clasificado</span> &nbsp;|&nbsp; 
+                    <span id="mgr-card-pts" class="val-gold">-- pts</span> &nbsp;|&nbsp; 
+                    <span id="mgr-card-trend">--</span>
+                </div>
             </div>
 
             <!-- SECCIÓN 1: FINANZAS -->
-            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 14px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
-                <div style="color: var(--muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; letter-spacing: 1px; border-bottom: 1px dashed var(--border); padding-bottom: 6px;">💼 Finanzas y Mercado</div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 14px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="color: var(--muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 6px;">💼 Finanzas y Mercado</div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85rem;">
-                    <div><span class="muted">Valor Máx:</span> <b class="val-blue">125M €</b></div>
-                    <div><span class="muted">Valor Mín:</span> <b class="val-white">45M €</b></div>
-                    <div><span class="muted">Compras:</span> <b>22</b></div>
-                    <div><span class="muted">Ventas:</span> <b>20</b></div>
-                    <div><span class="muted">Movs Total:</span> <b>42</b></div>
-                    <div><span class="muted">Especulación:</span> <b class="val-pos">+5.4M €</b></div>
-                    <div><span class="muted">Paguitas:</span> <b class="val-gold">+4.2M €</b></div>
-                    <div><span class="muted">Sanciones:</span> <b class="val-neg">-1.0M €</b></div>
+                    <div><span class="muted">Valor Máx:</span> <b id="mgr-f-max" class="val-blue">-- €</b></div>
+                    <div><span class="muted">Valor Mín:</span> <b id="mgr-f-min" class="val-white">-- €</b></div>
+                    <div><span class="muted">Compras:</span> <b id="mgr-f-compras">--</b></div>
+                    <div><span class="muted">Ventas:</span> <b id="mgr-f-ventas">--</b></div>
+                    <div><span class="muted">Movs Total:</span> <b id="mgr-f-movs">--</b></div>
+                    <div><span class="muted">Especulación:</span> <b id="mgr-f-espe">-- €</b></div>
+                    <div><span class="muted">Paguitas:</span> <b id="mgr-f-pag" class="val-gold">-- €</b></div>
+                    <div><span class="muted">Sanciones:</span> <b id="mgr-f-san" class="val-neg">-- €</b></div>
                 </div>
             </div>
 
             <!-- SECCIÓN 2: ESTADÍSTICAS -->
-            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 14px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
-                <div style="color: var(--muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; letter-spacing: 1px; border-bottom: 1px dashed var(--border); padding-bottom: 6px;">📊 Estadísticas (Jornadas ≥ 6 part.)</div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 14px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="color: var(--muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 6px;">📊 Estadísticas Históricas</div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85rem;">
-                    <div><span class="muted">Récord Máx:</span> <b class="val-pos">92 pts</b></div>
-                    <div><span class="muted">Récord Mín:</span> <b class="val-neg">15 pts</b></div>
-                    <div><span class="muted">Media Pts:</span> <b>54.2</b></div>
-                    <div><span class="muted">Pos. Media:</span> <b>2.4</b></div>
-                    <div><span class="muted">Semanas Líder:</span> <b>4</b></div>
-                    <div><span class="muted">Táctica Fav:</span> <b>3-4-3</b></div>
+                    <div><span class="muted">Récord Máx:</span> <b id="mgr-s-rmax" class="val-pos">-- pts</b></div>
+                    <div><span class="muted">Récord Mín:</span> <b id="mgr-s-rmin" class="val-neg">-- pts</b></div>
+                    <div><span class="muted">Media Pts:</span> <b id="mgr-s-media">--</b></div>
+                    <div><span class="muted">Pos. Media:</span> <b id="mgr-s-posm">--</b></div>
+                    <div><span class="muted">Semanas Líder:</span> <b id="mgr-s-lider">--</b></div>
+                    <div><span class="muted">Táctica Fav:</span> <b id="mgr-s-tac">--</b></div>
                     <div style="grid-column: span 2; margin-top: 4px; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.02);">
-                        <span class="muted">Medallas Totales:</span> <b>12</b> <span style="font-size:0.9rem;">(5🥇 | 4🥈 | 3🥉)</span>
+                        <span class="muted">Metales Totales:</span> <b id="mgr-s-mtotal">--</b> 
+                        <span style="font-size:0.9rem;" id="mgr-s-mdesglose">(--🥇 | --🥈 | --🥉)</span>
                     </div>
                 </div>
             </div>
 
-            <!-- SECCIÓN 3: HAT-TRICK (POSITIVOS) -->
+            <!-- SECCIÓN 3: HAT-TRICK (Pendiente Python) -->
             <div style="margin-bottom: 16px;">
-                <div style="color: var(--gold); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; letter-spacing: 1px; text-align: center;">⭐ El Hat-Trick (Mejores Jugadores)</div>
-                <div style="display: flex; gap: 8px; justify-content: space-between;">
-                    <div style="flex: 1; background: linear-gradient(135deg, #1f2937 0%, #111827 100%); border-radius: 6px; padding: 8px 4px; text-align: center; border: 1px solid var(--gold);">
-                        <div style="font-size: 0.65rem; color: var(--gold); font-weight:bold; margin-bottom:2px;">MÁS PUNTOS</div>
-                        <div style="color: #fff; font-weight: 900; font-size: 0.8rem;">Bellingham</div>
-                        <div class="val-gold" style="font-size: 1.1rem; font-weight: 900; margin: 2px 0;">112 pts</div>
-                    </div>
-                    <div style="flex: 1; background: linear-gradient(135deg, #1f2937 0%, #111827 100%); border-radius: 6px; padding: 8px 4px; text-align: center; border: 1px solid var(--accent);">
-                        <div style="font-size: 0.65rem; color: var(--accent); font-weight:bold; margin-bottom:2px;">MÁS RENTABLE</div>
-                        <div style="color: #fff; font-weight: 900; font-size: 0.8rem;">Griezmann</div>
-                        <div class="val-pos" style="font-size: 1rem; font-weight: 900; margin: 2px 0;">95.000 €/pt</div>
-                    </div>
-                    <div style="flex: 1; background: linear-gradient(135deg, #1f2937 0%, #111827 100%); border-radius: 6px; padding: 8px 4px; text-align: center; border: 1px solid var(--blue);">
-                        <div style="font-size: 0.65rem; color: var(--blue); font-weight:bold; margin-bottom:2px;">MÁS ALINEADO</div>
-                        <div style="color: #fff; font-weight: 900; font-size: 0.8rem;">Isco</div>
-                        <div class="val-blue" style="font-size: 1.1rem; font-weight: 900; margin: 2px 0;">12 part.</div>
-                    </div>
-                </div>
+                <div style="color: var(--gold); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; text-align: center;">⭐ El Hat-Trick (Próximamente)</div>
+                <div class="muted" style="text-align:center; font-size:0.8rem; background:rgba(0,0,0,0.2); padding:10px; border-radius:6px; border:1px dashed var(--border);">Cargando los 3 mejores jugadores (Pts, Rentabilidad y Alineaciones)...</div>
             </div>
 
-            <!-- SECCIÓN 4: EL POZO (NEGATIVOS) -->
+            <!-- SECCIÓN 4: EL POZO (Pendiente Python) -->
             <div>
-                <div style="color: var(--danger); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; letter-spacing: 1px; text-align: center;">💀 El Pozo (Peores Jugadores)</div>
-                <div style="display: flex; gap: 8px; justify-content: center;">
-                    <div style="flex: 1; max-width: 48%; background: linear-gradient(135deg, #2a1010 0%, #111827 100%); border-radius: 6px; padding: 8px 4px; text-align: center; border: 1px solid var(--danger);">
-                        <div style="font-size: 0.65rem; color: var(--danger); font-weight:bold; margin-bottom:2px;">MENOS PUNTOS</div>
-                        <div style="color: #fff; font-weight: 900; font-size: 0.8rem;">Vallejo</div>
-                        <div class="val-neg" style="font-size: 1.1rem; font-weight: 900; margin: 2px 0;">-4 pts</div>
-                    </div>
-                    <div style="flex: 1; max-width: 48%; background: linear-gradient(135deg, #2a1010 0%, #111827 100%); border-radius: 6px; padding: 8px 4px; text-align: center; border: 1px solid var(--danger);">
-                        <div style="font-size: 0.65rem; color: var(--danger); font-weight:bold; margin-bottom:2px;">MENOS RENTABLE</div>
-                        <div style="color: #fff; font-weight: 900; font-size: 0.8rem;">Tchouaméni</div>
-                        <div class="val-neg" style="font-size: 1rem; font-weight: 900; margin: 2px 0;">850.000 €/pt</div>
-                    </div>
-                </div>
+                <div style="color: var(--danger); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; text-align: center;">💀 El Pozo (Próximamente)</div>
+                <div class="muted" style="text-align:center; font-size:0.8rem; background:rgba(0,0,0,0.2); padding:10px; border-radius:6px; border:1px dashed var(--danger);">Cargando los peores jugadores y garrafones...</div>
             </div>
 
         </div>
@@ -555,36 +524,28 @@
         const ctx = document.getElementById('ruleta-vip');
         if(!ctx) return;
 
-        // 1. Cargar el orden según la Clasificación General (1º a 6º)
+        // 1. Cargar el orden según la Clasificación General (El 1º de líder)
         if (globalStats.clasif_general_actual && globalStats.clasif_general_actual.length > 0) {
             mgrLabels = globalStats.clasif_general_actual.map(d => d.manager);
         } else {
-            mgrLabels = ['Rolo', 'Alberto', 'Gorka', 'Iñaki', 'Lord Rhal', 'Jon']; // Fallback
+            mgrLabels = ['Rolo', 'Alberto', 'Gorka', 'Iñaki', 'Lord Rhal', 'Jon'];
         }
 
-        // 2. Mapear los colores corporativos fijos de cada uno
-        const baseColors = {
-            'Rolo': '#3b82f6', 'Rolo Tomasi': '#3b82f6',
-            'Alberto': '#ef4444', 'Alberto Garcia': '#ef4444',
-            'Gorka': '#10b981', 'Gorka Bartu': '#10b981',
-            'Iñaki': '#f59e0b',
-            'Lord Rhal': '#8b5cf6',
-            'Jon': '#ec4899', 'Jon MARQUEZ PEREZ': '#ec4899'
-        };
+        // Colores corporativos puros
+        const baseColors = { 'Rolo': '#3b82f6', 'Alberto': '#ef4444', 'Gorka': '#10b981', 'Iñaki': '#f59e0b', 'Lord Rhal': '#8b5cf6', 'Jon': '#ec4899', 'Rolo Tomasi': '#3b82f6', 'Alberto Garcia': '#ef4444', 'Gorka Bartu': '#10b981', 'Jon MARQUEZ PEREZ': '#ec4899' };
         mgrColors = mgrLabels.map(m => baseColors[m] || '#ffffff');
         
-        // Empezamos en el 1º clasificado por defecto
-        activeMgrIdx = 0;
+        activeMgrIdx = 0; // Empieza marcando al 1º clasificado
 
         const getDatasets = (activeIndex) => {
             let bgColors = [];
             let offsets = [];
             for(let i = 0; i < mgrLabels.length; i++) {
                 if(i === activeIndex) {
-                    bgColors.push(mgrColors[i]); 
-                    offsets.push(20); // El líder (o seleccionado) sale hacia fuera
+                    bgColors.push(mgrColors[i]); // Color puro si está activo
+                    offsets.push(15);            // Resalta un poco hacia afuera
                 } else {
-                    bgColors.push('#374151'); // Gris para los demás
+                    bgColors.push(mgrColors[i] + '40'); // MAGIA: Le añadimos '40' al Hex (aprox 25% opacidad)
                     offsets.push(0);
                 }
             }
@@ -598,76 +559,59 @@
             data: { labels: mgrLabels, datasets: getDatasets(activeMgrIdx) },
             options: {
                 responsive: true, maintainAspectRatio: false,
-                cutout: '45%', // Ajustado EXACTAMENTE al botón del Salón de la Fama
+                cutout: '48%', 
                 rotation: calcRotation(activeMgrIdx),
                 animation: { animateRotate: true, animateScale: false, duration: 400 },
                 plugins: { legend: { display: false }, tooltip: { enabled: false } },
                 onClick: (e, elements) => {
-                    if (elements.length > 0) abrirModalManager(activeMgrIdx);
+                    if (elements.length > 0) {
+                        let clickedIdx = elements[0].index;
+                        // Al tocar un color, la ruleta gira hacia él y se abre su tarjeta
+                        girarRuleta(clickedIdx);
+                        abrirModalManager(clickedIdx);
+                    }
                 }
             }
         });
-
-        // 3. Forzar el renderizado inicial del avatar y nombre del líder
-        window.girarRuleta(0);
-
-        // ==========================================
-        // NUEVO MOTOR TÁCTIL (SWIPE MÓVIL 100% FIABLE)
-        // ==========================================
-        let touchstartX = 0; 
-        let touchendX = 0; 
-        let ruletaWrap = document.getElementById('ruleta-container');
-
-        ruletaWrap.addEventListener('touchstart', function(e) {
-            touchstartX = e.touches[0].clientX;
-        }, {passive: true});
-
-        ruletaWrap.addEventListener('touchend', function(e) {
-            touchendX = e.changedTouches[0].clientX;
-            let diff = touchstartX - touchendX;
-            // Si el deslizamiento es mayor a 40px, giramos
-            if (Math.abs(diff) > 40) {
-                if (diff > 0) window.girarRuleta(1); // Deslizar izq -> siguiente
-                else window.girarRuleta(-1);         // Deslizar der -> anterior
-            }
-        }, {passive: true});
     }
 
-    window.girarRuleta = function(dir) {
-        if(dir === 1) activeMgrIdx = (activeMgrIdx + 1) % mgrLabels.length;
-        else if (dir === -1) activeMgrIdx = (activeMgrIdx - 1 + mgrLabels.length) % mgrLabels.length;
+    function girarRuleta(idx) {
+        activeMgrIdx = idx;
         
         ruletaChart.data.datasets = [{
             data: [1,1,1,1,1,1], 
-            backgroundColor: mgrColors.map((c,i) => i === activeMgrIdx ? c : '#374151'),
+            backgroundColor: mgrColors.map((c,i) => i === activeMgrIdx ? c : c + '40'),
             borderWidth: 0,
-            offset: mgrColors.map((c,i) => i === activeMgrIdx ? 20 : 0)
+            offset: mgrColors.map((c,i) => i === activeMgrIdx ? 15 : 0)
         }];
         ruletaChart.options.rotation = -30 - (activeMgrIdx * 60);
         ruletaChart.update();
-        
-        // Actualizamos Nombre, Avatar y Color
-        let nameEl = document.getElementById('ruleta-mgr-name');
-        let avatarEl = document.getElementById('ruleta-mgr-avatar');
-        let managerActual = mgrLabels[activeMgrIdx];
-        
-        nameEl.innerText = managerActual;
-        nameEl.style.color = mgrColors[activeMgrIdx];
-        
-        // Carga la foto/emoji real de la variable emoMgr
-        if(emoMgr[managerActual]) {
-            avatarEl.innerText = emoMgr[managerActual];
-        } else {
-            avatarEl.innerText = "👤";
-        }
     }
 
     function abrirModalManager(idx = activeMgrIdx) {
-        document.getElementById('mockup-name').innerText = mgrLabels[idx];
-        document.getElementById('mockup-border').style.borderColor = mgrColors[idx];
+        let mgrName = mgrLabels[idx];
+        let color = mgrColors[idx];
         
-        let avatarEl = document.getElementById('ruleta-mgr-avatar');
-        document.getElementById('mockup-border').innerText = avatarEl.innerText;
+        // --- 1. Rellenar Cabecera y Colores Básicos ---
+        document.getElementById('mgr-card-name').innerText = mgrName;
+        document.getElementById('mgr-card-name').style.color = color;
+        document.getElementById('mgr-card-avatar').style.borderColor = color;
+        document.getElementById('mgr-card-avatar').innerText = emoMgr[mgrName] || "👤";
+        
+        // --- 2. Rellenar Clasificación ---
+        let cls = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(c => c.manager === mgrName) : null;
+        if(cls) {
+            document.getElementById('mgr-card-pos').innerText = cls.pos + "º Clasificado";
+            document.getElementById('mgr-card-pts').innerText = cls.pts_t + " pts";
+            
+            let htmlTendencia = '<span class="muted">=</span>';
+            if(cls.tendencia === '▲') htmlTendencia = '<span class="val-pos">▲</span>';
+            else if(cls.tendencia === '▼') htmlTendencia = '<span class="val-neg">▼</span>';
+            document.getElementById('mgr-card-trend').innerHTML = htmlTendencia;
+        }
+
+        // --- 3. (PRÓXIMO PASO: INYECTAR RESTO DE VARIABLES REALES DE PYTHON) ---
+        // Aquí conectaremos los IDs de finanzas y el Hat-Trick.
         
         document.getElementById('modal-manager').style.display = 'flex';
     }
@@ -681,7 +625,7 @@
             e.target.style.display = 'none';
         }
     }
-
+    
     function renderDashboard() { 
         const grid = document.getElementById('grid-dashboard'); 
         if(!grid) return;
