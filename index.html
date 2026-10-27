@@ -89,33 +89,29 @@
         /* --- MOTOR VISUAL RULETA 2D PREMIUM --- */
         .ruleta-2d-container { position: relative; width: 100%; max-width: 360px; aspect-ratio: 1 / 1; margin: 10px auto 40px auto; touch-action: manipulation; -webkit-tap-highlight-color: transparent; outline: none; }
         
-        .ruleta-wheel { width: 100%; height: 100%; position: absolute; top: 0; left: 0; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Giro con efecto rebote suave */ }
+        .ruleta-wheel { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
         .ruleta-svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5)); }
         
-        /* El grupo que se hunde y brilla al tocar */
         .wedge-group { cursor: pointer; transition: all 0.15s ease-out; transform-origin: 0px 0px; -webkit-tap-highlight-color: transparent; outline: none; }
-        .wedge-group:active { transform: scale(0.92); filter: brightness(1.4); }
-        
-        .wedge-path { stroke-width: 3; stroke-linejoin: round; stroke: #111827; } /* Líneas separadoras oscuras */
+        .wedge-group:active { transform: scale(0.92); }
+        .wedge-path { stroke-width: 3; stroke-linejoin: round; stroke: #111827; transition: filter 0.3s; } 
         
         /* Avatares (Los cromos de los colegas) */
-        .avatar-2d { position: absolute; width: 70px; height: 70px; border-radius: 50%; background: #1e293b; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.5); border: 3px solid; }
+        .avatar-wrapper { position: relative; width: 100%; height: 100%; }
+        .avatar-2d { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: #1e293b; box-sizing: border-box; transition: all 0.4s; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.5); border: 3px solid; }
         .avatar-2d img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); }
         
         /* El destello del líder elegido */
-        .avatar-2d.active-glow { box-shadow: 0 0 25px currentColor, 0 8px 16px rgba(0,0,0,0.7); filter: brightness(1.15) scale(1.15); z-index: 40; border-width: 4px; }
+        .avatar-2d.active-glow { box-shadow: 0 0 25px currentColor, 0 8px 16px rgba(0,0,0,0.7); filter: brightness(1.15) scale(1.15); border-width: 4px; }
         
-        /* Botón Central */
-        .center-btn-2d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42%; height: 42%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b 60%, #b45309 100%); border: 3px solid #111827; box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 4px 6px rgba(255,255,255,0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; z-index: 50; overflow: hidden; text-align: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; outline: none; }
-        .center-btn-2d:active { transform: translate(-50%, -50%) scale(0.92); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 1px 3px rgba(255,255,255,0.2); filter: brightness(1.2); }
+        /* La nueva chapita de posición */
+        .badge-posicion { position: absolute; top: -5px; right: -5px; background: #0f172a; color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.75rem; font-weight: 900; z-index: 60; box-shadow: 0 2px 4px rgba(0,0,0,0.6); border: 2px solid; }
+
+        /* Botón Central Expandido (Preparando el terreno para la Y de Mercedes) */
+        .center-btn-2d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; height: 50%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b 60%, #b45309 100%); border: 3px solid #111827; box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 4px 6px rgba(255,255,255,0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; overflow: hidden; text-align: center; }
+        .center-btn-2d .stars-layer { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)); background-repeat: repeat; background-size: 100px 100px; animation: spinStars 25s linear infinite; opacity: 0.4; pointer-events: none; }
         
-        .stars-layer { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)); background-repeat: repeat; background-size: 100px 100px; animation: spinStars 25s linear infinite; opacity: 0.4; z-index: 1; pointer-events: none; }
-        @keyframes spinStars { 100% { transform: rotate(360deg); } }
-        .center-content { position: relative; z-index: 2; text-shadow: 1px 1px 3px rgba(0,0,0,0.6); }
-        
-        /* Modal con fondo de Cristal Empañado (Blur) */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 12px; animation: fadeIn 0.3s ease; }
-        /* Ajuste fino para el móvil: que ocupe todo lo posible sin romperse */
         .modal-content { background: var(--surface); width: 100%; max-width: 480px; max-height: 95vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); padding: 20px; overflow-y: auto; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--muted); cursor: pointer; background: none; border: none; z-index: 1000; }
 
@@ -123,7 +119,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 16:28</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 18:22</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -273,18 +269,15 @@
 
     <div id="content-totales-ruleta" class="section-content">
         <div class="card" style="text-align: center; padding: 16px 10px; border: none; background: transparent; box-shadow: none;">
-            
-            <!-- Sonido Mecánico del Clic -->
             <audio id="ruleta-click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
 
             <div class="ruleta-2d-container" id="ruleta-touch-area">
-                <!-- La ruleta entera que gira -->
                 <div class="ruleta-wheel" id="ruleta-svg-container">
-                    <!-- Se inyectará desde JS -->
+                    <!-- JS inyecta la ruleta aquí -->
                 </div>
                 
-                <!-- Botón Central -->
-                <div class="center-btn-2d" onclick="setTimeout(() => abrirModalFama(), 150); event.stopPropagation();">
+                <!-- Núcleo Central (50% de la ruleta) -->
+                <div class="center-btn-2d" onclick="abrirModalFama(); event.stopPropagation();">
                     <div class="stars-layer"></div>
                     <div class="center-content">
                         <div style="font-size: 2rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5)); margin-bottom: 2px;">🏆</div>
@@ -292,8 +285,6 @@
                     </div>
                 </div>
             </div>
-            
-            <p class="muted" style="font-size: 0.85rem; margin-top: 10px;">👆 Desliza para girar o toca una foto para abrir el Cromo.</p>
         </div>
     </div>
 
@@ -538,7 +529,6 @@
     let ruletaInicializada = false;
     let mgrDataRuleta = []; 
 
-    // TUS FOTOS REALES DE DRIVE
     const fotosMgrUID = {
         "21057989": "1lMpof0yp07WfdrMiz0xBZ3xpvj3ROxHO", "21058279": "1BbNA9rH0cVFqZhfAjes1Lf-y3TNUPXEz", 
         "21059980": "13oIgZEhUPH-i_DFmILVuUH4Fq1LagBTT", "21067500": "1e0hCuH0j40vb7568S1X9jgempH8KTq48", 
@@ -554,11 +544,7 @@
 
     function reproducirClic() {
         const sonido = document.getElementById('ruleta-click-sound');
-        if (sonido) {
-            sonido.currentTime = 0;
-            sonido.volume = 0.6; // No muy alto, elegante
-            sonido.play().catch(e => {}); // El catch evita errores si el móvil tiene el audio bloqueado
-        }
+        if (sonido) { sonido.currentTime = 0; sonido.volume = 0.6; sonido.play().catch(e => {}); }
     }
 
     function initRuletaVIP() {
@@ -566,10 +552,15 @@
         const container = document.getElementById('ruleta-svg-container');
         if(!container) return;
 
+        // Utilizamos estríctamente los datos pre-calculados de Totales
         if (globalStats.clasif_general_actual && globalStats.clasif_general_actual.length > 0) {
-            mgrDataRuleta = globalStats.clasif_general_actual.map(d => ({ nombre: d.manager, uid: d.uid }));
+            mgrDataRuleta = globalStats.clasif_general_actual.map((d, index) => ({ 
+                nombre: d.manager, 
+                uid: d.uid, 
+                pos: d.pos || (index + 1) 
+            }));
         } else {
-            mgrDataRuleta = [{nombre: 'Rolo', uid: '21057989'}, {nombre: 'Alberto', uid: '21067327'}, {nombre: 'Gorka', uid: '21058216'}, {nombre: 'Iñaki', uid: '21067500'}, {nombre: 'Lord Rhal', uid: '21058279'}, {nombre: 'Jon', uid: '21059980'}];
+            mgrDataRuleta = [{nombre: 'Rolo', uid: '21057989', pos: 1}, {nombre: 'Alberto', uid: '21067327', pos: 2}, {nombre: 'Gorka', uid: '21058216', pos: 3}, {nombre: 'Iñaki', uid: '21067500', pos: 4}, {nombre: 'Lord Rhal', uid: '21058279', pos: 5}, {nombre: 'Jon', uid: '21059980', pos: 6}];
         }
 
         let svgHtml = `<svg class="ruleta-svg" viewBox="-160 -160 320 320"><defs>`;
@@ -590,17 +581,23 @@
             let fotoId = fotosMgrUID[mgr.uid];
             let contenido = fotoId ? `<img src="${getFotoUrl(fotoId)}" alt="${mgr.nombre}" loading="lazy" />` : (emoMgr[mgr.nombre] || '👤');
             
-            // Hemos envuelto la cuña y el ForeignObject (Avatar) en el mismo grupo para que se hundan y destellen a la vez.
+            // LÓGICA DE ESCALERA DE COLOR: El líder = 100% brillo. El 6º = 50% brillo (apagado)
+            let brillo = 1 - (i * 0.10); 
+            
+            // FOTOS HACIA AFUERA: Empujamos la `y` de -138 a -148 para pegarlos al exterior
             svgHtml += `
                 <g transform="rotate(${rotation})">
-                    <g class="wedge-group" onclick="girarRuleta(${i}, true)">
-                        <!-- Quesito de color -->
-                        <path class="wedge-path" d="M 0,0 L -80,-138.56 A 160,160 0 0,1 80,-138.56 Z" fill="url(#grad-${i})" />
+                    <g class="wedge-group" onclick="clickWedgeRuleta(${i})">
+                        <path id="wedge-${i}" class="wedge-path" d="M 0,0 L -80,-138.56 A 160,160 0 0,1 80,-138.56 Z" fill="url(#grad-${i})" style="filter: brightness(${brillo});" />
                         
-                        <!-- Contenedor del Avatar. Tiene rotación inversa inicial para que salgan de pie -->
-                        <foreignObject x="-35" y="-138" width="70" height="70">
-                            <div xmlns="http://www.w3.org/1999/xhtml" class="avatar-2d" id="avatar-${i}" style="color: ${color}; transform: rotate(${-rotation}deg);">
-                                ${contenido}
+                        <foreignObject x="-30" y="-148" width="60" height="60">
+                            <div xmlns="http://www.w3.org/1999/xhtml" class="avatar-wrapper" style="transform: rotate(${-rotation}deg);">
+                                <div class="avatar-2d ${i === 0 ? 'active-glow' : ''}" style="color: ${color}; filter: brightness(${brillo});">
+                                    ${contenido}
+                                </div>
+                                <div class="badge-posicion" style="border-color: ${color}; filter: brightness(${brillo});">
+                                    ${mgr.pos}
+                                </div>
                             </div>
                         </foreignObject>
                     </g>
@@ -610,55 +607,14 @@
         svgHtml += `</svg>`;
         container.innerHTML = svgHtml;
         ruletaInicializada = true;
-        
-        // Empieza marcando al líder
-        window.girarRuleta(0, false);
-
-        // MOTOR SWIPE (Deslizar el dedo para girar)
-        let touchArea = document.getElementById('ruleta-touch-area');
-        let touchstartX = 0; let activeIdx = 0;
-
-        touchArea.addEventListener('touchstart', e => { touchstartX = e.touches[0].clientX; }, {passive: true});
-        touchArea.addEventListener('touchend', e => {
-            let diff = touchstartX - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 40) {
-                if (diff > 0) activeIdx = (activeIdx + 1) % mgrDataRuleta.length;
-                else activeIdx = (activeIdx - 1 + mgrDataRuleta.length) % mgrDataRuleta.length;
-                window.girarRuleta(activeIdx, false); 
-            }
-        }, {passive: true});
     }
 
-    // Gira la ruleta, hace el sonido y añade el brillo a la foto elegida
-    window.girarRuleta = function(idx, interact = false) {
-        if (interact) reproducirClic();
-
-        let wheel = document.getElementById('ruleta-svg-container');
-        let angleZ = -idx * 60; 
-        
-        // Rotamos el lienzo entero (Efecto ruleta de la fortuna)
-        wheel.style.transform = `rotateZ(${angleZ}deg)`;
-        
-        for(let i=0; i < mgrDataRuleta.length; i++) {
-            let avatar = document.getElementById(`avatar-${i}`);
-            if(avatar) {
-                // Matemática pura: Contrarrestamos el giro de la rueda para que las cabezas sigan verticales
-                let counterRotation = -(angleZ + (i * 60));
-                avatar.style.transform = `rotateZ(${counterRotation}deg)`;
-                
-                // Efecto "Resplandor del Elegido" al que queda arriba
-                if(i === idx) {
-                    avatar.classList.add('active-glow');
-                } else {
-                    avatar.classList.remove('active-glow');
-                }
-            }
-        }
-        
-        // Si el giro viene de tocar un quesito directamente, abrimos su tarjeta tras una pausa
-        if (interact) {
-            setTimeout(() => { abrirModalManager(idx); }, 250);
-        }
+    // Al hacer clic: Suena, se hunde visualmente por CSS y te saca la pantalla de Mánager
+    window.clickWedgeRuleta = function(idx) {
+        reproducirClic();
+        setTimeout(() => { 
+            abrirModalManager(idx); 
+        }, 150);
     }
     
     function abrirModalManager(idx) {
@@ -691,7 +647,7 @@
 
     function abrirModalFama() { document.getElementById('modal-fama').style.display = 'flex'; }
     function cerrarModal(e) { if(e.target.classList.contains('modal-overlay')) e.target.style.display = 'none'; }
-            
+                
     function renderDashboard() { 
         const grid = document.getElementById('grid-dashboard'); 
         if(!grid) return;
