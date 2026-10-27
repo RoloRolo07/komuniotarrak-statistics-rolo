@@ -86,42 +86,44 @@
         .clasificacion-wrapper { display: flex; flex-direction: column; gap: 16px; }
         @media (min-width: 1024px) { .clasificacion-wrapper { flex-direction: row; align-items: flex-start; } .clasificacion-main { flex: 1.6; } .clasificacion-side { flex: 1; } }
         
-        /* --- MOTOR VISUAL RULETA PREMIUM 3D (FÍSICA REAL) --- */
-        .ruleta-premium-container { position: relative; width: 100%; max-width: 350px; aspect-ratio: 1 / 1; margin: 10px auto 40px auto; touch-action: manipulation; perspective: 1000px; -webkit-tap-highlight-color: transparent; }
+        /* --- MOTOR VISUAL RULETA 2D PREMIUM --- */
+        .ruleta-2d-container { position: relative; width: 100%; max-width: 360px; aspect-ratio: 1 / 1; margin: 10px auto 40px auto; touch-action: manipulation; -webkit-tap-highlight-color: transparent; outline: none; }
         
-        /* Tumbamos la mesa 45º (Ni muy plano, ni muy aplastado) */
-        .ruleta-rotator { position: relative; width: 100%; height: 100%; transform: rotateX(45deg); transform-style: preserve-3d; }
+        .ruleta-wheel { width: 100%; height: 100%; position: absolute; top: 0; left: 0; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Giro con efecto rebote suave */ }
+        .ruleta-svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5)); }
         
-        /* LA BASE 3D: Esto crea el "grosor" de la pizza de plástico por debajo */
-        .ruleta-base { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: #020617; transform: translateZ(-20px); box-shadow: 0 25px 20px rgba(0,0,0,0.8); border: 2px solid #1e293b; }
+        /* El grupo que se hunde y brilla al tocar */
+        .wedge-group { cursor: pointer; transition: all 0.15s ease-out; transform-origin: 0px 0px; -webkit-tap-highlight-color: transparent; outline: none; }
+        .wedge-group:active { transform: scale(0.92); filter: brightness(1.4); }
         
-        /* El motor que gira. Mueve el SVG y las fotos a la vez */
-        .ruleta-wheel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .wedge-path { stroke-width: 3; stroke-linejoin: round; stroke: #111827; } /* Líneas separadoras oscuras */
         
-        .ruleta-svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; filter: drop-shadow(0px 0px 5px rgba(0,0,0,0.5)); }
+        /* Avatares (Los cromos de los colegas) */
+        .avatar-2d { position: absolute; width: 70px; height: 70px; border-radius: 50%; background: #1e293b; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.5); border: 3px solid; }
+        .avatar-2d img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); }
         
-        /* Las cápsulas de las fotos (Los peones). ¡Se levantan en -45º para mirar a cámara! */
-        .avatar-pawn { position: absolute; width: 68px; height: 68px; border-radius: 50%; background: #1e293b; border: 3px solid; box-sizing: border-box; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; -webkit-tap-highlight-color: transparent; transform-origin: center center; display: flex; justify-content: center; align-items: center; overflow: hidden; transform-style: preserve-3d; }
-        .avatar-pawn img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); /* Quita bordes feos de la foto */ }
+        /* El destello del líder elegido */
+        .avatar-2d.active-glow { box-shadow: 0 0 25px currentColor, 0 8px 16px rgba(0,0,0,0.7); filter: brightness(1.15) scale(1.15); z-index: 40; border-width: 4px; }
         
-        /* Botón Central Salón de la Fama (Fijo, no gira) */
-        .center-btn-3d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translateZ(10px); width: 44%; height: 44%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b 60%, #b45309 100%); border: 3px solid #111827; box-shadow: 0 15px 25px rgba(0,0,0,0.9), inset 0 4px 6px rgba(255,255,255,0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; z-index: 50; overflow: hidden; text-align: center; transition: all 0.1s; -webkit-tap-highlight-color: transparent; }
-        .center-btn-3d:active { transform: translate(-50%, -50%) translateZ(0px) scale(0.95); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 1px 3px rgba(255,255,255,0.2); filter: brightness(0.8); }
+        /* Botón Central */
+        .center-btn-2d { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42%; height: 42%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b 60%, #b45309 100%); border: 3px solid #111827; box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 4px 6px rgba(255,255,255,0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; z-index: 50; overflow: hidden; text-align: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; outline: none; }
+        .center-btn-2d:active { transform: translate(-50%, -50%) scale(0.92); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 1px 3px rgba(255,255,255,0.2); filter: brightness(1.2); }
         
         .stars-layer { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)); background-repeat: repeat; background-size: 100px 100px; animation: spinStars 25s linear infinite; opacity: 0.4; z-index: 1; pointer-events: none; }
         @keyframes spinStars { 100% { transform: rotate(360deg); } }
-        .center-content { position: relative; z-index: 2; text-shadow: 1px 1px 3px rgba(0,0,0,0.6); transform: rotateX(-30deg); /* Levanta el texto del centro para que se lea perfecto */ }
+        .center-content { position: relative; z-index: 2; text-shadow: 1px 1px 3px rgba(0,0,0,0.6); }
         
-        /* Modales (Se mantienen) */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; animation: fadeIn 0.3s ease; }
-        .modal-content { background: var(--surface); width: 100%; max-width: 900px; max-height: 90vh; border-radius: 12px; border: 1px solid var(--border); padding: 20px; overflow-y: auto; position: relative; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--muted); cursor: pointer; background: none; border: none; }
+        /* Modal con fondo de Cristal Empañado (Blur) */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 12px; animation: fadeIn 0.3s ease; }
+        /* Ajuste fino para el móvil: que ocupe todo lo posible sin romperse */
+        .modal-content { background: var(--surface); width: 100%; max-width: 480px; max-height: 95vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); padding: 20px; overflow-y: auto; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--muted); cursor: pointer; background: none; border: none; z-index: 1000; }
 
     </style>
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 16:01</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 16:28</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -270,29 +272,28 @@
     </div>
 
     <div id="content-totales-ruleta" class="section-content">
-        <div class="card" style="text-align: center; padding: 16px 10px;">
-            <div class="ruleta-premium-container" id="ruleta-touch-area">
-                <div class="ruleta-rotator">
-                    <!-- El grosor inferior del casino -->
-                    <div class="ruleta-base"></div>
-                    
-                    <!-- El motor giratorio que contiene el lienzo y las fotos de pie -->
-                    <div class="ruleta-wheel" id="ruleta-wheel">
-                        <svg class="ruleta-svg" viewBox="-160 -160 320 320" id="ruleta-svg-container"></svg>
-                        <div id="ruleta-pawns-container"></div>
-                    </div>
-                    
-                    <!-- Botón Central (Fijo, sobre el eje de rotación) -->
-                    <div class="center-btn-3d" onclick="abrirModalFama(); event.stopPropagation();">
-                        <div class="stars-layer"></div>
-                        <div class="center-content">
-                            <div style="font-size: 2rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5)); margin-bottom: 2px;">🏆</div>
-                            <div style="font-size: 0.75rem; font-weight:900; color:#fff; letter-spacing: 1px; line-height: 1.1;">SALÓN DE<br>LA FAMA</div>
-                        </div>
+        <div class="card" style="text-align: center; padding: 16px 10px; border: none; background: transparent; box-shadow: none;">
+            
+            <!-- Sonido Mecánico del Clic -->
+            <audio id="ruleta-click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+
+            <div class="ruleta-2d-container" id="ruleta-touch-area">
+                <!-- La ruleta entera que gira -->
+                <div class="ruleta-wheel" id="ruleta-svg-container">
+                    <!-- Se inyectará desde JS -->
+                </div>
+                
+                <!-- Botón Central -->
+                <div class="center-btn-2d" onclick="setTimeout(() => abrirModalFama(), 150); event.stopPropagation();">
+                    <div class="stars-layer"></div>
+                    <div class="center-content">
+                        <div style="font-size: 2rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5)); margin-bottom: 2px;">🏆</div>
+                        <div style="font-size: 0.75rem; font-weight:900; color:#fff; letter-spacing: 1px; line-height: 1.1;">SALÓN DE<br>LA FAMA</div>
                     </div>
                 </div>
             </div>
-            <p class="muted" style="font-size: 0.85rem; margin-top: 5px;">👆 Desliza para girar o toca una foto para abrir el Cromo.</p>
+            
+            <p class="muted" style="font-size: 0.85rem; margin-top: 10px;">👆 Desliza para girar o toca una foto para abrir el Cromo.</p>
         </div>
     </div>
 
@@ -539,12 +540,9 @@
 
     // TUS FOTOS REALES DE DRIVE
     const fotosMgrUID = {
-        "21057989": "1lMpof0yp07WfdrMiz0xBZ3xpvj3ROxHO", // Rolo
-        "21058279": "1BbNA9rH0cVFqZhfAjes1Lf-y3TNUPXEz", // Lord Rhal
-        "21059980": "13oIgZEhUPH-i_DFmILVuUH4Fq1LagBTT", // Jon
-        "21067500": "1e0hCuH0j40vb7568S1X9jgempH8KTq48", // Iñaki
-        "21067327": "1SI79MjtqS3eYirwqephyKHv3_TnvgEwh", // Alberto
-        "21058216": "1Rc4WdeErw4rnAbWPlNtYUWZMB4Rlb0a0"  // Gorka
+        "21057989": "1lMpof0yp07WfdrMiz0xBZ3xpvj3ROxHO", "21058279": "1BbNA9rH0cVFqZhfAjes1Lf-y3TNUPXEz", 
+        "21059980": "13oIgZEhUPH-i_DFmILVuUH4Fq1LagBTT", "21067500": "1e0hCuH0j40vb7568S1X9jgempH8KTq48", 
+        "21067327": "1SI79MjtqS3eYirwqephyKHv3_TnvgEwh", "21058216": "1Rc4WdeErw4rnAbWPlNtYUWZMB4Rlb0a0"
     };
 
     const coloresMgrUID = {
@@ -552,15 +550,21 @@
         "21067500": "#f59e0b", "21058279": "#8b5cf6", "21059980": "#ec4899"
     };
 
-    function getFotoUrl(id) {
-        return `https://drive.google.com/thumbnail?id=${id}&sz=w200-h200`; 
+    function getFotoUrl(id) { return `https://drive.google.com/thumbnail?id=${id}&sz=w200-h200`; }
+
+    function reproducirClic() {
+        const sonido = document.getElementById('ruleta-click-sound');
+        if (sonido) {
+            sonido.currentTime = 0;
+            sonido.volume = 0.6; // No muy alto, elegante
+            sonido.play().catch(e => {}); // El catch evita errores si el móvil tiene el audio bloqueado
+        }
     }
 
     function initRuletaVIP() {
         if(ruletaInicializada) return;
-        const svgContainer = document.getElementById('ruleta-svg-container');
-        const pawnsContainer = document.getElementById('ruleta-pawns-container');
-        if(!svgContainer || !pawnsContainer) return;
+        const container = document.getElementById('ruleta-svg-container');
+        if(!container) return;
 
         if (globalStats.clasif_general_actual && globalStats.clasif_general_actual.length > 0) {
             mgrDataRuleta = globalStats.clasif_general_actual.map(d => ({ nombre: d.manager, uid: d.uid }));
@@ -568,105 +572,92 @@
             mgrDataRuleta = [{nombre: 'Rolo', uid: '21057989'}, {nombre: 'Alberto', uid: '21067327'}, {nombre: 'Gorka', uid: '21058216'}, {nombre: 'Iñaki', uid: '21067500'}, {nombre: 'Lord Rhal', uid: '21058279'}, {nombre: 'Jon', uid: '21059980'}];
         }
 
-        let svgHtml = `<defs>`;
+        let svgHtml = `<svg class="ruleta-svg" viewBox="-160 -160 320 320"><defs>`;
         mgrDataRuleta.forEach((mgr, i) => {
             let color = coloresMgrUID[mgr.uid] || '#ffffff';
-            // Degradado que da sensación de "botón inflado"
             svgHtml += `
-                <radialGradient id="grad-${i}" cx="50%" cy="50%" r="85%">
-                    <stop offset="40%" stop-color="${color}" />
+                <radialGradient id="grad-${i}" cx="50%" cy="50%" r="90%">
+                    <stop offset="30%" stop-color="${color}" />
                     <stop offset="100%" stop-color="#020617" />
                 </radialGradient>
             `;
         });
         svgHtml += `</defs>`;
         
-        let pawnsHtml = "";
-
         mgrDataRuleta.forEach((mgr, i) => {
             let rotation = i * 60; 
-            
-            // 1. Dibujamos el Queso con un borde negro oscuro que simula el surco entre botones
-            svgHtml += `
-                <g transform="rotate(${rotation})">
-                    <path id="wedge-${i}" class="wedge-path" d="M 0,0 L -80,-138.56 A 160,160 0 0,1 80,-138.56 Z" fill="url(#grad-${i})" stroke="#020617" stroke-width="4" onclick="girarRuleta(${i})" style="cursor:pointer; transition: opacity 0.4s;" />
-                </g>
-            `;
-            
-            // 2. Matemáticas para colocar el Avatar-Peón flotando en la rueda
-            let angleRad = (rotation - 90) * (Math.PI / 180);
-            let rPct = 35; // Distancia del centro (35% del radio)
-            let leftPct = 50 + (rPct * Math.cos(angleRad));
-            let topPct = 50 + (rPct * Math.sin(angleRad));
-            
             let color = coloresMgrUID[mgr.uid] || '#ffffff';
             let fotoId = fotosMgrUID[mgr.uid];
             let contenido = fotoId ? `<img src="${getFotoUrl(fotoId)}" alt="${mgr.nombre}" loading="lazy" />` : (emoMgr[mgr.nombre] || '👤');
             
-            // Creamos el Peón (div). De entrada está rotado en X para ponerse de pie
-            pawnsHtml += `
-                <div class="avatar-pawn" id="pawn-${i}" style="left: ${leftPct}%; top: ${topPct}%; border-color: ${color};" onclick="girarRuleta(${i})">
-                    ${contenido}
-                </div>
+            // Hemos envuelto la cuña y el ForeignObject (Avatar) en el mismo grupo para que se hundan y destellen a la vez.
+            svgHtml += `
+                <g transform="rotate(${rotation})">
+                    <g class="wedge-group" onclick="girarRuleta(${i}, true)">
+                        <!-- Quesito de color -->
+                        <path class="wedge-path" d="M 0,0 L -80,-138.56 A 160,160 0 0,1 80,-138.56 Z" fill="url(#grad-${i})" />
+                        
+                        <!-- Contenedor del Avatar. Tiene rotación inversa inicial para que salgan de pie -->
+                        <foreignObject x="-35" y="-138" width="70" height="70">
+                            <div xmlns="http://www.w3.org/1999/xhtml" class="avatar-2d" id="avatar-${i}" style="color: ${color}; transform: rotate(${-rotation}deg);">
+                                ${contenido}
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
             `;
         });
-        
-        svgContainer.innerHTML = svgHtml;
-        pawnsContainer.innerHTML = pawnsHtml;
+        svgHtml += `</svg>`;
+        container.innerHTML = svgHtml;
         ruletaInicializada = true;
         
-        // Arrancamos posicionando al líder
+        // Empieza marcando al líder
         window.girarRuleta(0, false);
 
-        // --- MOTOR TÁCTIL (SIN CUADRADO FANTASMA) ---
+        // MOTOR SWIPE (Deslizar el dedo para girar)
         let touchArea = document.getElementById('ruleta-touch-area');
-        let touchstartX = 0; let touchendX = 0;
-        let activeIdx = 0; // Índice temporal para no perder la posición al hacer swipe
+        let touchstartX = 0; let activeIdx = 0;
 
         touchArea.addEventListener('touchstart', e => { touchstartX = e.touches[0].clientX; }, {passive: true});
         touchArea.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].clientX;
-            let diff = touchstartX - touchendX;
+            let diff = touchstartX - e.changedTouches[0].clientX;
             if (Math.abs(diff) > 40) {
                 if (diff > 0) activeIdx = (activeIdx + 1) % mgrDataRuleta.length;
                 else activeIdx = (activeIdx - 1 + mgrDataRuleta.length) % mgrDataRuleta.length;
-                window.girarRuleta(activeIdx, false); // Solo gira, no abre modal
+                window.girarRuleta(activeIdx, false); 
             }
         }, {passive: true});
     }
 
-    // La función maestra. Gira la rueda y obliga a las fotos a "mirar a la cámara"
-    window.girarRuleta = function(idx, openModal = true) {
-        let wheel = document.getElementById('ruleta-wheel');
+    // Gira la ruleta, hace el sonido y añade el brillo a la foto elegida
+    window.girarRuleta = function(idx, interact = false) {
+        if (interact) reproducirClic();
+
+        let wheel = document.getElementById('ruleta-svg-container');
         let angleZ = -idx * 60; 
         
-        // Hacemos girar todo el disco
+        // Rotamos el lienzo entero (Efecto ruleta de la fortuna)
         wheel.style.transform = `rotateZ(${angleZ}deg)`;
         
         for(let i=0; i < mgrDataRuleta.length; i++) {
-            let pawn = document.getElementById(`pawn-${i}`);
-            let wedge = document.getElementById(`wedge-${i}`);
-            if(pawn && wedge) {
-                // MAGIA NEGRA: Contrarrrestamos el giro del disco (rotateZ) y los ponemos de pie (rotateX(-45deg))
-                pawn.style.transform = `translate(-50%, -50%) rotateZ(${-angleZ}deg) rotateX(-45deg)`;
+            let avatar = document.getElementById(`avatar-${i}`);
+            if(avatar) {
+                // Matemática pura: Contrarrestamos el giro de la rueda para que las cabezas sigan verticales
+                let counterRotation = -(angleZ + (i * 60));
+                avatar.style.transform = `rotateZ(${counterRotation}deg)`;
                 
+                // Efecto "Resplandor del Elegido" al que queda arriba
                 if(i === idx) {
-                    pawn.style.boxShadow = `0 15px 25px rgba(0,0,0,0.9), 0 0 20px ${coloresMgrUID[mgrDataRuleta[i].uid]}`;
-                    pawn.style.filter = "brightness(1.1) scale(1.15)";
-                    pawn.style.zIndex = "40";
-                    wedge.style.opacity = "1";
+                    avatar.classList.add('active-glow');
                 } else {
-                    pawn.style.boxShadow = `0 5px 10px rgba(0,0,0,0.6)`;
-                    pawn.style.filter = "brightness(0.4) scale(0.85)";
-                    pawn.style.zIndex = "30";
-                    wedge.style.opacity = "0.5";
+                    avatar.classList.remove('active-glow');
                 }
             }
         }
         
-        if (openModal) {
-            // Un pequeño delay para que veas la animación de giro antes de abrir la tarjeta
-            setTimeout(() => { abrirModalManager(idx); }, 300);
+        // Si el giro viene de tocar un quesito directamente, abrimos su tarjeta tras una pausa
+        if (interact) {
+            setTimeout(() => { abrirModalManager(idx); }, 250);
         }
     }
     
@@ -680,7 +671,7 @@
         document.getElementById('mgr-card-avatar').style.borderColor = color;
         
         if (fotoId) {
-            document.getElementById('mgr-card-avatar').innerHTML = `<img src="${getFotoUrl(fotoId)}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; transform:scale(1.1);" />`;
+            document.getElementById('mgr-card-avatar').innerHTML = `<img src="${getFotoUrl(fotoId)}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; transform:scale(1.05);" />`;
             document.getElementById('mgr-card-avatar').style.background = 'transparent';
         } else {
             document.getElementById('mgr-card-avatar').innerHTML = emoMgr[mgr.nombre] || "👤";
@@ -700,7 +691,7 @@
 
     function abrirModalFama() { document.getElementById('modal-fama').style.display = 'flex'; }
     function cerrarModal(e) { if(e.target.classList.contains('modal-overlay')) e.target.style.display = 'none'; }
-        
+            
     function renderDashboard() { 
         const grid = document.getElementById('grid-dashboard'); 
         if(!grid) return;
