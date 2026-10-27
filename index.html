@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 19:44</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 19:51</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -578,21 +578,23 @@
             let grosorQuesito = '3'; 
             let glowShadow = 'box-shadow: 0 4px 8px rgba(0,0,0,0.5);';
             
-            // Lógica unificada: ¿Qué lleva la chapita?
+            // Variables dinámicas para la chapita
             let textoChapita = mgr.pos;
             let fontSizeChapita = "13";
+            let bgChapita = "#0f172a"; // Fondo oscuro para mortales
+            let textY = "5"; 
 
             if (mgr.pos === 1) { 
                 posColor = '#eab308'; strokeQuesito = '#eab308'; grosorQuesito = '5.5'; glowShadow = `box-shadow: 0 0 20px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
-                textoChapita = "🥇"; fontSizeChapita = "14";
+                textoChapita = "🥇"; fontSizeChapita = "18"; bgChapita = "#ffffff"; textY = "6"; // Blanco y más grande
             } 
             else if (mgr.pos === 2) { 
                 posColor = '#9ca3af'; strokeQuesito = '#9ca3af'; grosorQuesito = '4.5'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
-                textoChapita = "🥈"; fontSizeChapita = "14";
+                textoChapita = "🥈"; fontSizeChapita = "18"; bgChapita = "#ffffff"; textY = "6";
             } 
             else if (mgr.pos === 3) { 
                 posColor = '#b45309'; strokeQuesito = '#b45309'; grosorQuesito = '4.5'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
-                textoChapita = "🥉"; fontSizeChapita = "14";
+                textoChapita = "🥉"; fontSizeChapita = "18"; bgChapita = "#ffffff"; textY = "6";
             }
 
             let donutPath = `M -34.5,-59.75 L -80,-138.56 A 160,160 0 0,1 80,-138.56 L 34.5,-59.75 A 69,69 0 0,0 -34.5,-59.75 Z`;
@@ -610,11 +612,11 @@
                             </div>
                         </foreignObject>
 
-                        <!-- La chapita unificada de posición/medalla con fondo oscuro -->
+                        <!-- Chapita adaptativa: blanca para el podio, oscura para el resto -->
                         <g transform="translate(38, -133)">
                             <g transform="rotate(${-rotation})">
-                                <circle cx="0" cy="0" r="14" fill="#0f172a" stroke="${posColor}" stroke-width="2.5" />
-                                <text x="0" y="5" fill="#fff" font-size="${fontSizeChapita}" font-weight="900" text-anchor="middle" font-family="sans-serif">${textoChapita}</text>
+                                <circle cx="0" cy="0" r="14" fill="${bgChapita}" stroke="${posColor}" stroke-width="2.5" />
+                                <text x="0" y="${textY}" fill="#fff" font-size="${fontSizeChapita}" font-weight="900" text-anchor="middle" font-family="sans-serif">${textoChapita}</text>
                             </g>
                         </g>
                     </g>
