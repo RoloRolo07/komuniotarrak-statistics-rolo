@@ -114,7 +114,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 18:35</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 18:43</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -560,7 +560,6 @@
         let svgHtml = `<svg class="ruleta-svg" viewBox="-160 -160 320 320"><defs>`;
         mgrDataRuleta.forEach((mgr, i) => {
             let color = coloresMgrUID[mgr.uid] || '#ffffff';
-            // Degradado interno manteniendo el color vivo del jugador
             svgHtml += `
                 <radialGradient id="grad-${i}" cx="50%" cy="50%" r="90%">
                     <stop offset="30%" stop-color="${color}" />
@@ -576,20 +575,32 @@
             let fotoId = fotosMgrUID[mgr.uid];
             let contenido = fotoId ? `<img src="${getFotoUrl(fotoId)}" alt="${mgr.nombre}" loading="lazy" />` : (emoMgr[mgr.nombre] || '👤');
             
-            // LÓGICA DEL PODIO (Oro, Plata, Bronce)
-            let posColor = '#1e293b'; // Borde oscuro por defecto
+            // LÓGICA DEL PODIO (Oro, Plata, Bronce para Foto, Chapita Y Quesito)
+            let posColor = '#1e293b'; 
+            let strokeQuesito = '#111827'; // Borde oscuro por defecto para la ruleta
+            let grosorQuesito = '3'; // Grosor normal
             let glowShadow = 'box-shadow: 0 4px 8px rgba(0,0,0,0.5);';
-            if (mgr.pos === 1) { posColor = '#eab308'; glowShadow = `box-shadow: 0 0 20px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; } // Oro
-            else if (mgr.pos === 2) { posColor = '#9ca3af'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; } // Plata
-            else if (mgr.pos === 3) { posColor = '#b45309'; glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; } // Bronce
+
+            if (mgr.pos === 1) { 
+                posColor = '#eab308'; strokeQuesito = '#eab308'; grosorQuesito = '5'; // Oro y más grueso
+                glowShadow = `box-shadow: 0 0 20px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
+            } 
+            else if (mgr.pos === 2) { 
+                posColor = '#9ca3af'; strokeQuesito = '#9ca3af'; grosorQuesito = '4'; // Plata
+                glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
+            } 
+            else if (mgr.pos === 3) { 
+                posColor = '#b45309'; strokeQuesito = '#b45309'; grosorQuesito = '4'; // Bronce
+                glowShadow = `box-shadow: 0 0 12px ${posColor}, 0 4px 8px rgba(0,0,0,0.8);`; 
+            }
 
             svgHtml += `
                 <g transform="rotate(${rotation})">
                     <g class="wedge-group" onclick="clickWedgeRuleta(${i})">
-                        <!-- El quesito -->
-                        <path id="wedge-${i}" class="wedge-path" d="M 0,0 L -80,-138.56 A 160,160 0 0,1 80,-138.56 Z" fill="url(#grad-${i})" />
+                        <!-- El quesito con su borde dinámico inyectado en el style -->
+                        <path id="wedge-${i}" class="wedge-path" d="M 0,0 L -80,-138.56 A 160,160 0 0,1 80,-138.56 Z" fill="url(#grad-${i})" style="stroke: ${strokeQuesito}; stroke-width: ${grosorQuesito}px; stroke-linejoin: round;" />
                         
-                        <!-- La foto (Gira hacia el lado contrario para estar de pie) -->
+                        <!-- La foto -->
                         <foreignObject x="-35" y="-138" width="70" height="70">
                             <div xmlns="http://www.w3.org/1999/xhtml" class="avatar-wrapper" style="transform: rotate(${-rotation}deg);">
                                 <div class="avatar-2d" style="border-color: ${posColor}; ${glowShadow}">
@@ -598,9 +609,8 @@
                             </div>
                         </foreignObject>
 
-                        <!-- La chapita de posición ANCLADA AL SVG (No baila) -->
+                        <!-- La chapita de posición -->
                         <g transform="translate(38, -125)">
-                            <!-- El número rota sobre sí mismo para estar siempre derecho -->
                             <g transform="rotate(${-rotation})">
                                 <circle cx="0" cy="0" r="14" fill="#0f172a" stroke="${posColor}" stroke-width="2.5" />
                                 <text x="0" y="5" fill="#fff" font-size="13" font-weight="900" text-anchor="middle" font-family="sans-serif">${mgr.pos}</text>
@@ -615,7 +625,7 @@
         container.innerHTML = svgHtml;
         ruletaInicializada = true;
     }
-
+    
     // Al hacer clic: Suena, se hunde visualmente por CSS y te saca la pantalla de Mánager
     window.clickWedgeRuleta = function(idx) {
         reproducirClic();
