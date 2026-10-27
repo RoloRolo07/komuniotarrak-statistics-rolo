@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 19:15</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 27/10/2026 19:25</div></div>
     <div class="main-nav">
         <button class="main-tab active" onclick="setMainTab('diario')">📰 DIARIO</button>
         <button class="main-tab" onclick="setMainTab('jornada')">🏆 JORNADAS</button>
@@ -567,7 +567,7 @@
         });
         svgHtml += `</defs>`;
         
-        // FUNCIÓN AUXILIAR: Genera un quesito en formato "Donut"
+        // FUNCIÓN AUXILIAR
         const generarWedge = (mgr, i) => {
             let rotation = i * 60; 
             let fotoId = fotosMgrUID[mgr.uid];
@@ -589,7 +589,8 @@
                     <g class="wedge-group" onclick="clickWedgeRuleta(${i})">
                         <path id="wedge-${i}" class="wedge-path" d="${donutPath}" fill="url(#grad-${i})" style="stroke: ${strokeQuesito}; stroke-width: ${grosorQuesito}px; stroke-linejoin: round;" />
                         
-                        <foreignObject x="-35" y="-138" width="70" height="70">
+                        <!-- Moviendo la foto un poco más hacia el exterior (y de -138 a -146) -->
+                        <foreignObject x="-35" y="-146" width="70" height="70">
                             <div xmlns="http://www.w3.org/1999/xhtml" class="avatar-wrapper" style="transform: rotate(${-rotation}deg);">
                                 <div class="avatar-2d" style="border-color: ${posColor}; ${glowShadow}">
                                     ${contenido}
@@ -597,7 +598,8 @@
                             </div>
                         </foreignObject>
 
-                        <g transform="translate(38, -125)">
+                        <!-- Desplazando la chapita en paralelo para que no pierda su sitio (de -125 a -133) -->
+                        <g transform="translate(38, -133)">
                             <g transform="rotate(${-rotation})">
                                 <circle cx="0" cy="0" r="14" fill="#0f172a" stroke="${posColor}" stroke-width="2.5" />
                                 <text x="0" y="5" fill="#fff" font-size="13" font-weight="900" text-anchor="middle" font-family="sans-serif">${mgr.pos}</text>
@@ -608,18 +610,10 @@
             `;
         };
 
-        // RENDERIZADO CON JERARQUÍA ESTRICTA (Z-INDEX PERFECTO)
-        
-        // 1º: Dibujamos a los "Mortales" (posiciones 4, 5 y 6)
+        // RENDERIZADO (El orden de jerarquía que arregla los bordes)
         mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos > 3) svgHtml += generarWedge(mgr, i); });
-        
-        // 2º: Dibujamos el Bronce (Pisa a los mortales por la izquierda/derecha)
         mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos === 3) svgHtml += generarWedge(mgr, i); });
-        
-        // 3º: Dibujamos la Plata (Pisa al Bronce y a los mortales)
         mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos === 2) svgHtml += generarWedge(mgr, i); });
-        
-        // 4º: Dibujamos el Oro (El Rey. Se dibuja el último para pisar absolutamente a todos sus vecinos)
         mgrDataRuleta.forEach((mgr, i) => { if (mgr.pos === 1) svgHtml += generarWedge(mgr, i); });
 
         svgHtml += `</svg>`;
