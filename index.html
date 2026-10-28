@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 16:58</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 17:11</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -369,7 +369,7 @@
         const tituloTexto = document.getElementById('titulo-texto');
 
         if (modo === 'menu_dia') {
-            renderRuletaTrivial();
+            setTimeout(() => renderRuletaTrivial(), 50);
             return;
         }
 
@@ -468,7 +468,7 @@
                                 ${getFotoHtml(d.uid)}
                             </div>
                         </td>
-                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="val-blue" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${pagoHtml}</td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${sancionHtml}</td>
                     </tr>`;
