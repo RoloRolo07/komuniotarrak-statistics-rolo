@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 19:15</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 19:31</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -126,9 +126,9 @@
     <div class="card" style="padding: 10px; margin-bottom: 12px; background: linear-gradient(145deg, #1e293b, #0f172a); border-color: var(--accent);">
         <!-- Botonera tipo iOS (Con emojis y Menú del Día) -->
         <div style="display: flex; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px; flex: 1;">
-            <button id="btn-modo-general" onclick="cambiarModo('general')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🏆 General</button>
+            <button id="btn-modo-general" onclick="cambiarModo('general')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🏆 General</button>
             <button id="btn-modo-jornadas" onclick="cambiarModo('jornadas')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">⚔️ Jornadas</button>
-            <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🍩 Menú del Día</button>
+            <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🍩 Menú del Día</button>
         </div>
     </div>
 
@@ -309,7 +309,7 @@
     // =======================================================
     // 🧠 CORE DE NAVEGACIÓN (NUEVA ARQUITECTURA)
     // =======================================================
-    window.modoActual = 'menu_dia';
+    window.modoActual = 'general';
 
     window.cambiarModo = function(modoSeleccionado) {
         if (modoSeleccionado) window.modoActual = modoSeleccionado;
