@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 16:27</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 16:58</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -162,7 +162,7 @@
             <!-- Contenedor Flex para Título y Combo Juntos -->
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 8px;">
                 <div id="titulo-texto" class="card-title" style="border: none; padding: 0; margin: 0; font-size: 1.15rem;">🏆 Clasificación</div>
-                <select id="selector-jornada" class="search-input" style="margin-bottom: 0; font-size: 0.9rem; font-weight: bold; width: 140px; display: none; background: var(--surface); padding: 4px 8px; height: 32px;" onchange="renderizarVista()">
+                <select id="selector-jornada" class="search-input" style="margin-bottom: 0; font-size: 0.9rem; font-weight: bold; width: 160px; display: none; background: var(--surface); padding: 4px 8px; height: 32px;" onchange="renderizarVista()">
                 </select>
             </div>
             <div style="overflow-x: auto;">
@@ -395,7 +395,7 @@
             // CABECERAS: Centrado puro sin anchos forzados
             tablaHead.innerHTML = `<tr>
                 <th style="text-align:center; padding:6px 2px;">Pos</th>
-                <th style="text-align:center; padding:6px 2px;"></th>
+                <th style="text-align:center; padding:6px 2px;">Mánager</th>
                 <th style="text-align:center; padding:6px 2px;">Pts</th>
                 <th style="text-align:center; padding:6px 2px;" title="Al Líder">Líder</th>
                 <th style="text-align:center; padding:6px 2px;" title="Al Anterior">Ant.</th>
@@ -439,7 +439,7 @@
             // CABECERAS JORNADA: Centrado puro
             tablaHead.innerHTML = `<tr>
                 <th style="text-align:center; padding:6px 2px;">Pos</th>
-                <th style="text-align:center; padding:6px 2px;"></th>
+                <th style="text-align:center; padding:6px 2px;">Mánager</th>
                 <th style="text-align:center; padding:6px 2px;">Pts</th>
                 <th style="text-align:center; padding:6px 2px;">Paguitas</th>
                 <th style="text-align:center; padding:6px 2px;">Sanc.</th>
@@ -447,14 +447,13 @@
 
             if (jd && jd.clasif_jornada && jd.clasif_jornada.length > 0) {
                 tablaBody.innerHTML = jd.clasif_jornada.map((d, i) => {
-                    let pagoHtml = `<span class="muted">-</span>`;
-                    let sancionHtml = `<span class="muted">-</span>`;
+                    let pagoHtml = `<div style="font-size:0.85rem; white-space:nowrap;"><span class="val-pos">0 €</span></div>`;
+                    let sancionHtml = `<div style="font-size:0.85rem; white-space:nowrap;"><span class="val-neg">0 €</span></div>`;
                     
                     if (jd.paguitas) {
                         let pago = jd.paguitas.find(p => p.manager === d.manager);
                         if (pago) {
-                            let icono = pago.rol === 'Último' ? '🩸' : (pago.rol === 'Penúltimo' ? '🛟' : '🛶');
-                            pagoHtml = `<div style="font-size:0.8rem; white-space:nowrap; margin-bottom:2px;">${icono} <span class="val-pos">+${fmtE(pago.premio)}</span></div>`;
+                            pagoHtml = `<div style="font-size:0.85rem; white-space:nowrap; margin-bottom:2px;"><span class="val-pos">${fmtE(pago.premio)}</span></div>`;
                         }
                     }
                     if (jd.sanciones) {
@@ -1101,7 +1100,7 @@
             
     // FORZAR CACHÉ DE FOTOS PARA LA RULETA
     const cacheDiv = document.createElement('div');
-    cacheDiv.style.display = 'none';
+    cacheDiv.style.cssText = 'position:absolute; width:1px; height:1px; opacity:0.01; overflow:hidden;';
     Object.values(fotosMgrUID).forEach(id => {
         let img = new Image();
         img.src = getFotoUrl(id);
