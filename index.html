@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 17:37</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 18:11</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -396,7 +396,7 @@
             tablaHead.innerHTML = `<tr>
                 <th style="text-align:center; padding:6px 2px;">Pos</th>
                 <th style="text-align:center; padding:6px 2px;">Mánager</th>
-                <th style="text-align:center; padding:6px 2px; border-right: 1px solid rgba(255,255,255,0.15);">Pts</th>
+                <th style="text-align:center; padding:6px 2px;">Pts</th>
                 <th style="text-align:center; padding:6px 2px;" title="Al Líder">Líder</th>
                 <th style="text-align:center; padding:6px 2px;" title="Al Anterior">Ant.</th>
                 <th style="text-align:center; padding:6px 2px;">+/-</th>
@@ -410,13 +410,13 @@
                         if (m) microM = `<div style="font-size: 0.7rem; color: var(--muted); line-height: 1; margin-top:4px; text-align:center; white-space:nowrap; letter-spacing:-0.5px;">🥇${m.oros} 🥈${m.platas} 🥉${m.bronces}</div>`;
                     }
                     
-                    // LÓGICA DE COLORES VIP Y CÉSPED
+                    // LÓGICA DE COLORES VIP (Mayor volumen) Y GRIS PARA MORTALES
                     let bgStyle = '';
-                    if (i === 0) bgStyle = 'background: linear-gradient(90deg, rgba(234,179,8,0.15) 0%, rgba(0,0,0,0) 80%);'; // Oro
-                    else if (i === 1) bgStyle = 'background: linear-gradient(90deg, rgba(156,163,175,0.15) 0%, rgba(0,0,0,0) 80%);'; // Plata
-                    else if (i === 2) bgStyle = 'background: linear-gradient(90deg, rgba(180,83,9,0.15) 0%, rgba(0,0,0,0) 80%);'; // Bronce
-                    else bgStyle = 'background: linear-gradient(90deg, rgba(16,185,129,0.04) 0%, rgba(0,0,0,0) 80%);'; // Verde césped muy sutil
-                    
+                    if (i === 0) bgStyle = 'background: linear-gradient(90deg, rgba(234,179,8,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else if (i === 1) bgStyle = 'background: linear-gradient(90deg, rgba(156,163,175,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else if (i === 2) bgStyle = 'background: linear-gradient(90deg, rgba(180,83,9,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else bgStyle = 'background: linear-gradient(90deg, rgba(148,163,184,0.10) 0%, rgba(0,0,0,0) 80%);';
+
                     return `<tr style="${bgStyle} border-bottom: 1px solid rgba(255,255,255,0.03);">
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
                         <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer; text-align:center; padding:6px 2px; vertical-align:middle;">
@@ -425,7 +425,7 @@
                                 ${microM}
                             </div>
                         </td>
-                        <td style="text-align:center; padding:6px 2px; vertical-align:middle; border-right: 1px solid rgba(255,255,255,0.15);"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
                         <td class="muted" style="text-align:center; padding:6px 2px; vertical-align:middle; font-size: 0.85rem;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
                         <td class="muted" style="text-align:center; padding:6px 2px; vertical-align:middle; font-size: 0.85rem;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-weight:bold; font-size:1rem;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
@@ -444,11 +444,11 @@
                 <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero (Día)</button>
             `;
             
-// CABECERAS JORNADA: Separador derecho en Puntos
+            // CABECERAS JORNADA: Separador derecho en Puntos
             tablaHead.innerHTML = `<tr>
                 <th style="text-align:center; padding:6px 2px;">Pos</th>
                 <th style="text-align:center; padding:6px 2px;">Mánager</th>
-                <th style="text-align:center; padding:6px 2px; border-right: 1px solid rgba(255,255,255,0.15);">Pts</th>
+                <th style="text-align:center; padding:6px 2px;">Pts</th>
                 <th style="text-align:center; padding:6px 2px;">Paguitas</th>
                 <th style="text-align:center; padding:6px 2px;">Sanc.</th>
             </tr>`;
@@ -467,12 +467,12 @@
                         if (sancion) sancionHtml = `<div style="font-size:0.85rem; white-space:nowrap;">🚨 <span class="val-neg">-${fmtE(sancion.cantidad)}</span></div>`;
                     }
 
-                    // LÓGICA DE COLORES VIP Y CÉSPED
+                    // LÓGICA DE COLORES VIP (Mayor volumen) Y GRIS PARA MORTALES
                     let bgStyle = '';
-                    if (i === 0) bgStyle = 'background: linear-gradient(90deg, rgba(234,179,8,0.15) 0%, rgba(0,0,0,0) 80%);'; // Oro
-                    else if (i === 1) bgStyle = 'background: linear-gradient(90deg, rgba(156,163,175,0.15) 0%, rgba(0,0,0,0) 80%);'; // Plata
-                    else if (i === 2) bgStyle = 'background: linear-gradient(90deg, rgba(180,83,9,0.15) 0%, rgba(0,0,0,0) 80%);'; // Bronce
-                    else bgStyle = 'background: linear-gradient(90deg, rgba(16,185,129,0.04) 0%, rgba(0,0,0,0) 80%);'; // Verde césped muy sutil
+                    if (i === 0) bgStyle = 'background: linear-gradient(90deg, rgba(234,179,8,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else if (i === 1) bgStyle = 'background: linear-gradient(90deg, rgba(156,163,175,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else if (i === 2) bgStyle = 'background: linear-gradient(90deg, rgba(180,83,9,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else bgStyle = 'background: linear-gradient(90deg, rgba(148,163,184,0.10) 0%, rgba(0,0,0,0) 80%);';
 
                     return `<tr style="${bgStyle} border-bottom: 1px solid rgba(255,255,255,0.03);">
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
@@ -481,7 +481,7 @@
                                 ${getFotoHtml(d.uid)}
                             </div>
                         </td>
-                        <td style="text-align:center; padding:6px 2px; vertical-align:middle; border-right: 1px solid rgba(255,255,255,0.15);"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${pagoHtml}</td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${sancionHtml}</td>
                     </tr>`;
@@ -528,6 +528,11 @@
         });
         svgHtml += `</svg>`;
         container.innerHTML = svgHtml;
+        
+        // TRUCO MÁGICO: Forzar al navegador (PC y Móvil) a repintar el SVG al instante
+        container.style.display = 'none';
+        container.offsetHeight; // Esto obliga al navegador a recalcular la pantalla
+        container.style.display = 'block';
     }
     
     function renderDashboard() { 
@@ -1121,14 +1126,22 @@
     });
     document.body.appendChild(cacheDiv);
 
-    renderCountdown(); 
+    // ARRANQUE DIRECTO 
+    renderCountdown();
+    cambiarModo('menu_dia');
 
-    // TU LÓGICA: Simulamos el clic físico del usuario tras un mini-respiro
+    // Caché de fotos en segundo plano y a prueba de fallos
     setTimeout(() => {
-        const btnMenu = document.getElementById('btn-modo-menu_dia');
-        if (btnMenu) btnMenu.click();
-        else cambiarModo('menu_dia');
-    }, 150);
+        try {
+            const cacheDiv = document.createElement('div');
+            cacheDiv.style.cssText = 'position:absolute; width:1px; height:1px; opacity:0.01; overflow:hidden;';
+            Object.values(fotosMgrUID).forEach(id => {
+                let img = new Image();
+                img.src = getFotoUrl(id);
+                cacheDiv.appendChild(img);
+            });
+            document.body.appendChild(cacheDiv);
+        } catch(e) {}
+    }, 100);
     
-</script>
 </script>
