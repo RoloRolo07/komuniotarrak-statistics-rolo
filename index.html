@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 15:01</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 15:49</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -382,91 +382,108 @@
             return `<div style="width:56px; height:56px; border-radius:50%; background:#333; border:2px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto; flex-shrink:0;">👤</div>`;
         };
 
-        if (modo === 'general') {
-            tituloTexto.innerText = "🏆 Clasificación General";
-            pastillasContainer.innerHTML = `
-                <button class="btn-filter" style="background:var(--accent); color:#000; font-weight:bold;">🌟 11 Ideal</button>
-                <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero</button>
-                <button class="btn-filter" style="background:var(--card);">💰 Finanzas</button>
-                <button class="btn-filter" style="background:var(--card);">📖 Fichajes</button>
-                <button class="btn-filter" style="background:var(--gold); color:#000; font-weight:bold; margin-left:auto;">🏅 Medallero</button>
-            `;
-            
-            // PUNTOS DESPLAZADOS A LA IZQUIERDA (Dando un ancho fijo a las distancias)
-            tablaHead.innerHTML = `<tr><th style="width:25px; padding-right:2px;">Pos</th><th style="width:60px; text-align:center;"></th><th style="text-align:right; padding:6px 12px;">Pts</th><th style="width:45px; text-align:right; padding:6px 2px;" title="Al Líder">Líder</th><th style="width:45px; text-align:right; padding:6px 2px;" title="Al Anterior">Ant.</th><th style="width:30px; text-align:center; padding:6px 0px;">+/-</th></tr>`;
-            
-            if(globalStats.clasif_general_actual) {
-                tablaBody.innerHTML = globalStats.clasif_general_actual.map((d, i) => {
-                    let microM = "";
-                    if (globalStats.medallero_actual) {
-                        let m = globalStats.medallero_actual.find(x => x.uid === d.uid);
-                        if (m) microM = `<div style="font-size: 0.65rem; color: var(--muted); line-height: 1; margin-top:4px; text-align:center; white-space:nowrap;">🥇${m.oros} 🥈${m.platas} 🥉${m.bronces}</div>`;
-                    }
-                    
-                    return `<tr>
-                        <td style="padding-right:2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer; padding:6px 0; vertical-align:middle;">
-                            <div style="display:flex; flex-direction:column; align-items:center;">
-                                ${getFotoHtml(d.uid)}
-                                ${microM}
-                            </div>
-                        </td>
-                        <td style="text-align:right; padding:6px 12px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
-                        <td class="muted" style="text-align:right; font-size: 0.85rem; padding:6px 2px; vertical-align:middle;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
-                        <td class="muted" style="text-align:right; font-size: 0.85rem; padding:6px 2px; vertical-align:middle;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td>
-                        <td style="text-align:center; font-weight:bold; font-size:1rem; padding:6px 0px; vertical-align:middle;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
-                    </tr>`;
-                }).join('');
-            }
-
-        } else if (modo === 'jornadas') {
-            tituloTexto.innerText = `📈 Clasificación`;
-            
-            pastillasContainer.innerHTML = `
-                <button class="btn-filter" style="background:var(--accent); color:#000; font-weight:bold;">🌟 11 de la Jornada</button>
-                <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero (Día)</button>
-            `;
-            
-            tablaHead.innerHTML = `<tr><th style="width: 25px; padding-right:2px;">Pos</th><th style="width:60px; text-align:center;"></th><th style="text-align:right; padding:6px 12px;">Pts</th><th style="text-align:right; padding:6px 2px;">Paguitas</th><th style="text-align:right; padding:6px 2px;">Sanciones</th></tr>`;
-
-            const idx = document.getElementById('selector-jornada').value;
-            let jd = jornadasData[idx];
-            if (jd && jd.clasif_jornada && jd.clasif_jornada.length > 0) {
-                tablaBody.innerHTML = jd.clasif_jornada.map((d, i) => {
-                    let pagoHtml = `<span class="muted">-</span>`;
-                    let sancionHtml = `<span class="muted">-</span>`;
-                    
-                    if (jd.paguitas) {
-                        let pago = jd.paguitas.find(p => p.manager === d.manager);
-                        if (pago) {
-                            let icono = pago.rol === 'Último' ? '🩸' : (pago.rol === 'Penúltimo' ? '🛟' : '🛶');
-                            pagoHtml = `<div style="font-size:0.75rem; white-space:nowrap; margin-bottom:2px;">${icono} <span class="val-pos">+${fmtE(pago.premio)}</span></div>`;
-                        }
-                    }
-                    if (jd.sanciones) {
-                        let sancion = jd.sanciones.find(s => s.manager === d.manager);
-                        if (sancion) {
-                            sancionHtml = `<div style="font-size:0.75rem; white-space:nowrap;">🚨 <span class="val-neg">-${fmtE(sancion.cantidad)}</span></div>`;
-                        }
-                    }
-
-                    return `<tr>
-                        <td style="padding-right:2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de Jornada de: ${d.manager}')" style="cursor:pointer; padding:8px 0; vertical-align:middle;">
-                            <div style="display:flex; justify-content:center;">
-                                ${getFotoHtml(d.uid)}
-                            </div>
-                        </td>
-                        <td style="text-align:right; padding:6px 12px; vertical-align:middle;"><span class="val-blue" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
-                        <td style="text-align:right; padding:6px 2px; vertical-align:middle;">${pagoHtml}</td>
-                        <td style="text-align:right; padding:6px 2px; vertical-align:middle;">${sancionHtml}</td>
-                    </tr>`;
-                }).join('');
-            } else {
-                tablaBody.innerHTML = '<tr><td colspan="5" class="muted" style="text-align:center; padding:20px;">⏳ Jornada en juego o sin datos.</td></tr>';
-            }
+    if (modo === 'general') {
+        tituloTexto.innerText = "🏆 Clasificación General";
+        pastillasContainer.innerHTML = `
+            <button class="btn-filter" style="background:var(--accent); color:#000; font-weight:bold;">🌟 11 Ideal</button>
+            <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero</button>
+            <button class="btn-filter" style="background:var(--card);">💰 Finanzas</button>
+            <button class="btn-filter" style="background:var(--card);">📖 Fichajes</button>
+            <button class="btn-filter" style="background:var(--gold); color:#000; font-weight:bold; margin-left:auto;">🏅 Medallero</button>
+        `;
+        
+        // CABECERAS: Todo centrado de forma natural
+        tablaHead.innerHTML = `<tr>
+            <th style="text-align:center; padding:6px 4px;">Pos</th>
+            <th style="text-align:center; padding:6px 4px;"></th>
+            <th style="text-align:center; padding:6px 4px;">Pts</th>
+            <th style="text-align:center; padding:6px 4px;" title="Al Líder">Líder</th>
+            <th style="text-align:center; padding:6px 4px;" title="Al Anterior">Ant.</th>
+            <th style="text-align:center; padding:6px 4px;">+/-</th>
+        </tr>`;
+        
+        if(globalStats.clasif_general_actual) {
+            tablaBody.innerHTML = globalStats.clasif_general_actual.map((d, i) => {
+                let microM = "";
+                if (globalStats.medallero_actual) {
+                    let m = globalStats.medallero_actual.find(x => x.uid === d.uid);
+                    if (m) microM = `<div style="font-size: 0.7rem; color: var(--muted); line-height: 1; margin-top:4px; text-align:center; white-space:nowrap; letter-spacing:-0.5px;">🥇${m.oros} 🥈${m.platas} 🥉${m.bronces}</div>`;
+                }
+                
+                // CELDAS: Todo centrado (text-align: center)
+                return `<tr>
+                    <td style="text-align:center; padding:6px 4px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
+                    <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer; text-align:center; padding:6px 4px; vertical-align:middle;">
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                            ${getFotoHtml(d.uid)}
+                            ${microM}
+                        </div>
+                    </td>
+                    <td style="text-align:center; padding:6px 4px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
+                    <td class="muted" style="text-align:center; padding:6px 4px; vertical-align:middle; font-size: 0.85rem;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
+                    <td class="muted" style="text-align:center; padding:6px 4px; vertical-align:middle; font-size: 0.85rem;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td>
+                    <td style="text-align:center; padding:6px 4px; vertical-align:middle; font-weight:bold; font-size:1rem;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
+                </tr>`;
+            }).join('');
         }
-    };
+
+    } else if (modo === 'jornadas') {
+        const idx = document.getElementById('selector-jornada').value;
+        let jd = jornadasData[idx];
+        
+        let nombreJ = jd ? jd.info.nombre : `Jornada ${parseInt(idx)+1}`;
+        tituloTexto.innerText = `📈 Clasificación`;
+        
+        pastillasContainer.innerHTML = `
+            <button class="btn-filter" style="background:var(--accent); color:#000; font-weight:bold;">🌟 11 de la Jornada</button>
+            <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero (Día)</button>
+        `;
+        
+        // CABECERAS JORNADA: Todo centrado de forma natural
+        tablaHead.innerHTML = `<tr>
+            <th style="text-align:center; padding:6px 4px;">Pos</th>
+            <th style="text-align:center; padding:6px 4px;"></th>
+            <th style="text-align:center; padding:6px 4px;">Pts</th>
+            <th style="text-align:center; padding:6px 4px;">Paguitas</th>
+            <th style="text-align:center; padding:6px 4px;">Sanc.</th>
+        </tr>`;
+
+        if (jd && jd.clasif_jornada && jd.clasif_jornada.length > 0) {
+            tablaBody.innerHTML = jd.clasif_jornada.map((d, i) => {
+                let pagoHtml = `<span class="muted">-</span>`;
+                let sancionHtml = `<span class="muted">-</span>`;
+                
+                if (jd.paguitas) {
+                    let pago = jd.paguitas.find(p => p.manager === d.manager);
+                    if (pago) {
+                        let icono = pago.rol === 'Último' ? '🩸' : (pago.rol === 'Penúltimo' ? '🛟' : '🛶');
+                        pagoHtml = `<div style="font-size:0.8rem; white-space:nowrap; margin-bottom:2px;">${icono} <span class="val-pos">+${fmtE(pago.premio)}</span></div>`;
+                    }
+                }
+                if (jd.sanciones) {
+                    let sancion = jd.sanciones.find(s => s.manager === d.manager);
+                    if (sancion) {
+                        sancionHtml = `<div style="font-size:0.8rem; white-space:nowrap;">🚨 <span class="val-neg">-${fmtE(sancion.cantidad)}</span></div>`;
+                    }
+                }
+
+                // CELDAS JORNADA: Todo centrado (text-align: center)
+                return `<tr>
+                    <td style="text-align:center; padding:6px 4px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
+                    <td onclick="alert('Abriendo tarjeta de Jornada de: ${d.manager}')" style="cursor:pointer; text-align:center; padding:6px 4px; vertical-align:middle;">
+                        <div style="display:flex; justify-content:center;">
+                            ${getFotoHtml(d.uid)}
+                        </div>
+                    </td>
+                    <td style="text-align:center; padding:6px 4px; vertical-align:middle;"><span class="val-blue" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
+                    <td style="text-align:center; padding:6px 4px; vertical-align:middle;">${pagoHtml}</td>
+                    <td style="text-align:center; padding:6px 4px; vertical-align:middle;">${sancionHtml}</td>
+                </tr>`;
+            }).join('');
+        } else {
+            tablaBody.innerHTML = '<tr><td colspan="5" class="muted" style="text-align:center; padding:20px;">⏳ Jornada en juego o sin datos.</td></tr>';
+        }
+    }
 
     function renderRuletaTrivial() {
         const container = document.getElementById('ruleta-svg-container');
