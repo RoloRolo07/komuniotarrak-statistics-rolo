@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 14:28</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 14:45</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -122,20 +122,12 @@
 
 <!-- NUEVO CONTENEDOR MAESTRO -->
 <div class="container">
-    <!-- 1. EL SELECTOR MAESTRO (BOTONERA TÁCTIL) -->
+    <!-- 1. EL SELECTOR MAESTRO (Ancho completo con Emojis) -->
     <div class="card" style="padding: 10px; margin-bottom: 12px; background: linear-gradient(145deg, #1e293b, #0f172a); border-color: var(--accent);">
-        <div style="display: flex; gap: 8px; align-items: center;">
-            
-            <!-- Botonera compacta (Sin forzar flex:1 para que no robe espacio) -->
-            <div style="display: flex; background: rgba(0,0,0,0.4); padding: 3px; border-radius: 8px;">
-                <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="padding: 6px 8px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.85rem; transition: 0.2s; white-space: nowrap;">Menú</button>
-                <button id="btn-modo-general" onclick="cambiarModo('general')" style="padding: 6px 8px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.85rem; transition: 0.2s; white-space: nowrap;">General</button>
-                <button id="btn-modo-jornadas" onclick="cambiarModo('jornadas')" style="padding: 6px 8px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.85rem; transition: 0.2s; white-space: nowrap;">Jornadas</button>
-            </div>
-            
-            <!-- Selector secundario de jornadas (Se estira para que quepa todo el texto) -->
-            <select id="selector-jornada" class="search-input" style="margin-bottom: 0; font-size: 0.85rem; font-weight: bold; flex: 1; min-width: 0; display: none; background: var(--surface); padding: 6px 8px; height: 32px;" onchange="renderizarVista()">
-            </select>
+        <div style="display: flex; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px;">
+            <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s;">🍩 Menú</button>
+            <button id="btn-modo-general" onclick="cambiarModo('general')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s;">🏆 General</button>
+            <button id="btn-modo-jornadas" onclick="cambiarModo('jornadas')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s;">⚔️ Jornadas</button>
         </div>
     </div>
 
@@ -166,7 +158,12 @@
     <!-- 4. UNIVERSO: LISTAS (GENERAL Y JORNADA) -->
     <div id="vista-lista" style="display: none;">
         <div class="card" style="padding: 10px;">
-            <div id="titulo-lista" class="card-title" style="font-size: 1.15rem; padding-bottom: 8px;">Clasificación</div>
+            <!-- Contenedor Flex para Título y Combo Juntos -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 8px;">
+                <div id="titulo-texto" class="card-title" style="border: none; padding: 0; margin: 0; font-size: 1.15rem;">🏆 Clasificación</div>
+                <select id="selector-jornada" class="search-input" style="margin-bottom: 0; font-size: 0.9rem; font-weight: bold; width: 140px; display: none; background: var(--surface); padding: 4px 8px; height: 32px;" onchange="renderizarVista()">
+                </select>
+            </div>
             <div style="overflow-x: auto;">
                 <table class="tabla-compacta" style="width:100%;">
                     <thead id="tabla-head"></thead>
@@ -368,24 +365,24 @@
         const pastillasContainer = document.getElementById('pastillas-container');
         const tablaHead = document.getElementById('tabla-head');
         const tablaBody = document.getElementById('tabla-body');
-        const tituloLista = document.getElementById('titulo-lista');
+        const tituloTexto = document.getElementById('titulo-texto');
 
         if (modo === 'menu_dia') {
             renderRuletaTrivial();
             return;
         }
 
-        // Foto centrada, sin márgenes laterales para que cuadre sin texto
+        // FOTOS AMPLIADAS (44px) Y CENTRADAS
         const getFotoHtml = (uid) => {
             let fotoId = fotosMgrUID[uid];
             let color = coloresMgrUID[uid] || '#fff';
             let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
-            if(imgSrc) return `<img src="${imgSrc}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:2px solid ${color}; display:block; margin:0 auto;">`;
-            return `<div style="width:38px; height:38px; border-radius:50%; background:#333; border:2px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.2rem; margin:0 auto;">👤</div>`;
+            if(imgSrc) return `<img src="${imgSrc}" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid ${color}; display:block; margin:0 auto;">`;
+            return `<div style="width:44px; height:44px; border-radius:50%; background:#333; border:2px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin:0 auto;">👤</div>`;
         };
 
         if (modo === 'general') {
-            tituloLista.innerText = "🏆 Clasificación General";
+            tituloTexto.innerText = "🏆 Clasificación General";
             pastillasContainer.innerHTML = `
                 <button class="btn-filter" style="background:var(--accent); color:#000; font-weight:bold;">🌟 11 Ideal</button>
                 <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero</button>
@@ -394,8 +391,8 @@
                 <button class="btn-filter" style="background:var(--gold); color:#000; font-weight:bold; margin-left:auto;">🏅 Medallero</button>
             `;
             
-            // CABECERAS EXTREMADAMENTE COMPRIMIDAS (Sin nombre de Mánager)
-            tablaHead.innerHTML = `<tr><th style="width:25px; padding-right:2px;">Pos</th><th style="width:50px; text-align:center;"></th><th style="text-align:right; padding:6px 2px;">Pts</th><th style="text-align:right; padding:6px 2px;" title="Al Líder">Líder</th><th style="text-align:right; padding:6px 2px;" title="Al Anterior">Ant.</th><th style="text-align:center; padding:6px 0px;">+/-</th></tr>`;
+            // PUNTOS DESPLAZADOS A LA IZQUIERDA (Dando un ancho fijo a las distancias)
+            tablaHead.innerHTML = `<tr><th style="width:25px; padding-right:2px;">Pos</th><th style="width:60px; text-align:center;"></th><th style="text-align:right; padding:6px 12px;">Pts</th><th style="width:45px; text-align:right; padding:6px 2px;" title="Al Líder">Líder</th><th style="width:45px; text-align:right; padding:6px 2px;" title="Al Anterior">Ant.</th><th style="width:30px; text-align:center; padding:6px 0px;">+/-</th></tr>`;
             
             if(globalStats.clasif_general_actual) {
                 tablaBody.innerHTML = globalStats.clasif_general_actual.map((d, i) => {
@@ -406,36 +403,33 @@
                     }
                     
                     return `<tr>
-                        <td style="padding-right:2px;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer; padding:6px 0;">
+                        <td style="padding-right:2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
+                        <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer; padding:6px 0; vertical-align:middle;">
                             <div style="display:flex; flex-direction:column; align-items:center;">
                                 ${getFotoHtml(d.uid)}
                                 ${microM}
                             </div>
                         </td>
-                        <td style="text-align:right; padding:6px 2px;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
-                        <td class="muted" style="text-align:right; font-size: 0.85rem; padding:6px 2px;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
-                        <td class="muted" style="text-align:right; font-size: 0.85rem; padding:6px 2px;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td>
-                        <td style="text-align:center; font-weight:bold; font-size:1rem; padding:6px 0px;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
+                        <td style="text-align:right; padding:6px 12px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
+                        <td class="muted" style="text-align:right; font-size: 0.85rem; padding:6px 2px; vertical-align:middle;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
+                        <td class="muted" style="text-align:right; font-size: 0.85rem; padding:6px 2px; vertical-align:middle;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td>
+                        <td style="text-align:center; font-weight:bold; font-size:1rem; padding:6px 0px; vertical-align:middle;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
                     </tr>`;
                 }).join('');
             }
 
         } else if (modo === 'jornadas') {
-            const idx = document.getElementById('selector-jornada').value;
-            let jd = jornadasData[idx];
-            
-            let nombreJ = jd ? jd.info.nombre : `Jornada ${parseInt(idx)+1}`;
-            tituloLista.innerText = `📈 Clasificación (${nombreJ})`;
+            tituloTexto.innerText = `📈 Clasificación`;
             
             pastillasContainer.innerHTML = `
                 <button class="btn-filter" style="background:var(--accent); color:#000; font-weight:bold;">🌟 11 de la Jornada</button>
                 <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero (Día)</button>
             `;
             
-            // CABECERAS JORNADA (Paguitas y Sanciones separadas explícitamente)
-            tablaHead.innerHTML = `<tr><th style="width: 25px; padding-right:2px;">Pos</th><th style="width:50px; text-align:center;"></th><th style="text-align:right; padding:6px 2px;">Pts</th><th style="text-align:right; padding:6px 2px;">Paguitas</th><th style="text-align:right; padding:6px 2px;">Sanciones</th></tr>`;
+            tablaHead.innerHTML = `<tr><th style="width: 25px; padding-right:2px;">Pos</th><th style="width:60px; text-align:center;"></th><th style="text-align:right; padding:6px 12px;">Pts</th><th style="text-align:right; padding:6px 2px;">Paguitas</th><th style="text-align:right; padding:6px 2px;">Sanciones</th></tr>`;
 
+            const idx = document.getElementById('selector-jornada').value;
+            let jd = jornadasData[idx];
             if (jd && jd.clasif_jornada && jd.clasif_jornada.length > 0) {
                 tablaBody.innerHTML = jd.clasif_jornada.map((d, i) => {
                     let pagoHtml = `<span class="muted">-</span>`;
@@ -456,13 +450,13 @@
                     }
 
                     return `<tr>
-                        <td style="padding-right:2px;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de Jornada de: ${d.manager}')" style="cursor:pointer; padding:6px 0;">
+                        <td style="padding-right:2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
+                        <td onclick="alert('Abriendo tarjeta de Jornada de: ${d.manager}')" style="cursor:pointer; padding:8px 0; vertical-align:middle;">
                             <div style="display:flex; justify-content:center;">
                                 ${getFotoHtml(d.uid)}
                             </div>
                         </td>
-                        <td style="text-align:right; padding:6px 2px;"><span class="val-blue" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
+                        <td style="text-align:right; padding:6px 12px; vertical-align:middle;"><span class="val-blue" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
                         <td style="text-align:right; padding:6px 2px; vertical-align:middle;">${pagoHtml}</td>
                         <td style="text-align:right; padding:6px 2px; vertical-align:middle;">${sancionHtml}</td>
                     </tr>`;
@@ -482,9 +476,9 @@
             { nombre: "Mercado", emoji: "🛒", bg: "#3b82f6" },     // Azul (Geografía)
             { nombre: "Dashboard", emoji: "📊", bg: "#eab308" },   // Amarillo (Historia)
             { nombre: "Movimientos", emoji: "🔄", bg: "#10b981" }, // Verde (Ciencias)
-            { nombre: "Sección VAR", emoji: "🖥️", bg: "#f97316" }, // Naranja (Deportes) - El VAR
+            { nombre: "V.A.R.", emoji: "🖥️", bg: "#f97316" },     // Naranja (Deportes)
             { nombre: "Latentes", emoji: "🔮", bg: "#92400e" },    // Marrón (Arte/Lit)
-            { nombre: "Subid/Bajad.", emoji: "📈", bg: "#ec4899" } // Rosa (Entretenimiento)
+            { nombre: "Subid./Bajad.", emoji: "📈", bg: "#ec4899" } // Rosa (Entretenimiento)
         ];
 
         let svgHtml = `<svg class="ruleta-svg" viewBox="-160 -160 320 320"><defs>`;
