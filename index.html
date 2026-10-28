@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 19:03</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 19:15</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -126,9 +126,9 @@
     <div class="card" style="padding: 10px; margin-bottom: 12px; background: linear-gradient(145deg, #1e293b, #0f172a); border-color: var(--accent);">
         <!-- Botonera tipo iOS (Con emojis y Menú del Día) -->
         <div style="display: flex; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px; flex: 1;">
-            <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🍩 Menú del Día</button>
             <button id="btn-modo-general" onclick="cambiarModo('general')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🏆 General</button>
             <button id="btn-modo-jornadas" onclick="cambiarModo('jornadas')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">⚔️ Jornadas</button>
+            <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🍩 Menú del Día</button>
         </div>
     </div>
 
@@ -1129,19 +1129,11 @@
 
     // ARRANQUE OFICIAL (Solo arranca cuando el HTML base está 100% construido)
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. Arrancamos el contador de la jornada
+    // Arrancamos el reloj
         renderCountdown();
 
-        // 2. Disparos el arranque normal y corriente
-        cambiarModo('menu_dia');
-
-        // 3. El "toque de gracia": simulamos tu clic exacto en el botón de menú
-        setTimeout(() => {
-            const btnMenu = document.getElementById('btn-modo-menu_dia');
-            if (btnMenu) {
-                btnMenu.click();
-            }
-        }, 10);
+        // Arrancamos limpios y seguros en la General
+        cambiarModo('general');
     });
 
     // Caché de fotos en segundo plano y a prueba de fallos
