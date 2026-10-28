@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 13:38</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 13:56</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -122,16 +122,19 @@
 
 <!-- NUEVO CONTENEDOR MAESTRO -->
 <div class="container">
-    <!-- 1. EL SELECTOR MAESTRO -->
-    <div class="card" style="padding: 12px; margin-bottom: 12px; background: linear-gradient(145deg, #1e293b, #0f172a); border-color: var(--accent);">
+    <!-- 1. EL SELECTOR MAESTRO (BOTONERA TÁCTIL) -->
+    <div class="card" style="padding: 10px; margin-bottom: 12px; background: linear-gradient(145deg, #1e293b, #0f172a); border-color: var(--accent);">
         <div style="display: flex; gap: 8px; align-items: center;">
-            <select id="selector-modo" class="search-input" style="margin-bottom: 0; font-size: 1.1rem; font-weight: bold; flex: 1; border-color: var(--accent); color: var(--white);" onchange="cambiarModo()">
-                <option value="menu_dia">Menú del Día</option>
-                <option value="general">General</option>
-                <option value="jornadas">Jornadas</option>
-            </select>
-            <!-- Selector secundario de jornadas -->
-            <select id="selector-jornada" class="search-input" style="margin-bottom: 0; font-size: 1.05rem; font-weight: bold; width: 130px; display: none; background: var(--surface);" onchange="renderizarVista()">
+            
+            <!-- Botonera tipo iOS -->
+            <div style="display: flex; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px; flex: 1;">
+                <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.9rem; transition: 0.2s;">🍩 Menú</button>
+                <button id="btn-modo-general" onclick="cambiarModo('general')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.9rem; transition: 0.2s;">🏆 General</button>
+                <button id="btn-modo-jornadas" onclick="cambiarModo('jornadas')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.9rem; transition: 0.2s;">⚔️ Jornadas</button>
+            </div>
+            
+            <!-- Selector secundario de jornadas (Se ajusta al espacio restante) -->
+            <select id="selector-jornada" class="search-input" style="margin-bottom: 0; font-size: 0.95rem; font-weight: bold; width: 110px; display: none; background: var(--surface); padding: 6px 8px; height: 35px;" onchange="renderizarVista()">
             </select>
         </div>
     </div>
@@ -291,8 +294,27 @@ let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
     // =======================================================
     // 🧠 CORE DE NAVEGACIÓN (NUEVA ARQUITECTURA)
     // =======================================================
-    window.cambiarModo = function() {
-        const modo = document.getElementById('selector-modo').value;
+    window.modoActual = 'menu_dia'; // Variable global para recordar dónde estamos
+
+    window.cambiarModo = function(modoSeleccionado) {
+        // En caso de que se llame sin argumentos (al iniciar), pillamos el actual
+        if (modoSeleccionado) window.modoActual = modoSeleccionado;
+        const modo = window.modoActual;
+        
+        // Colorear la botonera
+        ['menu_dia', 'general', 'jornadas'].forEach(m => {
+            let btn = document.getElementById('btn-modo-' + m);
+            if(btn) {
+                if(m === modo) {
+                    btn.style.background = 'var(--accent)';
+                    btn.style.color = '#000';
+                } else {
+                    btn.style.background = 'transparent';
+                    btn.style.color = 'var(--muted)';
+                }
+            }
+        });
+
         const selectorJornadas = document.getElementById('selector-jornada');
         const pastillasContainer = document.getElementById('pastillas-container');
         
@@ -322,7 +344,7 @@ let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
     }
 
     window.renderizarVista = function() {
-        const modo = document.getElementById('selector-modo').value;
+        const modo = window.modoActual;
         const pastillasContainer = document.getElementById('pastillas-container');
         const tablaHead = document.getElementById('tabla-head');
         const tablaBody = document.getElementById('tabla-body');
@@ -333,6 +355,15 @@ let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
             return;
         }
 
+        // Función ayudante para sacar la foto con su borde de color
+        const getFotoHtml = (uid) => {
+            let fotoId = fotosMgrUID[uid];
+            let color = coloresMgrUID[uid] || '#fff';
+            let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
+            if(imgSrc) return `<img src="${imgSrc}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid ${color}; margin-right:8px; flex-shrink:0;">`;
+            return `<div style="width:36px; height:36px; border-radius:50%; background:#333; border:2px solid ${color}; display:flex; align-items:center; justify-content:center; margin-right:8px; font-size:1.2rem; flex-shrink:0;">👤</div>`;
+        };
+
         if (modo === 'general') {
             tituloLista.innerText = "🏆 Clasificación General";
             pastillasContainer.innerHTML = `
@@ -342,21 +373,33 @@ let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
                 <button class="btn-filter" style="background:var(--card);">📖 Fichajes</button>
                 <button class="btn-filter" style="background:var(--gold); color:#000; font-weight:bold; margin-left:auto;">🏅 Medallero</button>
             `;
-            tablaHead.innerHTML = `<tr><th style="width: 40px;">Pos</th><th>Mánager</th><th style="text-align:right;">Pts</th><th style="text-align:right;">Dist.</th><th style="text-align:center;">+/-</th></tr>`;
+            
+            // CABECERAS EXTREMADAMENTE COMPRIMIDAS (Líder y Ant. separados)
+            tablaHead.innerHTML = `<tr><th style="width:25px; padding-right:2px;">Pos</th><th>Mánager</th><th style="text-align:right; padding:6px 2px;">Pts</th><th style="text-align:right; padding:6px 2px;" title="Al Líder">Líder</th><th style="text-align:right; padding:6px 2px;" title="Al Anterior">Ant.</th><th style="text-align:center; padding:6px 0px;">+/-</th></tr>`;
             
             if(globalStats.clasif_general_actual) {
                 tablaBody.innerHTML = globalStats.clasif_general_actual.map((d, i) => {
                     let microM = "";
                     if (globalStats.medallero_actual) {
                         let m = globalStats.medallero_actual.find(x => x.uid === d.uid);
-                        if (m) microM = `<div style="font-size: 0.75rem; color: var(--muted); margin-top: 2px;">🥇${m.oros} 🥈${m.platas} 🥉${m.bronces}</div>`;
+                        if (m) microM = `<div style="font-size: 0.7rem; color: var(--muted); line-height: 1; margin-top:2px;">🥇${m.oros} 🥈${m.platas} 🥉${m.bronces}</div>`;
                     }
+                    
                     return `<tr>
-                        <td><div style="font-size: 1.2rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.7rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer;"><div style="font-size: 1.05rem; font-weight: bold; color: var(--white);">${d.manager}</div>${microM}</td>
-                        <td style="text-align:right;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem;">${d.pts_t}</span></td>
-                        <td class="muted" style="text-align:right; font-size: 0.85rem; white-space:nowrap;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
-                        <td style="text-align:center; font-weight:bold; font-size:1.1rem;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
+                        <td style="padding-right:2px;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
+                        <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer; padding-left:0; padding-right:0;">
+                            <div style="display:flex; align-items:center;">
+                                ${getFotoHtml(d.uid)}
+                                <div style="display:flex; flex-direction:column; justify-content:center;">
+                                    <span style="font-size: 0.95rem; font-weight: bold; color: var(--white); line-height:1.1;">${d.manager}</span>
+                                    ${microM}
+                                </div>
+                            </div>
+                        </td>
+                        <td style="text-align:right; padding:6px 2px;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.05rem;">${d.pts_t}</span></td>
+                        <td class="muted" style="text-align:right; font-size: 0.8rem; padding:6px 2px;">${d.dist_lider === 0 ? '-' : d.dist_lider}</td>
+                        <td class="muted" style="text-align:right; font-size: 0.8rem; padding:6px 2px;">${d.dist_anterior === 0 ? '-' : d.dist_anterior}</td>
+                        <td style="text-align:center; font-weight:bold; font-size:1rem; padding:6px 0px;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
                     </tr>`;
                 }).join('');
             }
@@ -370,7 +413,9 @@ let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
                 <button class="btn-filter" style="background:var(--accent); color:#000; font-weight:bold;">🌟 11 de la Jornada</button>
                 <button class="btn-filter" style="background:var(--card);">🟨 Tarjetero (Día)</button>
             `;
-            tablaHead.innerHTML = `<tr><th style="width: 40px;">Pos</th><th>Mánager</th><th style="text-align:right;">Pts</th><th style="text-align:right;">💶 Extra</th></tr>`;
+            
+            // CABECERAS JORNADA (Comprimidas)
+            tablaHead.innerHTML = `<tr><th style="width: 25px; padding-right:2px;">Pos</th><th>Mánager</th><th style="text-align:right; padding:6px 2px;">Pts</th><th style="text-align:right; padding:6px 2px;">💶 Extra</th></tr>`;
 
             if (jd && jd.clasif_jornada && jd.clasif_jornada.length > 0) {
                 tablaBody.innerHTML = jd.clasif_jornada.map((d, i) => {
@@ -379,18 +424,24 @@ let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
                         let pago = jd.paguitas.find(p => p.manager === d.manager);
                         if (pago) {
                             let icono = pago.rol === 'Último' ? '🩸' : (pago.rol === 'Penúltimo' ? '🛟' : '🛶');
-                            salseoHtml = `<div style="font-size:0.8rem;">${icono} <span class="val-pos">+${fmtE(pago.premio)}</span></div>`;
+                            salseoHtml = `<div style="font-size:0.75rem; white-space:nowrap; margin-bottom:2px;">${icono} <span class="val-pos">+${fmtE(pago.premio)}</span></div>`;
                         }
                     }
                     if (jd.sanciones) {
                         let sancion = jd.sanciones.find(s => s.manager === d.manager);
-                        if (sancion) salseoHtml += `<div style="font-size:0.8rem;">🚨 <span class="val-neg">-${fmtE(sancion.cantidad)}</span></div>`;
+                        if (sancion) salseoHtml += `<div style="font-size:0.75rem; white-space:nowrap;">🚨 <span class="val-neg">-${fmtE(sancion.cantidad)}</span></div>`;
                     }
+
                     return `<tr>
-                        <td><div style="font-size: 1.2rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.7rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de Jornada de: ${d.manager}')" style="cursor:pointer;"><div style="font-size: 1.05rem; font-weight: bold; color: var(--white);">${d.manager}</div></td>
-                        <td style="text-align:right;"><span class="val-blue" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
-                        <td style="text-align:right;">${salseoHtml}</td>
+                        <td style="padding-right:2px;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
+                        <td onclick="alert('Abriendo tarjeta de Jornada de: ${d.manager}')" style="cursor:pointer; padding-left:0;">
+                            <div style="display:flex; align-items:center;">
+                                ${getFotoHtml(d.uid)}
+                                <span style="font-size: 0.95rem; font-weight: bold; color: var(--white);">${d.manager}</span>
+                            </div>
+                        </td>
+                        <td style="text-align:right; padding:6px 2px;"><span class="val-blue" style="font-size:1.05rem; font-weight:bold;">${d.pts_j}</span></td>
+                        <td style="text-align:right; padding:6px 2px; vertical-align:middle;">${salseoHtml}</td>
                     </tr>`;
                 }).join('');
             } else {
