@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 14:45</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 15:01</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -124,10 +124,11 @@
 <div class="container">
     <!-- 1. EL SELECTOR MAESTRO (Ancho completo con Emojis) -->
     <div class="card" style="padding: 10px; margin-bottom: 12px; background: linear-gradient(145deg, #1e293b, #0f172a); border-color: var(--accent);">
-        <div style="display: flex; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px;">
-            <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s;">🍩 Menú</button>
-            <button id="btn-modo-general" onclick="cambiarModo('general')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s;">🏆 General</button>
-            <button id="btn-modo-jornadas" onclick="cambiarModo('jornadas')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s;">⚔️ Jornadas</button>
+        <!-- Botonera tipo iOS (Con emojis y Menú del Día) -->
+        <div style="display: flex; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px; flex: 1;">
+            <button id="btn-modo-menu_dia" onclick="cambiarModo('menu_dia')" style="flex: 1; padding: 8px 4px; border: none; background: var(--accent); color: #000; font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🍩 Menú del Día</button>
+            <button id="btn-modo-general" onclick="cambiarModo('general')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">🏆 General</button>
+            <button id="btn-modo-jornadas" onclick="cambiarModo('jornadas')" style="flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 6px; font-size: 0.95rem; transition: 0.2s; white-space: nowrap;">⚔️ Jornadas</button>
         </div>
     </div>
 
@@ -372,13 +373,13 @@
             return;
         }
 
-        // FOTOS AMPLIADAS (44px) Y CENTRADAS
+        // FOTOS GIGANTES (56px) Y CENTRADAS
         const getFotoHtml = (uid) => {
             let fotoId = fotosMgrUID[uid];
             let color = coloresMgrUID[uid] || '#fff';
             let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
-            if(imgSrc) return `<img src="${imgSrc}" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid ${color}; display:block; margin:0 auto;">`;
-            return `<div style="width:44px; height:44px; border-radius:50%; background:#333; border:2px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin:0 auto;">👤</div>`;
+            if(imgSrc) return `<img src="${imgSrc}" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid ${color}; display:block; margin:0 auto; flex-shrink:0;">`;
+            return `<div style="width:56px; height:56px; border-radius:50%; background:#333; border:2px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto; flex-shrink:0;">👤</div>`;
         };
 
         if (modo === 'general') {
@@ -1087,7 +1088,16 @@
         content.innerHTML = html;
     }
             
+    // FORZAR CACHÉ DE FOTOS PARA LA RULETA
+    const cacheDiv = document.createElement('div');
+    cacheDiv.style.display = 'none';
+    Object.values(fotosMgrUID).forEach(id => {
+        let img = new Image();
+        img.src = getFotoUrl(id);
+        cacheDiv.appendChild(img);
+    });
+    document.body.appendChild(cacheDiv);
+
     renderCountdown(); 
     cambiarModo(); // Arranca el motor de la nueva arquitectura
-
 </script>
