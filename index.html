@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 18:31</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 18:47</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -344,12 +344,16 @@
             pastillasContainer.style.display = 'flex';
         }
 
-        document.getElementById('vista-menu-dia').style.display = (modo === 'menu_dia') ? 'block' : 'none';
+        const vistaMenuDia = document.getElementById('vista-menu-dia');
+        vistaMenuDia.style.display = (modo === 'menu_dia') ? 'block' : 'none';
         document.getElementById('vista-lista').style.display = (modo !== 'menu_dia') ? 'block' : 'none';
+
+        // EL FRENO MÁGICO: Obligamos al navegador a aplicar el display:block y calcular el tamaño real de la caja AHORA MISMO
+        vistaMenuDia.offsetHeight;
 
         renderizarVista();
     };
-
+    
     function initSelectorJornadas() {
         const sel = document.getElementById('selector-jornada');
         if (!jornadasData || !jornadasData.length) return;
@@ -425,7 +429,7 @@
                                 ${microM}
                             </div>
                         </td>
-                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
                         <td class="muted" style="text-align:center; padding:6px 2px; vertical-align:middle; font-size: 0.85rem;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
                         <td class="muted" style="text-align:center; padding:6px 2px; vertical-align:middle; font-size: 0.85rem;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-weight:bold; font-size:1rem;" class="${d.tendencia === '▲' ? "val-pos" : (d.tendencia === '▼' ? "val-neg" : "muted")}">${d.tendencia}</td>
@@ -481,7 +485,7 @@
                                 ${getFotoHtml(d.uid)}
                             </div>
                         </td>
-                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${pagoHtml}</td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${sancionHtml}</td>
                     </tr>`;
