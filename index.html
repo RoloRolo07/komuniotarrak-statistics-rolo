@@ -113,7 +113,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 18:47</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 28/10/2026 19:03</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -485,7 +485,7 @@
                                 ${getFotoHtml(d.uid)}
                             </div>
                         </td>
-                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${pagoHtml}</td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${sancionHtml}</td>
                     </tr>`;
@@ -1129,8 +1129,19 @@
 
     // ARRANQUE OFICIAL (Solo arranca cuando el HTML base está 100% construido)
     document.addEventListener('DOMContentLoaded', () => {
+        // 1. Arrancamos el contador de la jornada
         renderCountdown();
+
+        // 2. Disparos el arranque normal y corriente
         cambiarModo('menu_dia');
+
+        // 3. El "toque de gracia": simulamos tu clic exacto en el botón de menú
+        setTimeout(() => {
+            const btnMenu = document.getElementById('btn-modo-menu_dia');
+            if (btnMenu) {
+                btnMenu.click();
+            }
+        }, 10);
     });
 
     // Caché de fotos en segundo plano y a prueba de fallos
