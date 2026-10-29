@@ -218,23 +218,31 @@
             text-align: center;
         }
 
-        /* Efecto botón para las fotos de la tabla principal */
-        .avatar-trigger {
+        /* Contenedor del mánager en la tabla (Foto + Medallas) */
+        .manager-avatar-btn {
+            display: inline-block;
+            position: relative;
             cursor: pointer;
-            transition: all 0.1s ease-in-out;
+            border-radius: 50%;
+            /* Transición suave para el brillo y rápida para el hundimiento */
+            transition: transform 0.1s ease-in-out, filter 0.2s ease-in-out;
         }
 
-        .avatar-trigger:active {
-            transform: scale(0.92) translateY(3px);
-            opacity: 0.9;
+        /* Efecto Hover: Brillo dorado al pasar el ratón por encima */
+        .manager-avatar-btn:hover {
+            filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 0.7)); 
         }
 
+        /* Efecto Click: Hundimiento físico de todo el bloque */
+        .manager-avatar-btn:active {
+            transform: scale(0.92) translateY(4px);
+        }
 
     </style>
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 14:09</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 17:00</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -597,12 +605,15 @@
 
                     return `<tr style="${bgStyle} border-bottom: 1px solid rgba(255,255,255,0.03);">
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de: ${d.manager}')" style="cursor:pointer; text-align:center; padding:6px 2px; vertical-align:middle;">
-                            <div style="display:flex; flex-direction:column; align-items:center;">
+                        
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
+                            <!-- AQUÍ INYECTAMOS EL BOTÓN Y LA APERTURA DE TARJETA -->
+                            <div class="manager-avatar-btn" onclick="abrirTarjetaManager('${d.uid}')" style="display:inline-flex; flex-direction:column; align-items:center; padding:4px;">
                                 ${getFotoHtml(d.uid)}
                                 ${microM}
                             </div>
                         </td>
+                        
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_t}</span></td>
                         <td class="muted" style="text-align:center; padding:6px 2px; vertical-align:middle; font-size: 0.85rem;">${d.dist_lider === 0 ? '-' : `a ${d.dist_lider}`}</td>
                         <td class="muted" style="text-align:center; padding:6px 2px; vertical-align:middle; font-size: 0.85rem;">${d.dist_anterior === 0 ? '-' : `a ${d.dist_anterior}`}</td>
@@ -654,11 +665,14 @@
 
                     return `<tr style="${bgStyle} border-bottom: 1px solid rgba(255,255,255,0.03);">
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
-                        <td onclick="alert('Abriendo tarjeta de Jornada de: ${d.manager}')" style="cursor:pointer; text-align:center; padding:6px 2px; vertical-align:middle;">
-                            <div style="display:flex; justify-content:center;">
+                        
+                        <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
+                            <!-- AQUÍ INYECTAMOS EL BOTÓN PARA LA TABLA DE JORNADAS -->
+                            <div class="manager-avatar-btn" onclick="abrirTarjetaManager('${d.uid}')" style="display:inline-flex; justify-content:center; padding:4px;">
                                 ${getFotoHtml(d.uid)}
                             </div>
                         </td>
+                        
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><span class="${i===0 ? 'badge-rec-max' : 'val-white'}" style="font-size:1.1rem; font-weight:bold;">${d.pts_j}</span></td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${pagoHtml}</td>
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">${sancionHtml}</td>
@@ -1290,7 +1304,33 @@
         html += `</tbody></table>`;
         content.innerHTML = html;
     }
+
+    // Abre la tarjeta central al hacer clic en el mánager
+    function abrirTarjetaManager(idManager) {
+        const modal = document.getElementById('managerModal');
+        if (modal) {
+            // Mostramos el modal oscuro con la tarjeta
+            modal.classList.add('active');
             
+            // ¡OJO AQUÍ! Más adelante usaremos este 'idManager' para 
+            // cargar los datos, cambiar la foto, los escudos, etc.
+            console.log("Abriendo tarjeta para el mánager ID:", idManager);
+        }
+    }
+
+    // Cierra la tarjeta si haces clic en el fondo gris oscuro
+    function cerrarTarjetaFuera(event) {
+        if (event.target.id === 'managerModal') {
+            event.target.classList.remove('active');
+            
+            // Si la tarjeta se quedó girada en la Cara B, la devolvemos a la Cara A al cerrar
+            const tarjetaInner = document.querySelector('.manager-card-container');
+            if (tarjetaInner && tarjetaInner.classList.contains('is-flipped')) {
+                tarjetaInner.classList.remove('is-flipped');
+            }
+        }
+    }
+
     // FORZAR CACHÉ DE FOTOS PARA LA RULETA
     const cacheDiv = document.createElement('div');
     cacheDiv.style.cssText = 'position:absolute; width:1px; height:1px; opacity:0.01; overflow:hidden;';
