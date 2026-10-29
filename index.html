@@ -218,12 +218,23 @@
             text-align: center;
         }
 
+        /* Efecto botón para las fotos de la tabla principal */
+        .avatar-trigger {
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .avatar-trigger:active {
+            transform: scale(0.92) translateY(3px);
+            opacity: 0.9;
+        }
+
 
     </style>
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 13:59</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 14:09</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1286,6 +1297,7 @@
     Object.values(fotosMgrUID).forEach(id => {
         let img = new Image();
         img.src = getFotoUrl(id);
+        img.classList.add("avatar-trigger");
         cacheDiv.appendChild(img);
     });
     document.body.appendChild(cacheDiv);
@@ -1307,6 +1319,7 @@
             Object.values(fotosMgrUID).forEach(id => {
                 let img = new Image();
                 img.src = getFotoUrl(id);
+                img.classList.add("avatar-trigger");
                 cacheDiv.appendChild(img);
             });
             document.body.appendChild(cacheDiv);
