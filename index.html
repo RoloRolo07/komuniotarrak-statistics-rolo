@@ -218,31 +218,83 @@
             text-align: center;
         }
 
-        /* Contenedor del mánager en la tabla (Foto + Medallas) */
+        /* ========================================== */
+        /* EL BOTÓN DEL MANAGER EN LA TABLA           */
+        /* ========================================== */
         .manager-avatar-btn {
-            display: inline-block;
-            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
             cursor: pointer;
+            position: relative;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .manager-avatar-btn img {
+            border: 3px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            /* Transición suave para el brillo y rápida para el hundimiento */
-            transition: transform 0.1s ease-in-out, filter 0.2s ease-in-out;
+            padding: 2px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
         }
 
-        /* Efecto Hover: Brillo dorado al pasar el ratón por encima */
-        .manager-avatar-btn:hover {
-            filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 0.7)); 
-        }
-
-        /* Efecto Click: Hundimiento físico de todo el bloque */
         .manager-avatar-btn:active {
             transform: scale(0.92) translateY(4px);
+        }
+        .manager-avatar-btn:active img {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* ========================================== */
+        /* LA CAPA INVISIBLE (MODAL) PARA LA TARJETA  */
+        /* ========================================== */
+        .manager-modal-overlay {
+            display: none; 
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .manager-modal-overlay.active {
+            display: flex; 
+        }
+
+        /* BOTÓN CERRAR X */
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .close-modal-btn:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.9);
         }
 
     </style>
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 17:00</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 20:03</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -397,6 +449,51 @@
 
     <div id="content-normativa" class="section-content">
         <div class="card"><div class="card-title">📜 Normativa Oficial Komuniotarrak</div><div class="text-block" style="font-size:0.95rem; line-height:1.8;"><b>1. SALDOS Y PRESUPUESTOS</b><br>- Prohibido estar en negativo al inicio del primer partido de la jornada.<br>- Las multas por saldo negativo se aplicarán sobre el valor de la plantilla o puntos según dictamine la asamblea.<br><br><b>2. MERCADO DE FICHAJES</b><br>- Las sobrepujas son libres. El que más paga, se lo lleva.<br>- Prohibido comprar y vender al mismo jugador a otro mánager de la liga en la misma semana para evadir impuestos (Fair Play Financiero).<br><br><b>3. PAGUITAS</b><br>- Solo se entregan en jornadas completas (sin partidos aplazados).<br>- Último: 2.000.000 €<br>- Penúltimo: 1.200.000 €<br>- Antepenúltimo: 800.000 €<br><br><b>4. SANCIONES</b><br>- Toda venta de un jugador después del pitido inicial que altere el saldo para evitar un negativo será severamente castigada.<br>- El VAR actúa de oficio.</div></div>
+    </div>
+
+    <!-- EL MOLDE ÚNICO DE LA TARJETA (Nace oculto) -->
+    <div id="managerModal" class="manager-modal-overlay" onclick="cerrarTarjetaFuera(event)">
+        <!-- Añade esta línea: BOTÓN X PARA CERRAR -->
+        <button class="close-modal-btn" onclick="cerrarTarjetaX()">×</button>
+        <div class="manager-card-container" onclick="this.classList.toggle('is-flipped')">
+            <div class="manager-card-inner">
+                
+                <!-- CARA A -->
+                <div class="manager-card-front">
+                    <div class="manager-card-header">
+                        <div class="photo-button-wrapper">
+                            <img src="" alt="Manager" class="manager-photo-btn" id="modal-foto-manager">
+                            <div class="medal-badge" id="modal-medalla">🥇</div>
+                        </div>
+                        <div class="manager-info">
+                            <h2 id="modal-nombre-manager">Cargando...</h2>
+                            <p class="alias" id="modal-alias-manager">...</p>
+                        </div>
+                    </div>
+                    <div class="manager-card-body">
+                        <h3>📊 Resumen</h3>
+                        <p>Aquí inyectaremos los datos de la Cara A.</p>
+                    </div>
+                </div>
+
+                <!-- CARA B -->
+                <div class="manager-card-back">
+                    <div class="manager-card-header">
+                        <div class="photo-button-wrapper">
+                            <img src="" alt="Manager" class="manager-photo-btn" id="modal-foto-manager-back">
+                        </div>
+                        <div class="manager-info">
+                            <h2 id="modal-nombre-manager-back">Cargando...</h2>
+                        </div>
+                    </div>
+                    <div class="manager-card-body body-back">
+                        <h3>🏆 Salón de la Fama</h3>
+                        <p>Aquí inyectaremos los datos de la Cara B.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1331,6 +1428,19 @@
         }
     }
 
+    function cerrarTarjetaX() {
+    const modal = document.getElementById('managerModal');
+        if (modal) {
+            modal.classList.remove('active'); // Oculta el modal
+            
+            // Devuelve la tarjeta a la Cara A
+            const tarjetaInner = document.querySelector('.manager-card-container');
+            if (tarjetaInner && tarjetaInner.classList.contains('is-flipped')) {
+                tarjetaInner.classList.remove('is-flipped');
+            }
+        }
+    }   
+
     // FORZAR CACHÉ DE FOTOS PARA LA RULETA
     const cacheDiv = document.createElement('div');
     cacheDiv.style.cssText = 'position:absolute; width:1px; height:1px; opacity:0.01; overflow:hidden;';
@@ -1367,51 +1477,3 @@
     }, 100);
     
 </script>
-
-<!-- ✂️✂️✂️ TRUCO TEMPORAL: BORRAR LUEGO (TARJETA DE TEST) ✂️✂️✂️ -->
-<div class="manager-card-container" style="margin-top: 50px; margin-bottom: 50px;" onclick="this.classList.toggle('is-flipped')">
-    <div class="manager-card-inner">
-        
-        <!-- CARA A -->
-        <div class="manager-card-front">
-            <div class="manager-card-header">
-                <div class="photo-button-wrapper">
-                    <img src="https://via.placeholder.com/80" alt="Foto Manager" class="manager-photo-btn">
-                    <div class="medal-badge">🥇</div>
-                </div>
-                <div class="manager-info">
-                    <h2>Mánager Test</h2>
-                    <p class="alias">El Alias</p>
-                </div>
-            </div>
-            
-            <div class="manager-card-body">
-                <h3>📊 Resumen Histórico</h3>
-                <p>Haz clic en cualquier parte de la tarjeta para girarla.</p>
-                <p>Fíjate en cómo la foto se hunde al hacer clic.</p>
-            </div>
-        </div>
-
-        <!-- CARA B -->
-        <div class="manager-card-back">
-            <div class="manager-card-header">
-                <div class="photo-button-wrapper">
-                    <img src="https://via.placeholder.com/80" alt="Foto Manager" class="manager-photo-btn">
-                    <div class="medal-badge">🥇</div>
-                </div>
-                <div class="manager-info">
-                    <h2>Mánager Test</h2>
-                    <p class="alias">El Alias</p>
-                </div>
-            </div>
-            
-            <div class="manager-card-body body-back">
-                <h3>🏆 Salón de la Fama</h3>
-                <p>Y fíjate cómo la cabecera azul parece no haberse movido durante el giro.</p>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- ✂️✂️✂️ FIN DEL TRUCO TEMPORAL ✂️✂️✂️ -->
-
