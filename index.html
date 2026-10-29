@@ -231,27 +231,31 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .manager-avatar-btn img {
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            padding: 2px;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        /* Forzamos el relieve sea cual sea la imagen que venga de Python/JS */
+        .manager-avatar-btn img, .manager-avatar-btn .avatar-circle {
+            border: 3px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 50% !important;
+            padding: 2px !important;
+            background: linear-gradient(135deg, #1e3c72, #2a5298) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6) !important;
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out !important;
+            width: 48px !important;
+            height: 48px !important;
+            object-fit: cover !important;
         }
 
         .manager-avatar-btn:active {
             transform: scale(0.92) translateY(4px);
         }
-        .manager-avatar-btn:active img {
-            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        .manager-avatar-btn:active img, .manager-avatar-btn:active .avatar-circle {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.8) !important;
         }
 
         /* ========================================== */
-        /* LA CAPA INVISIBLE (MODAL) PARA LA TARJETA  */
+        /* LA CAPA INVISIBLE Y ANIMACIÓN DE ENTRADA   */
         /* ========================================== */
         .manager-modal-overlay {
-            display: none; 
+            display: flex;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
@@ -259,9 +263,31 @@
             z-index: 9999;
             justify-content: center;
             align-items: center;
+            
+            /* Efecto apagado por defecto */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
         }
+
         .manager-modal-overlay.active {
-            display: flex; 
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .manager-card-container {
+            width: 340px;
+            height: 520px;
+            perspective: 1000px; 
+            cursor: pointer;
+            user-select: none;
+            /* Efecto zoom al aparecer */
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .manager-modal-overlay.active .manager-card-container {
+            transform: scale(1);
         }
 
         /* BOTÓN CERRAR X */
@@ -294,7 +320,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 20:03</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 20:23</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -451,50 +477,83 @@
         <div class="card"><div class="card-title">📜 Normativa Oficial Komuniotarrak</div><div class="text-block" style="font-size:0.95rem; line-height:1.8;"><b>1. SALDOS Y PRESUPUESTOS</b><br>- Prohibido estar en negativo al inicio del primer partido de la jornada.<br>- Las multas por saldo negativo se aplicarán sobre el valor de la plantilla o puntos según dictamine la asamblea.<br><br><b>2. MERCADO DE FICHAJES</b><br>- Las sobrepujas son libres. El que más paga, se lo lleva.<br>- Prohibido comprar y vender al mismo jugador a otro mánager de la liga en la misma semana para evadir impuestos (Fair Play Financiero).<br><br><b>3. PAGUITAS</b><br>- Solo se entregan en jornadas completas (sin partidos aplazados).<br>- Último: 2.000.000 €<br>- Penúltimo: 1.200.000 €<br>- Antepenúltimo: 800.000 €<br><br><b>4. SANCIONES</b><br>- Toda venta de un jugador después del pitido inicial que altere el saldo para evitar un negativo será severamente castigada.<br>- El VAR actúa de oficio.</div></div>
     </div>
 
-    <!-- EL MOLDE ÚNICO DE LA TARJETA (Nace oculto) -->
+    <!-- EL MOLDE 3D FUSIONADO CON EL SÚPER CROMO -->
     <div id="managerModal" class="manager-modal-overlay" onclick="cerrarTarjetaFuera(event)">
-        <!-- Añade esta línea: BOTÓN X PARA CERRAR -->
-        <button class="close-modal-btn" onclick="cerrarTarjetaX()">×</button>
+        <button class="close-modal-btn" onclick="cerrarTarjetaX()">✖</button>
+        
         <div class="manager-card-container" onclick="this.classList.toggle('is-flipped')">
             <div class="manager-card-inner">
                 
-                <!-- CARA A -->
-                <div class="manager-card-front">
-                    <div class="manager-card-header">
-                        <div class="photo-button-wrapper">
-                            <img src="" alt="Manager" class="manager-photo-btn" id="modal-foto-manager">
-                            <div class="medal-badge" id="modal-medalla">🥇</div>
-                        </div>
-                        <div class="manager-info">
-                            <h2 id="modal-nombre-manager">Cargando...</h2>
-                            <p class="alias" id="modal-alias-manager">...</p>
+                <!-- CARA A: CABECERA Y FINANZAS -->
+                <div class="manager-card-front" style="background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); color: var(--text);">
+                    <!-- Cabecera Súper Cromo -->
+                    <div style="text-align: center; padding: 20px 10px 10px 10px;">
+                        <div id="mgr-card-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: #4b5563; border: 3px solid var(--border); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.6);">👤</div>
+                        <div id="mgr-card-name" style="font-size: 1.8rem; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 10px;">MÁNAGER</div>
+                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
+                            <span id="mgr-card-pos" style="color: var(--white);">--º</span> &nbsp;|&nbsp; 
+                            <span id="mgr-card-pts" class="val-gold">-- pts</span> &nbsp;|&nbsp; 
+                            <span id="mgr-card-trend">--</span>
                         </div>
                     </div>
-                    <div class="manager-card-body">
-                        <h3>📊 Resumen</h3>
-                        <p>Aquí inyectaremos los datos de la Cara A.</p>
+
+                    <!-- SECCIÓN 1: FINANZAS -->
+                    <div class="manager-card-body" style="padding: 15px;">
+                        <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                            <div style="color: var(--muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; border-bottom: 1px dashed var(--border); padding-bottom: 4px;">💼 Finanzas y Mercado</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.8rem;">
+                                <div><span class="muted">Val Máx:</span> <b id="mgr-f-max" class="val-blue">-- €</b></div>
+                                <div><span class="muted">Val Mín:</span> <b id="mgr-f-min" class="val-white">-- €</b></div>
+                                <div><span class="muted">Compras:</span> <b id="mgr-f-compras">--</b></div>
+                                <div><span class="muted">Ventas:</span> <b id="mgr-f-ventas">--</b></div>
+                                <div><span class="muted">Movs:</span> <b id="mgr-f-movs">--</b></div>
+                                <div><span class="muted">Especul:</span> <b id="mgr-f-espe">-- €</b></div>
+                                <div><span class="muted">Paguitas:</span> <b id="mgr-f-pag" class="val-gold">-- €</b></div>
+                                <div><span class="muted">Sanciones:</span> <b id="mgr-f-san" class="val-neg">-- €</b></div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px; font-size: 0.75rem; color: var(--muted);">Toca para girar ↺</div>
                     </div>
                 </div>
 
-                <!-- CARA B -->
-                <div class="manager-card-back">
-                    <div class="manager-card-header">
-                        <div class="photo-button-wrapper">
-                            <img src="" alt="Manager" class="manager-photo-btn" id="modal-foto-manager-back">
-                        </div>
-                        <div class="manager-info">
-                            <h2 id="modal-nombre-manager-back">Cargando...</h2>
-                        </div>
+                <!-- CARA B: ESTADÍSTICAS, HAT-TRICK Y POZO -->
+                <div class="manager-card-back" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); color: var(--text);">
+                    <!-- Mini cabecera Cara B -->
+                    <div style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div id="mgr-card-avatar-back" style="width: 40px; height: 40px; border-radius: 50%; background: #4b5563; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 10px;">👤</div>
+                        <div id="mgr-card-name-back" style="font-size: 1.2rem; font-weight: 900; color: var(--white); text-transform: uppercase;">MÁNAGER</div>
                     </div>
-                    <div class="manager-card-body body-back">
-                        <h3>🏆 Salón de la Fama</h3>
-                        <p>Aquí inyectaremos los datos de la Cara B.</p>
+
+                    <div class="manager-card-body" style="padding: 15px; overflow-y: auto;">
+                        <!-- SECCIÓN 2: ESTADÍSTICAS -->
+                        <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);">
+                            <div style="color: var(--muted); font-size: 0.7rem; text-transform: uppercase; font-weight: 900; margin-bottom: 6px; border-bottom: 1px dashed var(--border); padding-bottom: 4px;">📊 Históricas</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.75rem;">
+                                <div><span class="muted">Récord Máx:</span> <b id="mgr-s-rmax" class="val-pos">-- pts</b></div>
+                                <div><span class="muted">Récord Mín:</span> <b id="mgr-s-rmin" class="val-neg">-- pts</b></div>
+                                <div><span class="muted">Media Pts:</span> <b id="mgr-s-media">--</b></div>
+                                <div><span class="muted">Semanas Líder:</span> <b id="mgr-s-lider">--</b></div>
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 3: HAT-TRICK -->
+                        <div style="margin-bottom: 10px;">
+                            <div style="color: var(--gold); font-size: 0.7rem; text-transform: uppercase; font-weight: 900; margin-bottom: 4px; text-align: center;">⭐ El Hat-Trick</div>
+                            <div class="muted" style="text-align:center; font-size:0.75rem; background:rgba(0,0,0,0.2); padding:6px; border-radius:6px; border:1px dashed var(--border);">Próximamente...</div>
+                        </div>
+
+                        <!-- SECCIÓN 4: EL POZO -->
+                        <div>
+                            <div style="color: var(--danger); font-size: 0.7rem; text-transform: uppercase; font-weight: 900; margin-bottom: 4px; text-align: center;">💀 El Pozo</div>
+                            <div class="muted" style="text-align:center; font-size:0.75rem; background:rgba(0,0,0,0.2); padding:6px; border-radius:6px; border:1px dashed var(--danger);">Próximamente...</div>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+
 </div>
 
 <script>
@@ -656,13 +715,18 @@
             return;
         }
 
-        // Fotos gigantes (56px) con carga forzada
+        // Fotos gigantes (56px) limpias para permitir el relieve 3D del botón
         const getFotoHtml = (uid) => {
             let fotoId = fotosMgrUID[uid];
             let color = coloresMgrUID[uid] || '#fff';
             let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
-            if(imgSrc) return `<img src="${imgSrc}" loading="eager" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid ${color}; display:block; margin:0 auto; flex-shrink:0;">`;
-            return `<div style="width:56px; height:56px; border-radius:50%; background:#333; border:2px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto; flex-shrink:0;">👤</div>`;
+            
+            // Le quitamos todos los anchos fijos y le dejamos solo el color del borde. 
+            // Del relieve, tamaño y sombras se encarga ahora nuestro CSS.
+            if(imgSrc) {
+                return `<img src="${imgSrc}" loading="eager" style="border-color: ${color} !important; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+            }
+            return `<div style="background:#333; border-color: ${color} !important; width: 100%; height: 100%; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`;
         };
 
         if (modo === 'general') {
@@ -1402,17 +1466,51 @@
         content.innerHTML = html;
     }
 
-    // Abre la tarjeta central al hacer clic en el mánager
-    function abrirTarjetaManager(idManager) {
-        const modal = document.getElementById('managerModal');
-        if (modal) {
-            // Mostramos el modal oscuro con la tarjeta
-            modal.classList.add('active');
+    function abrirTarjetaManager(uidManager) {
+        // 1. Buscar los datos del mánager en tus arrays globales
+        if (!globalStats || !globalStats.clasif_general_actual) return;
+        
+        let datosClasif = globalStats.clasif_general_actual.find(m => m.uid === uidManager);
+        if (!datosClasif) return;
+        
+        // Buscar su posición real en la tabla (sumando 1 al índice)
+        let posicion = globalStats.clasif_general_actual.findIndex(m => m.uid === uidManager) + 1;
+        
+        // Buscar sus finanzas (buscamos en el array 'managers' por su nombre)
+        let datosFinanzas = managers.find(m => m.manager === datosClasif.manager);
+
+        // 2. INYECTAR DATOS BÁSICOS (Caras A y B)
+        document.getElementById('mgr-card-name').innerText = datosClasif.manager;
+        document.getElementById('mgr-card-name-back').innerText = datosClasif.manager;
+        
+        document.getElementById('mgr-card-pts').innerText = datosClasif.pts_t + " pts";
+        document.getElementById('mgr-card-trend').innerText = datosClasif.tendencia;
+        document.getElementById('mgr-card-pos').innerText = posicion + "º";
+
+        // Inyectar su avatar con el borde de su equipo
+        let htmlFoto = getFotoHtml(uidManager);
+        document.getElementById('mgr-card-avatar').innerHTML = htmlFoto;
+        document.getElementById('mgr-card-avatar-back').innerHTML = htmlFoto;
+
+        // 3. INYECTAR FINANZAS (Si existen en la variable 'managers')
+        if (datosFinanzas) {
+            // Usamos tu función fmtE() para formatear en euros
+            document.getElementById('mgr-f-max').innerText = fmtE(datosFinanzas.patrimonio_total || 0);
+            document.getElementById('mgr-f-min').innerText = fmtE(datosFinanzas.valor_plantilla || 0);
+            document.getElementById('mgr-f-espe').innerText = fmtE(datosFinanzas.presupuesto_liquido || 0);
             
-            // ¡OJO AQUÍ! Más adelante usaremos este 'idManager' para 
-            // cargar los datos, cambiar la foto, los escudos, etc.
-            console.log("Abriendo tarjeta para el mánager ID:", idManager);
+            // Si hay datos de mercado que no tenemos a mano, ponemos un placeholder visual
+            document.getElementById('mgr-f-compras').innerText = datosFinanzas.total_jugadores || "0";
         }
+
+        // 4. ABRIR TARJETA CON RETRASO
+        // Esperamos 150ms para saborear el clic físico del botón antes de oscurecer
+        setTimeout(() => {
+            const modal = document.getElementById('managerModal');
+            if (modal) {
+                modal.classList.add('active'); 
+            }
+        }, 150);
     }
 
     // Cierra la tarjeta si haces clic en el fondo gris oscuro
