@@ -229,6 +229,12 @@
             position: relative;
             outline: none;
             -webkit-tap-highlight-color: transparent;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Al clicar, hundimos la caja entera suavemente */
+        .manager-avatar-btn:active {
+            transform: scale(0.92) translateY(4px);
         }
 
         /* Forzamos el relieve sea cual sea la imagen que venga de Python/JS */
@@ -320,7 +326,7 @@
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 20:23</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 29/10/2026 20:30</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -715,18 +721,16 @@
             return;
         }
 
-        // Fotos gigantes (56px) limpias para permitir el relieve 3D del botón
+        // Fotos gigantes (56px) con sombra para efecto botón 3D
         const getFotoHtml = (uid) => {
             let fotoId = fotosMgrUID[uid];
             let color = coloresMgrUID[uid] || '#fff';
             let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
             
-            // Le quitamos todos los anchos fijos y le dejamos solo el color del borde. 
-            // Del relieve, tamaño y sombras se encarga ahora nuestro CSS.
             if(imgSrc) {
-                return `<img src="${imgSrc}" loading="eager" style="border-color: ${color} !important; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+                return `<img src="${imgSrc}" loading="eager" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:3px solid ${color}; display:block; margin:0 auto; flex-shrink:0; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">`;
             }
-            return `<div style="background:#333; border-color: ${color} !important; width: 100%; height: 100%; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`;
+            return `<div style="width:56px; height:56px; border-radius:50%; background:#333; border:3px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto; flex-shrink:0; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">👤</div>`;
         };
 
         if (modo === 'general') {
@@ -1467,44 +1471,42 @@
     }
 
     function abrirTarjetaManager(uidManager) {
-        // 1. Buscar los datos del mánager en tus arrays globales
+        // 1. Forzamos que el UID sea texto para que no falle la comparación estricta
+        let uidBuscado = String(uidManager);
+        
         if (!globalStats || !globalStats.clasif_general_actual) return;
         
-        let datosClasif = globalStats.clasif_general_actual.find(m => m.uid === uidManager);
-        if (!datosClasif) return;
+        // 2. Buscamos al mánager asegurando que comparamos texto con texto
+        let datosClasif = globalStats.clasif_general_actual.find(m => String(m.uid) === uidBuscado);
         
-        // Buscar su posición real en la tabla (sumando 1 al índice)
-        let posicion = globalStats.clasif_general_actual.findIndex(m => m.uid === uidManager) + 1;
+        if (!datosClasif) {
+            console.error("Fallo al encontrar datos del mánager UID:", uidBuscado);
+            return; 
+        }
         
-        // Buscar sus finanzas (buscamos en el array 'managers' por su nombre)
+        let posicion = globalStats.clasif_general_actual.findIndex(m => String(m.uid) === uidBuscado) + 1;
         let datosFinanzas = managers.find(m => m.manager === datosClasif.manager);
 
-        // 2. INYECTAR DATOS BÁSICOS (Caras A y B)
+        // 3. INYECTAR DATOS 
         document.getElementById('mgr-card-name').innerText = datosClasif.manager;
         document.getElementById('mgr-card-name-back').innerText = datosClasif.manager;
-        
         document.getElementById('mgr-card-pts').innerText = datosClasif.pts_t + " pts";
         document.getElementById('mgr-card-trend').innerText = datosClasif.tendencia;
         document.getElementById('mgr-card-pos').innerText = posicion + "º";
 
-        // Inyectar su avatar con el borde de su equipo
+        // Inyectar su avatar correcto (ahora con el borde real de su equipo)
         let htmlFoto = getFotoHtml(uidManager);
         document.getElementById('mgr-card-avatar').innerHTML = htmlFoto;
         document.getElementById('mgr-card-avatar-back').innerHTML = htmlFoto;
 
-        // 3. INYECTAR FINANZAS (Si existen en la variable 'managers')
         if (datosFinanzas) {
-            // Usamos tu función fmtE() para formatear en euros
             document.getElementById('mgr-f-max').innerText = fmtE(datosFinanzas.patrimonio_total || 0);
             document.getElementById('mgr-f-min').innerText = fmtE(datosFinanzas.valor_plantilla || 0);
             document.getElementById('mgr-f-espe').innerText = fmtE(datosFinanzas.presupuesto_liquido || 0);
-            
-            // Si hay datos de mercado que no tenemos a mano, ponemos un placeholder visual
             document.getElementById('mgr-f-compras').innerText = datosFinanzas.total_jugadores || "0";
         }
 
-        // 4. ABRIR TARJETA CON RETRASO
-        // Esperamos 150ms para saborear el clic físico del botón antes de oscurecer
+        // 4. ABRIR TARJETA (Retraso de 150ms para ver el efecto físico del botón)
         setTimeout(() => {
             const modal = document.getElementById('managerModal');
             if (modal) {
