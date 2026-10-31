@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 31/10/2026 13:20</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 31/10/2026 13:40</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1437,48 +1437,57 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     }
 
     function abrirTarjetaManager(uidManager, nombreManager) {
-        setTimeout(() => {
-            const tarjetaInner = document.querySelector('.manager-card-container.is-flipped');
-            if (tarjetaInner) tarjetaInner.classList.remove('is-flipped');
+        // 1. Quitar el giro previo si la tarjeta se quedó dada la vuelta
+        const tarjetaInner = document.querySelector('.manager-card-container.is-flipped');
+        if (tarjetaInner) tarjetaInner.classList.remove('is-flipped');
 
-            // Miramos si el selector de jornadas de tu HTML está visible para saber dónde estamos
-            const selectorVisible = document.getElementById('selector-jornada').style.display !== 'none';
+        // 2. Averiguar dónde estamos mirando el botón de "⚔️ Jornadas"
+        const btnJornadas = document.getElementById('btn-modo-jornadas');
+        // Si el botón no es transparente, es que está activo (estamos en Jornadas)
+        const estamosEnJornadas = btnJornadas && btnJornadas.style.background !== 'transparent';
 
-            if (selectorVisible) {
-                // --- ESTAMOS EN JORNADAS: SACAMOS LA ALINEACIÓN ---
-                const jd = jornadasData[selectedJornadaIdx];
+        if (estamosEnJornadas) {
+            // --- TUBERÍA DE ALINEACIÓN ---
+            const jd = jornadasData[selectedJornadaIdx];
+            
+            if (jd && jd.alineaciones) {
+                // Buscamos al mánager exacto de la fila que has pulsado
+                const mData = jd.alineaciones.find(a => a.manager.trim() === nombreManager.trim());
                 
-                if (jd && jd.alineaciones) {
-                    const mData = jd.alineaciones.find(a => a.manager === nombreManager);
+                if (mData) {
+                    // Juntamos todas las posiciones en una única lista
+                    let todosLosJugadores = [];
+                    if (mData.keeper) mData.keeper.forEach(j => todosLosJugadores.push({ ...j, linedup: true }));
+                    if (mData.defender) mData.defender.forEach(j => todosLosJugadores.push({ ...j, linedup: true }));
+                    if (mData.midfielder) mData.midfielder.forEach(j => todosLosJugadores.push({ ...j, linedup: true }));
+                    if (mData.striker) mData.striker.forEach(j => todosLosJugadores.push({ ...j, linedup: true }));
+                    if (mData.banquillo) mData.banquillo.forEach(j => todosLosJugadores.push({ ...j, linedup: false }));
                     
-                    if (mData) {
-                        const todosLosJugadores = [
-                            ...mData.keeper.map(j => ({ ...j, linedup: true })),
-                            ...mData.defender.map(j => ({ ...j, linedup: true })),
-                            ...mData.midfielder.map(j => ({ ...j, linedup: true })),
-                            ...mData.striker.map(j => ({ ...j, linedup: true })),
-                            ...mData.banquillo.map(j => ({ ...j, linedup: false }))
-                        ];
-                        
-                        const divVerde = document.getElementById('verde-alineacion');
-                        if (divVerde) divVerde.innerHTML = generarHtmlAlineacion({ jugadores: todosLosJugadores });
-                        
-                        const divPuntos = document.getElementById('puntos-jornada-tarjeta');
-                        if (divPuntos) divPuntos.innerText = mData.puntos_totales;
-                    }
+                    // Inyectamos el HTML de los jugadores machacando el texto "[ Aquí inyectaremos... ]"
+                    const divVerde = document.getElementById('verde-alineacion');
+                    if (divVerde) divVerde.innerHTML = generarHtmlAlineacion({ jugadores: todosLosJugadores });
+                    
+                    // Inyectamos los puntos totales en el número gigante
+                    const divPuntos = document.getElementById('puntos-jornada-tarjeta');
+                    if (divPuntos) divPuntos.innerText = mData.puntos_totales;
                 }
-                document.getElementById('tarjeta-general').style.display = 'none';
-                document.getElementById('tarjeta-jornada').style.display = 'block';
-                
-            } else {
-                // --- ESTAMOS EN GENERAL: SACAMOS ESTADÍSTICAS ---
-                document.getElementById('tarjeta-general').style.display = 'block';
-                document.getElementById('tarjeta-jornada').style.display = 'none';
             }
+            
+            // Mostramos la tarjeta de Jornada (y ocultamos la General)
+            document.getElementById('tarjeta-general').style.display = 'none';
+            document.getElementById('tarjeta-jornada').style.display = 'block';
+            
+        } else {
+            // --- ESTAMOS EN GENERAL ---
+            document.getElementById('tarjeta-general').style.display = 'block';
+            document.getElementById('tarjeta-jornada').style.display = 'none';
+        }
 
+        // 3. Abrir la ventana flotante (el Modal)
+        setTimeout(() => {
             const modal = document.getElementById('managerModal');
             if (modal) modal.classList.add('active'); 
-        }, 250); // Retardo físico de 250ms
+        }, 50); 
     }
 
     // Cierra la tarjeta si haces clic en el fondo gris oscuro
