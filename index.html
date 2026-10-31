@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: {ahora_str}</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 31/10/2026 13:20</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -331,6 +331,18 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 </table>
             </div>
         </div>
+
+        <!-- ======================================================= -->
+        <!-- NUEVO: PASTILLAS Y CONTENEDORES DE JORNADA              -->
+        <!-- ======================================================= -->
+        <div id="pastillas-jornada" style="display: flex; gap: 8px; margin-top: 16px; margin-bottom: 16px; display: none;">
+            <button onclick="document.getElementById('equipo-ideal-content').style.display = 'block'; document.getElementById('equipo-ideal-content').scrollIntoView({behavior: 'smooth'});" style="flex: 1; padding: 8px; border-radius: 20px; background: var(--card); color: var(--text); border: 1px solid var(--border); font-weight: bold; cursor: pointer;">🌟 11 Ideal</button>
+            <button onclick="alert('El tarjetero estará aquí pronto');" style="flex: 1; padding: 8px; border-radius: 20px; background: var(--card); color: var(--text); border: 1px solid var(--border); font-weight: bold; cursor: pointer;">🃏 Tarjetero</button>
+        </div>
+
+        <div id="equipo-ideal-content" style="display: none; margin-bottom: 16px;"></div>
+        <div id="paguitas-content"></div>
+        <div id="sanciones-content"></div>
     </div>
 </div>
 
@@ -1424,27 +1436,49 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         content.innerHTML = html;
     }
 
-    function abrirTarjetaManager(uidManager) {
-        // 1. El Retardo Táctil: Esperamos 250ms para que se vea el hundimiento del botón
+    function abrirTarjetaManager(uidManager, nombreManager) {
         setTimeout(() => {
-            // 2. Nos aseguramos de que no esté girada de la vez anterior
             const tarjetaInner = document.querySelector('.manager-card-container.is-flipped');
             if (tarjetaInner) tarjetaInner.classList.remove('is-flipped');
 
-            // 3. Mostramos la tarjeta correspondiente según la pestaña actual
-            if (window.modoActual === 'general') {
-                document.getElementById('tarjeta-general').style.display = 'block';
-                document.getElementById('tarjeta-jornada').style.display = 'none';
-            } else {
+            // Miramos si el selector de jornadas de tu HTML está visible para saber dónde estamos
+            const selectorVisible = document.getElementById('selector-jornada').style.display !== 'none';
+
+            if (selectorVisible) {
+                // --- ESTAMOS EN JORNADAS: SACAMOS LA ALINEACIÓN ---
+                const jd = jornadasData[selectedJornadaIdx];
+                
+                if (jd && jd.alineaciones) {
+                    const mData = jd.alineaciones.find(a => a.manager === nombreManager);
+                    
+                    if (mData) {
+                        const todosLosJugadores = [
+                            ...mData.keeper.map(j => ({ ...j, linedup: true })),
+                            ...mData.defender.map(j => ({ ...j, linedup: true })),
+                            ...mData.midfielder.map(j => ({ ...j, linedup: true })),
+                            ...mData.striker.map(j => ({ ...j, linedup: true })),
+                            ...mData.banquillo.map(j => ({ ...j, linedup: false }))
+                        ];
+                        
+                        const divVerde = document.getElementById('verde-alineacion');
+                        if (divVerde) divVerde.innerHTML = generarHtmlAlineacion({ jugadores: todosLosJugadores });
+                        
+                        const divPuntos = document.getElementById('puntos-jornada-tarjeta');
+                        if (divPuntos) divPuntos.innerText = mData.puntos_totales;
+                    }
+                }
                 document.getElementById('tarjeta-general').style.display = 'none';
                 document.getElementById('tarjeta-jornada').style.display = 'block';
+                
+            } else {
+                // --- ESTAMOS EN GENERAL: SACAMOS ESTADÍSTICAS ---
+                document.getElementById('tarjeta-general').style.display = 'block';
+                document.getElementById('tarjeta-jornada').style.display = 'none';
             }
 
-            // 4. Abrimos el modal con animación
             const modal = document.getElementById('managerModal');
             if (modal) modal.classList.add('active'); 
-            
-        }, 250); // <-- Los 250 milisegundos de magia física
+        }, 250); // Retardo físico de 250ms
     }
 
     // Cierra la tarjeta si haces clic en el fondo gris oscuro
