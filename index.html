@@ -219,29 +219,25 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     transition: transform 0.1s ease-out;
 }
 
-/* Al clicar, hundimos la caja entera suavemente */
+.manager-avatar-btn img, .manager-avatar-btn .avatar-circle-btn {
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-style: solid;
+    border-width: 3px;
+}
+
+/* Efecto de hundimiento al hacer clic */
 .manager-avatar-btn:active {
     transform: scale(0.92) translateY(4px);
 }
-
-/* Forzamos el relieve sea cual sea la imagen que venga de Python/JS */
-.manager-avatar-btn img, .manager-avatar-btn .avatar-circle {
-    border: 3px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 50% !important;
-    padding: 2px !important;
-    background: linear-gradient(135deg, #1e3c72, #2a5298) !important;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6) !important;
-    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out !important;
-    width: 48px !important;
-    height: 48px !important;
-    object-fit: cover !important;
-}
-
-.manager-avatar-btn:active {
-    transform: scale(0.92) translateY(4px);
-}
-.manager-avatar-btn:active img, .manager-avatar-btn:active .avatar-circle {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.8) !important;
+.manager-avatar-btn:active img, .manager-avatar-btn:active .avatar-circle-btn {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 
 /* ========================================== */
@@ -315,7 +311,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: {ahora_str}</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
-body
+
 <!-- RELOJ GIGANTE GLOBAL (INTOCABLE) -->
 <div id="cuenta-atras-banner" style="display:none; background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(4, 120, 87, 0.95) 100%); border-bottom: 3px solid #34d399; padding: 15px; text-align: center; color: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 1px; margin: 0; z-index: 100; position: relative;"></div>
 
@@ -379,7 +375,7 @@ body
     </div>
 
     <!-- EL MOLDE 3D FUSIONADO CON EL SÚPER CROMO -->
-    <div id="managerModal" class="manager-modal-overlay" onclick="cerrarTarjetaFuera(event)">
+    <div id="managerModal" class="manager-modal-overlay">
         <button class="close-modal-btn" onclick="cerrarTarjetaX()">✖</button>
         
         <div class="manager-card-container" onclick="this.classList.toggle('is-flipped')">
@@ -602,16 +598,15 @@ body
         }).join('');
     }
 
-    // Fotos gigantes (56px) con sombra para efecto botón 3D
     const getFotoHtml = (uid) => {
         let fotoId = fotosMgrUID[uid];
         let color = coloresMgrUID[uid] || '#fff';
         let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
         
         if(imgSrc) {
-            return `<img src="${imgSrc}" loading="eager" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:3px solid ${color}; display:block; margin:0 auto; flex-shrink:0; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">`;
+            return `<img src="${imgSrc}" loading="eager" style="border-color: ${color};">`;
         }
-        return `<div style="width:56px; height:56px; border-radius:50%; background:#333; border:3px solid ${color}; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto; flex-shrink:0; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">👤</div>`;
+        return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`;
     };
 
     window.renderizarVista = function() {
@@ -1364,48 +1359,11 @@ body
     }
 
     function abrirTarjetaManager(uidManager) {
-        // 1. Forzamos que el UID sea texto para que no falle la comparación estricta
-        let uidBuscado = String(uidManager);
-        
-        if (!globalStats || !globalStats.clasif_general_actual) return;
-        
-        // 2. Buscamos al mánager asegurando que comparamos texto con texto
-        let datosClasif = globalStats.clasif_general_actual.find(m => String(m.uid) === uidBuscado);
-        
-        if (!datosClasif) {
-            console.error("Fallo al encontrar datos del mánager UID:", uidBuscado);
-            return; 
+        // VERSIÓN MAQUETA: Solo abre la tarjeta con la animación, sin inyectar datos
+        const modal = document.getElementById('managerModal');
+        if (modal) {
+            modal.classList.add('active'); 
         }
-        
-        let posicion = globalStats.clasif_general_actual.findIndex(m => String(m.uid) === uidBuscado) + 1;
-        let datosFinanzas = managers.find(m => m.manager === datosClasif.manager);
-
-        // 3. INYECTAR DATOS 
-        document.getElementById('mgr-card-name').innerText = datosClasif.manager;
-        document.getElementById('mgr-card-name-back').innerText = datosClasif.manager;
-        document.getElementById('mgr-card-pts').innerText = datosClasif.pts_t + " pts";
-        document.getElementById('mgr-card-trend').innerText = datosClasif.tendencia;
-        document.getElementById('mgr-card-pos').innerText = posicion + "º";
-
-        // Inyectar su avatar correcto (ahora con el borde real de su equipo)
-        let htmlFoto = getFotoHtml(uidManager);
-        document.getElementById('mgr-card-avatar').innerHTML = htmlFoto;
-        document.getElementById('mgr-card-avatar-back').innerHTML = htmlFoto;
-
-        if (datosFinanzas) {
-            document.getElementById('mgr-f-max').innerText = fmtE(datosFinanzas.patrimonio_total || 0);
-            document.getElementById('mgr-f-min').innerText = fmtE(datosFinanzas.valor_plantilla || 0);
-            document.getElementById('mgr-f-espe').innerText = fmtE(datosFinanzas.presupuesto_liquido || 0);
-            document.getElementById('mgr-f-compras').innerText = datosFinanzas.total_jugadores || "0";
-        }
-
-        // 4. ABRIR TARJETA (Retraso de 150ms para ver el efecto físico del botón)
-        setTimeout(() => {
-            const modal = document.getElementById('managerModal');
-            if (modal) {
-                modal.classList.add('active'); 
-            }
-        }, 150);
     }
 
     // Cierra la tarjeta si haces clic en el fondo gris oscuro
