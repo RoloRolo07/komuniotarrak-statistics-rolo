@@ -97,116 +97,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .center-btn-2d:active { transform: translate(-50%, -50%) scale(0.92); box-shadow: 0 4px 8px rgba(0,0,0,0.8), inset 0 2px 6px rgba(0,0,0,0.08); background: #f1f5f9; }
 
 /* ========================================== */
-/* ESTILOS TARJETA MANAGER (PARA PYTHON)      */
-/* ========================================== */
-.manager-card-container {
-    width: 340px;
-    height: 520px;
-    perspective: 1000px; 
-    cursor: pointer;
-    user-select: none;
-    margin: 20px auto; 
-}
-
-.manager-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-    transform-style: preserve-3d;
-}
-
-.manager-card-container.is-flipped .manager-card-inner {
-    transform: rotateY(180deg);
-}
-
-.manager-card-front, .manager-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    background-color: #ffffff;
-    color: #333333; /* <-- AÑADE ESTA LÍNEA PARA EL TEXTO */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.manager-card-back {
-    transform: rotateY(180deg);
-}
-
-.body-back {
-    background-color: #f8f9fc;
-}
-
-.manager-card-header {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    border-bottom: 4px solid #ffd700;
-}
-
-.manager-info h2 {
-    margin: 0;
-    font-size: 1.3rem;
-    font-weight: 700;
-}
-
-.manager-info .alias {
-    margin: 0;
-    font-size: 0.9rem;
-    opacity: 0.85;
-    font-style: italic;
-}
-
-.photo-button-wrapper {
-    position: relative;
-    margin-right: 15px;
-}
-
-.manager-photo-btn {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ffffff;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-    transition: all 0.1s ease-in-out; 
-}
-
-.manager-card-container:active .manager-photo-btn {
-    transform: scale(0.92) translateY(3px);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
-}
-
-.medal-badge {
-    position: absolute;
-    bottom: -4px;
-    right: -4px;
-    background: white;
-    border-radius: 50%;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-.manager-card-body {
-    padding: 20px;
-    flex-grow: 1;
-    text-align: center;
-}
-
-/* ========================================== */
-/* EL BOTÓN DEL MANAGER EN LA TABLA           */
+/* EL BOTÓN FÍSICO DEL MANAGER (TÁCTIL)       */
 /* ========================================== */
 .manager-avatar-btn {
     display: inline-flex;
@@ -215,29 +106,36 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     cursor: pointer;
     position: relative;
     outline: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 0.1s ease-out;
+    -webkit-tap-highlight-color: transparent; /* Elimina el cuadro azul en móviles */
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.manager-avatar-btn img, .manager-avatar-btn .avatar-circle-btn {
+/* El avatar base con sombra dura (efecto 3D físico) */
+.manager-avatar-btn img, 
+.manager-avatar-btn .avatar-circle-btn,
+.foto-hundible {
     border-radius: 50%;
     padding: 2px;
     background: linear-gradient(135deg, #1e3c72, #2a5298);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-    width: 48px;
-    height: 48px;
+    /* La clave del botón físico: sombra de 6px sólida abajo + sombra difuminada */
+    box-shadow: 0 6px 0 rgba(0,0,0,0.6), 0 8px 10px rgba(0,0,0,0.5);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 52px;
+    height: 52px;
     object-fit: cover;
     border-style: solid;
     border-width: 3px;
 }
 
-/* Efecto de hundimiento al hacer clic */
-.manager-avatar-btn:active {
-    transform: scale(0.92) translateY(4px);
+/* El hundimiento táctil (Baja el elemento y borra la sombra sólida) */
+.manager-avatar-btn:active,
+.foto-hundible:active {
+    transform: translateY(6px);
 }
-.manager-avatar-btn:active img, .manager-avatar-btn:active .avatar-circle-btn {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.8);
+.manager-avatar-btn:active img, 
+.manager-avatar-btn:active .avatar-circle-btn,
+.foto-hundible:active {
+    box-shadow: 0 0 0 rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.5);
 }
 
 /* ========================================== */
@@ -247,62 +145,107 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     display: flex;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     z-index: 9999;
     justify-content: center;
     align-items: center;
-    
-    /* Efecto apagado por defecto */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
 }
-
-.manager-modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.manager-card-container {
-    width: 340px;
-    height: 520px;
-    perspective: 1000px; 
-    cursor: pointer;
-    user-select: none;
-    /* Efecto zoom al aparecer */
-    transform: scale(0.8);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.manager-modal-overlay.active .manager-card-container {
-    transform: scale(1);
-}
+.manager-modal-overlay.active { opacity: 1; visibility: visible; }
 
 /* BOTÓN CERRAR X */
 .close-modal-btn {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.15);
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.1);
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-    font-weight: bold;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
     cursor: pointer;
     z-index: 10000;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(4px);
-    -webkit-tap-highlight-color: transparent;
 }
-.close-modal-btn:active {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(0.9);
+
+/* ========================================== */
+/* FÍSICAS DE LA TARJETA GIRATORIA 3D         */
+/* ========================================== */
+.manager-card-container {
+    width: 350px;
+    height: 560px;
+    perspective: 1200px; 
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.manager-modal-overlay.active .manager-card-container { transform: scale(1); }
+
+.manager-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+.manager-card-container.is-flipped .manager-card-inner { transform: rotateY(180deg); }
+
+.manager-card-front, .manager-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    color: #f3f4f6;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.manager-card-back { transform: rotateY(180deg); }
+
+/* La Cabecera Fija Ilusoria */
+.tarjeta-cabecera {
+    text-align: center; 
+    padding: 20px 10px 15px 10px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.tarjeta-cuerpo {
+    padding: 15px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Cajas de datos internas */
+.caja-datos {
+    background: rgba(0,0,0,0.3); 
+    border-radius: 8px; 
+    padding: 12px; 
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 12px;
+}
+.caja-datos-tit {
+    color: #9ca3af; 
+    font-size: 0.75rem; 
+    text-transform: uppercase; 
+    font-weight: 900; 
+    margin-bottom: 8px; 
+    border-bottom: 1px dashed #374151; 
+    padding-bottom: 4px;
 }
 </style>
 </head>
@@ -374,83 +317,173 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <div class="card"><div class="card-title">📜 Normativa Oficial Komuniotarrak</div><div class="text-block" style="font-size:0.95rem; line-height:1.8;"><b>1. SALDOS Y PRESUPUESTOS</b><br>- Prohibido estar en negativo al inicio del primer partido de la jornada.<br>- Las multas por saldo negativo se aplicarán sobre el valor de la plantilla o puntos según dictamine la asamblea.<br><br><b>2. MERCADO DE FICHAJES</b><br>- Las sobrepujas son libres. El que más paga, se lo lleva.<br>- Prohibido comprar y vender al mismo jugador a otro mánager de la liga en la misma semana para evadir impuestos (Fair Play Financiero).<br><br><b>3. PAGUITAS</b><br>- Solo se entregan en jornadas completas (sin partidos aplazados).<br>- Último: 2.000.000 €<br>- Penúltimo: 1.200.000 €<br>- Antepenúltimo: 800.000 €<br><br><b>4. SANCIONES</b><br>- Toda venta de un jugador después del pitido inicial que altere el saldo para evitar un negativo será severamente castigada.<br>- El VAR actúa de oficio.</div></div>
     </div>
 
-    <!-- EL MOLDE 3D FUSIONADO CON EL SÚPER CROMO -->
-    <div id="managerModal" class="manager-modal-overlay">
-        <button class="close-modal-btn" onclick="cerrarTarjetaX()">✖</button>
-        
-        <div class="manager-card-container" onclick="this.classList.toggle('is-flipped')">
+    <!-- ======================================================= -->
+    <!-- SUPER CROMOS 3D (MAQUETAS)                              -->
+    <!-- Añade 'active' al modal para verlo fijo al diseñar      -->
+    <!-- ======================================================= -->
+    <div id="managerModal" class="manager-modal-overlay active">
+        <button class="close-modal-btn">✖</button>
+
+        <!-- 1. TARJETA MODO GENERAL (HISTÓRICO) -->
+        <div id="tarjeta-general" class="manager-card-container" onclick="this.classList.toggle('is-flipped')" style="display: block;">
             <div class="manager-card-inner">
                 
-                <!-- CARA A: CABECERA Y FINANZAS -->
-                <div class="manager-card-front" style="background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); color: var(--text);">
-                    <!-- Cabecera Súper Cromo -->
-                    <div style="text-align: center; padding: 20px 10px 10px 10px;">
-                        <div id="mgr-card-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: #4b5563; border: 3px solid var(--border); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.6);">👤</div>
-                        <div id="mgr-card-name" style="font-size: 1.8rem; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 10px;">MÁNAGER</div>
+                <!-- CARA A: GENERAL -->
+                <div class="manager-card-front">
+                    <div class="tarjeta-cabecera">
+                        <div class="foto-hundible" ontouchstart="" style="border-color: #3b82f6; margin: 0 auto 15px auto;">👤</div>
+                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
+                        <div style="color: #9ca3af; font-size: 0.9rem; font-style: italic; margin-bottom: 10px;">"El Alias"</div>
                         <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
-                            <span id="mgr-card-pos" style="color: var(--white);">--º</span> &nbsp;|&nbsp; 
-                            <span id="mgr-card-pts" class="val-gold">-- pts</span> &nbsp;|&nbsp; 
-                            <span id="mgr-card-trend">--</span>
+                            <span>1º General</span> &nbsp;|&nbsp; <span style="color: #f59e0b;">0 pts</span> &nbsp;|&nbsp; <span style="color: #10b981;">▲</span>
                         </div>
                     </div>
-
-                    <!-- SECCIÓN 1: FINANZAS -->
-                    <div class="manager-card-body" style="padding: 15px;">
-                        <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                            <div style="color: var(--muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; border-bottom: 1px dashed var(--border); padding-bottom: 4px;">💼 Finanzas y Mercado</div>
+                    <div class="tarjeta-cuerpo">
+                        <div class="caja-datos">
+                            <div class="caja-datos-tit">📈 Rendimiento y Estilo</div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.8rem;">
-                                <div><span class="muted">Val Máx:</span> <b id="mgr-f-max" class="val-blue">-- €</b></div>
-                                <div><span class="muted">Val Mín:</span> <b id="mgr-f-min" class="val-white">-- €</b></div>
-                                <div><span class="muted">Compras:</span> <b id="mgr-f-compras">--</b></div>
-                                <div><span class="muted">Ventas:</span> <b id="mgr-f-ventas">--</b></div>
-                                <div><span class="muted">Movs:</span> <b id="mgr-f-movs">--</b></div>
-                                <div><span class="muted">Especul:</span> <b id="mgr-f-espe">-- €</b></div>
-                                <div><span class="muted">Paguitas:</span> <b id="mgr-f-pag" class="val-gold">-- €</b></div>
-                                <div><span class="muted">Sanciones:</span> <b id="mgr-f-san" class="val-neg">-- €</b></div>
+                                <div><span style="color: #9ca3af;">Récord Máx:</span> <b style="color: #10b981;">0 pts</b></div>
+                                <div><span style="color: #9ca3af;">Récord Mín:</span> <b style="color: #ef4444;">0 pts</b></div>
+                                <div><span style="color: #9ca3af;">Media Pts:</span> <b>0</b></div>
+                                <div><span style="color: #9ca3af;">Francotirador:</span> <b>0%</b></div>
+                                <div><span style="color: #9ca3af;">Líder:</span> <b>0 sem</b></div>
+                                <div><span style="color: #9ca3af;">Táctica:</span> <b>0-0-0</b></div>
+                                <div style="grid-column: span 2; margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 4px;">
+                                    <span style="color: #9ca3af;">Metales:</span> <b>0 Totales</b> <span style="font-size:0.8rem;">(0🥇 | 0🥈 | 0🥉)</span>
+                                </div>
                             </div>
                         </div>
-                        <div style="text-align: center; margin-top: 10px; font-size: 0.75rem; color: var(--muted);">Toca para girar ↺</div>
+                        <div class="caja-datos">
+                            <div class="caja-datos-tit">💼 Finanzas Históricas</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.8rem;">
+                                <div><span style="color: #9ca3af;">Val Máx:</span> <b style="color: #3b82f6;">0 €</b></div>
+                                <div><span style="color: #9ca3af;">Val Mín:</span> <b>0 €</b></div>
+                                <div><span style="color: #9ca3af;">Compras:</span> <b>0</b></div>
+                                <div><span style="color: #9ca3af;">Ventas:</span> <b>0</b></div>
+                                <div><span style="color: #9ca3af;">Paguitas:</span> <b style="color: #f59e0b;">0 €</b></div>
+                                <div><span style="color: #9ca3af;">Sanciones:</span> <b style="color: #ef4444;">0 €</b></div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; font-size: 0.75rem; color: #9ca3af;">Toca para girar ↺</div>
                     </div>
                 </div>
 
-                <!-- CARA B: ESTADÍSTICAS, HAT-TRICK Y POZO -->
-                <div class="manager-card-back" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); color: var(--text);">
-                    <!-- Mini cabecera Cara B -->
-                    <div style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div id="mgr-card-avatar-back" style="width: 40px; height: 40px; border-radius: 50%; background: #4b5563; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 10px;">👤</div>
-                        <div id="mgr-card-name-back" style="font-size: 1.2rem; font-weight: 900; color: var(--white); text-transform: uppercase;">MÁNAGER</div>
+                <!-- CARA B: GENERAL (SALÓN DE LA FAMA) -->
+                <div class="manager-card-back">
+                    <div class="tarjeta-cabecera">
+                        <div class="foto-hundible" ontouchstart="" style="border-color: #3b82f6; margin: 0 auto 15px auto;">👤</div>
+                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
+                        <div style="color: #9ca3af; font-size: 0.9rem; font-style: italic; margin-bottom: 10px;">"El Alias"</div>
+                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
+                            <span>1º General</span> &nbsp;|&nbsp; <span style="color: #f59e0b;">0 pts</span> &nbsp;|&nbsp; <span style="color: #10b981;">▲</span>
+                        </div>
                     </div>
-
-                    <div class="manager-card-body" style="padding: 15px; overflow-y: auto;">
-                        <!-- SECCIÓN 2: ESTADÍSTICAS -->
-                        <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                            <div style="color: var(--muted); font-size: 0.7rem; text-transform: uppercase; font-weight: 900; margin-bottom: 6px; border-bottom: 1px dashed var(--border); padding-bottom: 4px;">📊 Históricas</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.75rem;">
-                                <div><span class="muted">Récord Máx:</span> <b id="mgr-s-rmax" class="val-pos">-- pts</b></div>
-                                <div><span class="muted">Récord Mín:</span> <b id="mgr-s-rmin" class="val-neg">-- pts</b></div>
-                                <div><span class="muted">Media Pts:</span> <b id="mgr-s-media">--</b></div>
-                                <div><span class="muted">Semanas Líder:</span> <b id="mgr-s-lider">--</b></div>
-                            </div>
+                    <div class="tarjeta-cuerpo">
+                        <div class="caja-datos" style="text-align: center;">
+                            <div class="caja-datos-tit" style="color: #f59e0b;">⭐ La Tormenta Perfecta</div>
+                            <div style="color: #9ca3af; font-size: 0.75rem;">(Más puntos dados)</div>
+                            <b>- Nadie -</b>
                         </div>
-
-                        <!-- SECCIÓN 3: HAT-TRICK -->
-                        <div style="margin-bottom: 10px;">
-                            <div style="color: var(--gold); font-size: 0.7rem; text-transform: uppercase; font-weight: 900; margin-bottom: 4px; text-align: center;">⭐ El Hat-Trick</div>
-                            <div class="muted" style="text-align:center; font-size:0.75rem; background:rgba(0,0,0,0.2); padding:6px; border-radius:6px; border:1px dashed var(--border);">Próximamente...</div>
+                        <div class="caja-datos" style="text-align: center;">
+                            <div class="caja-datos-tit" style="color: #3b82f6;">🍖 La Pata Negra</div>
+                            <div style="color: #9ca3af; font-size: 0.75rem;">(Más rentable históricamente)</div>
+                            <b>- Nadie -</b>
                         </div>
-
-                        <!-- SECCIÓN 4: EL POZO -->
-                        <div>
-                            <div style="color: var(--danger); font-size: 0.7rem; text-transform: uppercase; font-weight: 900; margin-bottom: 4px; text-align: center;">💀 El Pozo</div>
-                            <div class="muted" style="text-align:center; font-size:0.75rem; background:rgba(0,0,0,0.2); padding:6px; border-radius:6px; border:1px dashed var(--danger);">Próximamente...</div>
+                        <div class="caja-datos" style="text-align: center;">
+                            <div class="caja-datos-tit" style="color: #10b981;">📋 El Coleccionista</div>
+                            <div style="color: #9ca3af; font-size: 0.75rem;">(Más veces alineado)</div>
+                            <b>- Nadie -</b>
                         </div>
+                        <div style="text-align: center; font-size: 0.75rem; color: #9ca3af;">Toca para volver ↺</div>
                     </div>
                 </div>
 
             </div>
         </div>
-    </div>
 
+
+        <!-- 2. TARJETA MODO JORNADA (EL SEMANAL) -->
+        <!-- Cambia a display: block; para maquetarla -->
+        <div id="tarjeta-jornada" class="manager-card-container" onclick="this.classList.toggle('is-flipped')" style="display: none;">
+            <div class="manager-card-inner">
+                
+                <!-- CARA A: JORNADA -->
+                <div class="manager-card-front">
+                    <div class="tarjeta-cabecera">
+                        <div class="foto-hundible" ontouchstart="" style="border-color: #ef4444; margin: 0 auto 15px auto;">👤</div>
+                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
+                        <div style="color: #9ca3af; font-size: 0.9rem; font-style: italic; margin-bottom: 10px;">"El Alias"</div>
+                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
+                            <span>1º de la Jornada</span>
+                        </div>
+                    </div>
+                    <div class="tarjeta-cuerpo" style="display: flex; flex-direction: column;">
+                        <!-- Marcador Gigante -->
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div style="font-size: 4rem; font-weight: 900; color: #10b981; line-height: 1; text-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);">0</div>
+                            <div style="color: #9ca3af; font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Puntos</div>
+                        </div>
+                        <!-- El Verde (Alineación) -->
+                        <div class="caja-datos" style="flex-grow: 1;">
+                            <div class="caja-datos-tit" style="color: #10b981; text-align: center;">🏟️ El Verde</div>
+                            <div style="font-size: 0.8rem; text-align: center; color: #9ca3af; padding: 20px 0;">[ Aquí diseñaremos el once en formato lista o campo ]</div>
+                        </div>
+                        <div style="text-align: center; font-size: 0.75rem; color: #9ca3af;">Toca para girar ↺</div>
+                    </div>
+                </div>
+
+                <!-- CARA B: JORNADA (PREMIOS SEMANALES) -->
+                <div class="manager-card-back">
+                    <div class="tarjeta-cabecera">
+                        <div class="foto-hundible" ontouchstart="" style="border-color: #ef4444; margin: 0 auto 15px auto;">👤</div>
+                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
+                        <div style="color: #9ca3af; font-size: 0.9rem; font-style: italic; margin-bottom: 10px;">"El Alias"</div>
+                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
+                            <span>1º de la Jornada</span>
+                        </div>
+                    </div>
+                    <div class="tarjeta-cuerpo">
+                        <!-- Grid 2 columnas para premios de jornada -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="caja-datos" style="text-align: center; padding: 10px;">
+                                <div style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 4px;">👑</div>
+                                <div style="font-weight: bold; font-size: 0.85rem;">Tormenta</div>
+                                <div style="color: #9ca3af; font-size: 0.75rem;">(Mejor del 11)</div>
+                            </div>
+                            <div class="caja-datos" style="text-align: center; padding: 10px;">
+                                <div style="color: #ef4444; font-size: 1.2rem; margin-bottom: 4px;">📉</div>
+                                <div style="font-weight: bold; font-size: 0.85rem;">Tarde Negra</div>
+                                <div style="color: #9ca3af; font-size: 0.75rem;">(Peor del 11)</div>
+                            </div>
+                            <div class="caja-datos" style="text-align: center; padding: 10px;">
+                                <div style="color: #3b82f6; font-size: 1.2rem; margin-bottom: 4px;">🦸</div>
+                                <div style="font-weight: bold; font-size: 0.85rem;">El Carrito</div>
+                                <div style="color: #9ca3af; font-size: 0.75rem;">(Mayor %)</div>
+                            </div>
+                            <div class="caja-datos" style="text-align: center; padding: 10px;">
+                                <div style="color: #f3f4f6; font-size: 1.2rem; margin-bottom: 4px;">👻</div>
+                                <div style="font-weight: bold; font-size: 0.85rem;">Mr Ghosting</div>
+                                <div style="color: #9ca3af; font-size: 0.75rem;">(En banquillo)</div>
+                            </div>
+                            <div class="caja-datos" style="text-align: center; padding: 10px;">
+                                <div style="color: #10b981; font-size: 1.2rem; margin-bottom: 4px;">🍖</div>
+                                <div style="font-weight: bold; font-size: 0.85rem;">Pata Negra</div>
+                                <div style="color: #9ca3af; font-size: 0.75rem;">(€ / Ptos)</div>
+                            </div>
+                            <div class="caja-datos" style="text-align: center; padding: 10px;">
+                                <div style="color: #9ca3af; font-size: 1.2rem; margin-bottom: 4px;">🍷</div>
+                                <div style="font-weight: bold; font-size: 0.85rem;">Garrafón</div>
+                                <div style="color: #9ca3af; font-size: 0.75rem;">(€ / Ptos)</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; font-size: 0.75rem; color: #9ca3af; margin-top: 8px;">Toca para volver ↺</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
 <script>
     const managers = [{"manager": "Rolo Tomasi", "valor_plantilla": 84590000, "presupuesto_liquido": 1706721, "patrimonio_total": 86296721, "puja_maxima": 22854221, "total_jugadores": 13, "compras_realizadas": 58, "ventas_realizadas": 45, "puntos": 667}, {"manager": "Alberto Garcia", "valor_plantilla": 75370000, "presupuesto_liquido": 5690800, "patrimonio_total": 81060800, "puja_maxima": 24533300, "total_jugadores": 18, "compras_realizadas": 43, "ventas_realizadas": 25, "puntos": 583}, {"manager": "Iñaki", "valor_plantilla": 66020000, "presupuesto_liquido": -678720, "patrimonio_total": 65341280, "puja_maxima": 15826280, "total_jugadores": 18, "compras_realizadas": 62, "ventas_realizadas": 44, "puntos": 503}, {"manager": "Gorka Bartu", "valor_plantilla": 60390000, "presupuesto_liquido": 285202, "patrimonio_total": 60675202, "puja_maxima": 15382702, "total_jugadores": 14, "compras_realizadas": 85, "ventas_realizadas": 71, "puntos": 454}, {"manager": "Lord Rhal", "valor_plantilla": 65580000, "presupuesto_liquido": -4004960, "patrimonio_total": 61575040, "puja_maxima": 12390040, "total_jugadores": 13, "compras_realizadas": 41, "ventas_realizadas": 28, "puntos": 449}, {"manager": "Jon MARQUEZ PEREZ", "valor_plantilla": 49800000, "presupuesto_liquido": 466365, "patrimonio_total": 50266365, "puja_maxima": 12916365, "total_jugadores": 14, "compras_realizadas": 57, "ventas_realizadas": 43, "puntos": 404}];
     const alertas = ["👤 <b>*Iñaki*</b> (18 jugadores):\n    • 💰 <b>*INFRACCIÓN SALDO NEGATIVO:*</b> -678.720 €\n    • 🚨 <b>*INFRACCIÓN LÍMITE PLANTILLA:*</b> 18 jugadores (Límite: 17)\n", "👤 <b>*Lord Rhal*</b> (13 jugadores):\n    • 💰 <b>*INFRACCIÓN SALDO NEGATIVO:*</b> -4.004.960 €\n", "👤 <b>*Alberto Garcia*</b> (18 jugadores):\n    • 🚨 <b>*INFRACCIÓN LÍMITE PLANTILLA:*</b> 18 jugadores (Límite: 17)\n", "👤 <b>*Jon MARQUEZ PEREZ*</b> (14 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n", "👤 <b>*Rolo Tomasi*</b> (13 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n", "👤 <b>*Gorka Bartu*</b> (14 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n"];
