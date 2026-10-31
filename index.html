@@ -230,12 +230,17 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     flex-grow: 1;
 }
 
-/* Cajas de datos internas */
+/* Cajas de datos internas (Efecto Relieve Físico 3D) */
 .caja-datos {
-    background: rgba(0,0,0,0.3); 
-    border-radius: 8px; 
+    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.4) 100%);
+    border-radius: 10px; 
     padding: 12px; 
-    border: 1px solid rgba(255,255,255,0.05);
+    /* El truco del relieve: luces arriba/izq, sombras abajo/der */
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-left: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.6);
+    border-right: 1px solid rgba(0,0,0,0.6);
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.05);
     margin-bottom: 12px;
 }
 .caja-datos-tit {
@@ -244,8 +249,24 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     text-transform: uppercase; 
     font-weight: 900; 
     margin-bottom: 8px; 
-    border-bottom: 1px dashed #374151; 
+    border-bottom: 1px dashed rgba(255,255,255,0.1); 
     padding-bottom: 4px;
+}
+
+/* Clases para alinear el escudo y el nombre del jugador */
+.jugador-premio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+.escudo-mini {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
 }
 </style>
 </head>
@@ -318,14 +339,13 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
 
     <!-- ======================================================= -->
-    <!-- SUPER CROMOS 3D (MAQUETAS)                              -->
-    <!-- Añade 'active' al modal para verlo fijo al diseñar      -->
+    <!-- SUPER CROMOS 3D (MAQUETAS DEFINITIVAS)                  -->
     <!-- ======================================================= -->
-    <div id="managerModal" class="manager-modal-overlay active">
-        <button class="close-modal-btn">✖</button>
+    <div id="managerModal" class="manager-modal-overlay">
+        <button class="close-modal-btn" onclick="cerrarTarjetaX()">✖</button>
 
         <!-- 1. TARJETA MODO GENERAL (HISTÓRICO) -->
-        <div id="tarjeta-general" class="manager-card-container" onclick="this.classList.toggle('is-flipped')" style="display: block;">
+        <div id="tarjeta-general" class="manager-card-container" onclick="this.classList.toggle('is-flipped')" style="display: none;">
             <div class="manager-card-inner">
                 
                 <!-- CARA A: GENERAL -->
@@ -348,7 +368,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                 <div><span style="color: #9ca3af;">Francotirador:</span> <b>0%</b></div>
                                 <div><span style="color: #9ca3af;">Líder:</span> <b>0 sem</b></div>
                                 <div><span style="color: #9ca3af;">Táctica:</span> <b>0-0-0</b></div>
-                                <div style="grid-column: span 2; margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 4px;">
+                                <div style="grid-column: span 2; margin-top: 4px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 6px;">
                                     <span style="color: #9ca3af;">Metales:</span> <b>0 Totales</b> <span style="font-size:0.8rem;">(0🥇 | 0🥈 | 0🥉)</span>
                                 </div>
                             </div>
@@ -382,17 +402,29 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         <div class="caja-datos" style="text-align: center;">
                             <div class="caja-datos-tit" style="color: #f59e0b;">⭐ La Tormenta Perfecta</div>
                             <div style="color: #9ca3af; font-size: 0.75rem;">(Más puntos dados)</div>
-                            <b>- Nadie -</b>
+                            <div class="jugador-premio">
+                                <img src="https://drive.google.com/thumbnail?id=136eSioUVKMLqxeeKMIuX9JUh5NBMZ_la&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                <b style="font-size: 1.1rem;">Bellingham</b>
+                            </div>
+                            <div style="color: #f59e0b; font-size: 0.9rem; font-weight: bold;">+150 pts</div>
                         </div>
                         <div class="caja-datos" style="text-align: center;">
                             <div class="caja-datos-tit" style="color: #3b82f6;">🍖 La Pata Negra</div>
                             <div style="color: #9ca3af; font-size: 0.75rem;">(Más rentable históricamente)</div>
-                            <b>- Nadie -</b>
+                            <div class="jugador-premio">
+                                <img src="https://drive.google.com/thumbnail?id=1xA80QYBGEjl8MhrXe-IKN9POjzfiYqOU&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                <b style="font-size: 1.1rem;">Lamine Yamal</b>
+                            </div>
+                            <div style="color: #3b82f6; font-size: 0.9rem; font-weight: bold;">5.5 pts / millón</div>
                         </div>
                         <div class="caja-datos" style="text-align: center;">
                             <div class="caja-datos-tit" style="color: #10b981;">📋 El Coleccionista</div>
                             <div style="color: #9ca3af; font-size: 0.75rem;">(Más veces alineado)</div>
-                            <b>- Nadie -</b>
+                            <div class="jugador-premio">
+                                <img src="https://drive.google.com/thumbnail?id=1ed86k_8Vtzao1Y6mQaG9oBPX4Xu24DGP&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                <b style="font-size: 1.1rem;">I. Williams</b>
+                            </div>
+                            <div style="color: #10b981; font-size: 0.9rem; font-weight: bold;">15 jornadas</div>
                         </div>
                         <div style="text-align: center; font-size: 0.75rem; color: #9ca3af;">Toca para volver ↺</div>
                     </div>
@@ -403,7 +435,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
 
         <!-- 2. TARJETA MODO JORNADA (EL SEMANAL) -->
-        <!-- Cambia a display: block; para maquetarla -->
         <div id="tarjeta-jornada" class="manager-card-container" onclick="this.classList.toggle('is-flipped')" style="display: none;">
             <div class="manager-card-inner">
                 
@@ -418,12 +449,10 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         </div>
                     </div>
                     <div class="tarjeta-cuerpo" style="display: flex; flex-direction: column;">
-                        <!-- Marcador Gigante -->
                         <div style="text-align: center; margin-bottom: 15px;">
                             <div style="font-size: 4rem; font-weight: 900; color: #10b981; line-height: 1; text-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);">0</div>
                             <div style="color: #9ca3af; font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Puntos</div>
                         </div>
-                        <!-- El Verde (Alineación) -->
                         <div class="caja-datos" style="flex-grow: 1;">
                             <div class="caja-datos-tit" style="color: #10b981; text-align: center;">🏟️ El Verde</div>
                             <div style="font-size: 0.8rem; text-align: center; color: #9ca3af; padding: 20px 0;">[ Aquí diseñaremos el once en formato lista o campo ]</div>
@@ -443,38 +472,62 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         </div>
                     </div>
                     <div class="tarjeta-cuerpo">
-                        <!-- Grid 2 columnas para premios de jornada -->
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
-                                <div style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 4px;">👑</div>
-                                <div style="font-weight: bold; font-size: 0.85rem;">Tormenta</div>
-                                <div style="color: #9ca3af; font-size: 0.75rem;">(Mejor del 11)</div>
+                                <div style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 2px;">👑</div>
+                                <div style="font-weight: bold; font-size: 0.8rem;">Tormenta</div>
+                                <div class="jugador-premio" style="margin-top: 4px;">
+                                    <img src="https://drive.google.com/thumbnail?id=1t6JgECZ0DS2s_TBPMfKG9I56il4mZFNS&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                    <span style="font-size: 0.85rem;">Kubo</span>
+                                </div>
                             </div>
+                            
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
-                                <div style="color: #ef4444; font-size: 1.2rem; margin-bottom: 4px;">📉</div>
-                                <div style="font-weight: bold; font-size: 0.85rem;">Tarde Negra</div>
-                                <div style="color: #9ca3af; font-size: 0.75rem;">(Peor del 11)</div>
+                                <div style="color: #ef4444; font-size: 1.2rem; margin-bottom: 2px;">📉</div>
+                                <div style="font-weight: bold; font-size: 0.8rem;">Tarde Negra</div>
+                                <div class="jugador-premio" style="margin-top: 4px;">
+                                    <img src="https://drive.google.com/thumbnail?id=1ed86k_8Vtzao1Y6mQaG9oBPX4Xu24DGP&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                    <span style="font-size: 0.85rem;">Unai Simón</span>
+                                </div>
                             </div>
+
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
-                                <div style="color: #3b82f6; font-size: 1.2rem; margin-bottom: 4px;">🦸</div>
-                                <div style="font-weight: bold; font-size: 0.85rem;">El Carrito</div>
-                                <div style="color: #9ca3af; font-size: 0.75rem;">(Mayor %)</div>
+                                <div style="color: #3b82f6; font-size: 1.2rem; margin-bottom: 2px;">🦸</div>
+                                <div style="font-weight: bold; font-size: 0.8rem;">El Carrito</div>
+                                <div class="jugador-premio" style="margin-top: 4px;">
+                                    <img src="https://drive.google.com/thumbnail?id=16T47GYITukNadt0tZTDbmsH2j1ZdaUUm&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                    <span style="font-size: 0.85rem;">Griezmann</span>
+                                </div>
                             </div>
+
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
-                                <div style="color: #f3f4f6; font-size: 1.2rem; margin-bottom: 4px;">👻</div>
-                                <div style="font-weight: bold; font-size: 0.85rem;">Mr Ghosting</div>
-                                <div style="color: #9ca3af; font-size: 0.75rem;">(En banquillo)</div>
+                                <div style="color: #f3f4f6; font-size: 1.2rem; margin-bottom: 2px;">👻</div>
+                                <div style="font-weight: bold; font-size: 0.8rem;">Mr Ghosting</div>
+                                <div class="jugador-premio" style="margin-top: 4px;">
+                                    <img src="https://drive.google.com/thumbnail?id=1Eg-cRV9EWYVgsZnc2kcVbHpXAFaAxEhB&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                    <span style="font-size: 0.85rem;">Isco</span>
+                                </div>
                             </div>
+
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
-                                <div style="color: #10b981; font-size: 1.2rem; margin-bottom: 4px;">🍖</div>
-                                <div style="font-weight: bold; font-size: 0.85rem;">Pata Negra</div>
-                                <div style="color: #9ca3af; font-size: 0.75rem;">(€ / Ptos)</div>
+                                <div style="color: #10b981; font-size: 1.2rem; margin-bottom: 2px;">🍖</div>
+                                <div style="font-weight: bold; font-size: 0.8rem;">Pata Negra</div>
+                                <div class="jugador-premio" style="margin-top: 4px;">
+                                    <img src="https://drive.google.com/thumbnail?id=1Vn9GU7iNutlauVC7VN7885t7ORHPQin1&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                    <span style="font-size: 0.85rem;">Iago Aspas</span>
+                                </div>
                             </div>
+
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
-                                <div style="color: #9ca3af; font-size: 1.2rem; margin-bottom: 4px;">🍷</div>
-                                <div style="font-weight: bold; font-size: 0.85rem;">Garrafón</div>
-                                <div style="color: #9ca3af; font-size: 0.75rem;">(€ / Ptos)</div>
+                                <div style="color: #9ca3af; font-size: 1.2rem; margin-bottom: 2px;">🍷</div>
+                                <div style="font-weight: bold; font-size: 0.8rem;">Garrafón</div>
+                                <div class="jugador-premio" style="margin-top: 4px;">
+                                    <img src="https://drive.google.com/thumbnail?id=1tPocKhHEJKZaOIIECE_muv-XN5bgjdeh&sz=w100-h100" class="escudo-mini" onerror="this.style.display='none'">
+                                    <span style="font-size: 0.85rem;">Puado</span>
+                                </div>
                             </div>
+
                         </div>
                         <div style="text-align: center; font-size: 0.75rem; color: #9ca3af; margin-top: 8px;">Toca para volver ↺</div>
                     </div>
@@ -483,7 +536,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
 
     </div>
-    
+        
 <script>
     const managers = [{"manager": "Rolo Tomasi", "valor_plantilla": 84590000, "presupuesto_liquido": 1706721, "patrimonio_total": 86296721, "puja_maxima": 22854221, "total_jugadores": 13, "compras_realizadas": 58, "ventas_realizadas": 45, "puntos": 667}, {"manager": "Alberto Garcia", "valor_plantilla": 75370000, "presupuesto_liquido": 5690800, "patrimonio_total": 81060800, "puja_maxima": 24533300, "total_jugadores": 18, "compras_realizadas": 43, "ventas_realizadas": 25, "puntos": 583}, {"manager": "Iñaki", "valor_plantilla": 66020000, "presupuesto_liquido": -678720, "patrimonio_total": 65341280, "puja_maxima": 15826280, "total_jugadores": 18, "compras_realizadas": 62, "ventas_realizadas": 44, "puntos": 503}, {"manager": "Gorka Bartu", "valor_plantilla": 60390000, "presupuesto_liquido": 285202, "patrimonio_total": 60675202, "puja_maxima": 15382702, "total_jugadores": 14, "compras_realizadas": 85, "ventas_realizadas": 71, "puntos": 454}, {"manager": "Lord Rhal", "valor_plantilla": 65580000, "presupuesto_liquido": -4004960, "patrimonio_total": 61575040, "puja_maxima": 12390040, "total_jugadores": 13, "compras_realizadas": 41, "ventas_realizadas": 28, "puntos": 449}, {"manager": "Jon MARQUEZ PEREZ", "valor_plantilla": 49800000, "presupuesto_liquido": 466365, "patrimonio_total": 50266365, "puja_maxima": 12916365, "total_jugadores": 14, "compras_realizadas": 57, "ventas_realizadas": 43, "puntos": 404}];
     const alertas = ["👤 <b>*Iñaki*</b> (18 jugadores):\n    • 💰 <b>*INFRACCIÓN SALDO NEGATIVO:*</b> -678.720 €\n    • 🚨 <b>*INFRACCIÓN LÍMITE PLANTILLA:*</b> 18 jugadores (Límite: 17)\n", "👤 <b>*Lord Rhal*</b> (13 jugadores):\n    • 💰 <b>*INFRACCIÓN SALDO NEGATIVO:*</b> -4.004.960 €\n", "👤 <b>*Alberto Garcia*</b> (18 jugadores):\n    • 🚨 <b>*INFRACCIÓN LÍMITE PLANTILLA:*</b> 18 jugadores (Límite: 17)\n", "👤 <b>*Jon MARQUEZ PEREZ*</b> (14 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n", "👤 <b>*Rolo Tomasi*</b> (13 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n", "👤 <b>*Gorka Bartu*</b> (14 jugadores):\n    • ✅ <i>Sin incidencias.</i>\n"];
@@ -1392,11 +1445,22 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     }
 
     function abrirTarjetaManager(uidManager) {
-        // VERSIÓN MAQUETA: Solo abre la tarjeta con la animación, sin inyectar datos
-        const modal = document.getElementById('managerModal');
-        if (modal) {
-            modal.classList.add('active'); 
+        // 1. Nos aseguramos de que no esté girada de la vez anterior
+        const tarjetaInner = document.querySelector('.manager-card-container.is-flipped');
+        if (tarjetaInner) tarjetaInner.classList.remove('is-flipped');
+
+        // 2. Mostramos la tarjeta correspondiente según la pestaña actual
+        if (window.modoActual === 'general') {
+            document.getElementById('tarjeta-general').style.display = 'block';
+            document.getElementById('tarjeta-jornada').style.display = 'none';
+        } else {
+            document.getElementById('tarjeta-general').style.display = 'none';
+            document.getElementById('tarjeta-jornada').style.display = 'block';
         }
+
+        // 3. Abrimos el modal con animación
+        const modal = document.getElementById('managerModal');
+        if (modal) modal.classList.add('active'); 
     }
 
     // Cierra la tarjeta si haces clic en el fondo gris oscuro
