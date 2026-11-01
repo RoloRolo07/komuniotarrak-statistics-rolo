@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 13:35</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 13:41</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -801,8 +801,16 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         
                         // Buscamos el UID del mánager para inyectar su foto
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
-                        let fotoStr = uid ? getFotoHtml(uid).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:48px; height:48px; margin:0 auto;"').replace('<img', '<img style="width:48px; height:48px; margin:0 auto;"') : '👤';
                         
+                        // Técnica calcada del 11 Ideal:
+                        let colorDash = coloresMgrUID[uid] || '#fff';
+                        let fotoIdDash = fotosMgrUID[uid];
+                        let fotoUrlDash = fotoIdDash ? getFotoUrl(fotoIdDash) : '';
+                        
+                        let fotoStr = fotoUrlDash 
+                            ? `<img src="${fotoUrlDash}" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorDash}; object-fit: cover; background: #1e293b; margin: 0 auto; display: block; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">`
+                            : `<div style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorDash}; background: #cbd5e1; display:flex; justify-content:center; align-items:center; font-size:1.4rem; margin: 0 auto; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">👤</div>`;
+
                         return `<div class="card" style="margin-bottom: 12px;">
                             <div class="mgr-header" style="display:flex; justify-content:center; margin-bottom:12px;">
                                 ${fotoStr}
