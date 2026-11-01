@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 08:28</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 08:51</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -382,7 +382,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             </div>
                             <div style="display: flex; align-items: baseline; gap: 6px;">
                                 <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
-                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
                                 <div class="tendencia-cabecera" style="font-size: 1.4rem; font-weight: bold; margin-left: 4px;">-</div>
                             </div>
                         </div>
@@ -427,7 +426,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             </div>
                             <div style="display: flex; align-items: baseline; gap: 6px;">
                                 <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
-                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
                                 <div class="tendencia-cabecera" style="font-size: 1.4rem; font-weight: bold; margin-left: 4px;">-</div>
                             </div>
                         </div>
@@ -489,7 +487,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             </div>
                             <div style="display: flex; align-items: baseline; gap: 6px;">
                                 <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
-                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
                                 <div class="tendencia-cabecera" style="display: none;"></div>
                             </div>
                         </div>
@@ -499,13 +496,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         </div>
                     </div>
                     <div class="tarjeta-cuerpo" style="display: flex; flex-direction: column; padding-top: 5px;">
-                        <div class="caja-datos" style="flex-grow: 1;">
-                            <div class="caja-datos-tit" style="color: #10b981; text-align: center;">🏟️ El Verde</div>
-                            <div id="verde-alineacion" style="font-size: 0.8rem; text-align: center; color: #9ca3af; padding: 10px 0; overflow-y: auto;">
+                        <div class="caja-datos" style="flex-grow: 1; border: none; background: transparent; box-shadow: none; padding: 0;">
+                            <div id="verde-alineacion" style="font-size: 0.8rem; text-align: center; color: #9ca3af; overflow-y: auto;">
                                 [ Aquí inyectaremos el 11 titular al conectar JS ]
                             </div>
                         </div>
-                        <div style="text-align: center; font-size: 0.75rem; color: #9ca3af;">Toca para girar ↺</div>
+                        <div style="text-align: center; font-size: 0.75rem; color: #9ca3af; margin-top: 8px;">Toca para girar ↺</div>
                     </div>
                 </div>
 
@@ -519,7 +515,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             </div>
                             <div style="display: flex; align-items: baseline; gap: 6px;">
                                 <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
-                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
                                 <div class="tendencia-cabecera" style="display: none;"></div>
                             </div>
                         </div>
@@ -796,8 +791,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No hay movimientos recientes.</div>`;
                 }
             } else if (submodo === 'dashboard') {
-                modalContent.innerHTML = `<div class="card-title" style="font-size:1.1rem; padding-bottom:8px; color:var(--white);">📊 Cuentas y Dashboard</div><div class="grid-managers" id="grid-dashboard-modal"></div>`;
-                // Esperamos un tick para que se inyecte el HTML y luego llamamos a la función que lo rellena
+                modalContent.innerHTML = `<div class="card-title" style="font-size:1.1rem; padding-bottom:8px; color:var(--white); justify-content:center;">📊 Dashboard</div><div class="grid-managers" id="grid-dashboard-modal"></div>`;
                 setTimeout(() => {
                     const grid = document.getElementById('grid-dashboard-modal'); 
                     if (!grid) return;
@@ -806,7 +800,22 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg'; 
                         let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
                         if (textoM) { let infracciones = textoM.replace(/\\*/g, "").split('\\n').filter(l => l.includes('INFRACCIÓN')); if (infracciones.length > 0) alertaHTML = `<div class="alert-mini">⚠️ ${infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>')}</div>`; } 
-                        return `<div class="card" style="margin-bottom: 12px;"><div class="mgr-header">👤 ${m.manager}</div><div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div><div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div><div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div><div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div><div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>${alertaHTML}</div>`; 
+                        
+                        // Buscamos el UID del mánager para inyectar su foto
+                        let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
+                        let fotoStr = uid ? getFotoHtml(uid).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:48px; height:48px; margin:0 auto;"').replace('<img', '<img style="width:48px; height:48px; margin:0 auto;"') : '👤';
+                        
+                        return `<div class="card" style="margin-bottom: 12px;">
+                            <div class="mgr-header" style="display:flex; justify-content:center; margin-bottom:12px;">
+                                ${fotoStr}
+                            </div>
+                            <div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div>
+                            <div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div>
+                            <div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div>
+                            <div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div>
+                            <div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>
+                            ${alertaHTML}
+                        </div>`; 
                     }).join(''); 
                 }, 0);
             } else if (submodo === 'mercado_hoy') {
@@ -852,7 +861,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 
                 if (typeof mercado_vivo !== 'undefined' && mercado_vivo.length > 0) {
                     htmlMercado += `<div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;">
-                        <thead><tr><th>Jugador</th><th style="text-align:center;">Pos</th><th>Club</th><th style="text-align:right;">Precio</th></tr></thead><tbody>`;
+                        <thead><tr><th>Jugador</th><th style="text-align:center;">Pos</th><th style="text-align:center;">Club</th><th style="text-align:right;">Precio</th></tr></thead><tbody>`;
                     
                     const posBadge = (pos) => {
                         let p = (pos || '').toLowerCase();
@@ -864,10 +873,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     };
 
                     mercado_vivo.forEach(j => {
+                        let escudo = j.club_id ? `<img src="img/escudos/${j.club_id}.png" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
+                        
                         htmlMercado += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <td><b>${j.nombre}</b></td>
                             <td style="text-align:center;">${posBadge(j.posicion)}</td>
-                            <td class="muted">${j.club}</td>
+                            <td style="text-align:center;">${escudo}</td>
                             <td style="text-align:right; font-weight:bold; color:var(--white);">${fmtE(j.precio)}</td>
                         </tr>`;
                     });
@@ -1809,14 +1820,16 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     }
 
     function generarHtmlAlineacion(managerData) {
-        // Generador de etiquetas de posición basado en tu código original
-        const getPosBadge = (pos) => {
+        const getPosBadge = (pos, isBanquillo) => {
             let p = (pos || '').toLowerCase();
-            if (p.includes('keep') || p === '1') return `<span style="background: rgba(234, 179, 8, 0.15); border-left: 3px solid #eab308; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: #fde047; margin-right: 8px;">POR</span>`;
-            if (p.includes('def') || p === '2') return `<span style="background: rgba(59, 130, 246, 0.15); border-left: 3px solid #3b82f6; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: #93c5fd; margin-right: 8px;">DEF</span>`;
-            if (p.includes('mid') || p === '3') return `<span style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: #6ee7b7; margin-right: 8px;">MED</span>`;
-            if (p.includes('stri') || p === '4') return `<span style="background: rgba(239, 68, 68, 0.15); border-left: 3px solid #ef4444; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: #fca5a5; margin-right: 8px;">DEL</span>`;
-            return `<span style="background: rgba(156, 163, 175, 0.15); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; color: #d1d5db; margin-right: 8px;">DES</span>`;
+            let op = isBanquillo ? '0.4' : '1';
+            let opBg = isBanquillo ? '0.05' : '0.15';
+            
+            if (p.includes('keep') || p === '1' || p === '1.0') return `<span style="background: rgba(234, 179, 8, ${opBg}); border-left: 3px solid rgba(234, 179, 8, ${op}); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: rgba(253, 224, 71, ${op}); margin-right: 8px;">POR</span>`;
+            if (p.includes('def') || p === '2' || p === '2.0') return `<span style="background: rgba(59, 130, 246, ${opBg}); border-left: 3px solid rgba(59, 130, 246, ${op}); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: rgba(147, 197, 253, ${op}); margin-right: 8px;">DEF</span>`;
+            if (p.includes('mid') || p === '3' || p === '3.0') return `<span style="background: rgba(16, 185, 129, ${opBg}); border-left: 3px solid rgba(16, 185, 129, ${op}); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: rgba(110, 231, 183, ${op}); margin-right: 8px;">MED</span>`;
+            if (p.includes('stri') || p.includes('forward') || p === '4' || p === '4.0') return `<span style="background: rgba(239, 68, 68, ${opBg}); border-left: 3px solid rgba(239, 68, 68, ${op}); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: rgba(252, 165, 165, ${op}); margin-right: 8px;">DEL</span>`;
+            return `<span style="background: rgba(156, 163, 175, ${opBg}); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; color: rgba(209, 213, 219, ${op}); margin-right: 8px;">DES</span>`;
         };
 
         let titularesHTML = `<div style="font-size: 0.75rem; text-transform: uppercase; color: #f59e0b; font-weight: 800; margin-bottom: 8px; text-align: left;">⭐ TITULARES</div>`;
@@ -1825,16 +1838,18 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         let hayBanquillo = false;
 
         managerData.jugadores.forEach(j => {
-            let ptsStr = j.pts === 'LIVE' ? '<span style="color:#ef4444; animation: blinker 1.5s linear infinite;">LIVE</span>' : `<span style="color:#f3f4f6; font-weight:bold;">${j.pts}</span>`;
-            // Usamos el ID del equipo para cargar tu escudo local
-            let escudoHtml = j.team_id ? `<img src="img/escudos/${j.team_id}.png" style="width:16px; height:16px; object-fit:contain;" onerror="this.style.display='none'">` : '';
+            let isBanquillo = !j.linedup;
+            let ptsStr = j.pts === 'LIVE' ? '<span style="color:#ef4444; animation: blinker 1.5s linear infinite;">LIVE</span>' : `<span style="color:${isBanquillo ? '#9ca3af' : '#f3f4f6'}; font-weight:bold;">${j.pts}</span>`;
+            
+            // Asumiendo que el ID del equipo viaja en j.team_id o j.club_id
+            let escudoHtml = (j.team_id || j.club_id) ? `<img src="img/escudos/${j.team_id || j.club_id}.png" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
 
             let fila = `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
                     <div style="display: flex; align-items: center;">
-                        ${getPosBadge(j.position)}
-                        <span style="color: #f3f4f6; font-size: 0.9rem; margin-right: 8px;">${j.name}</span>
+                        ${getPosBadge(j.position, isBanquillo)}
                         ${escudoHtml}
+                        <span style="color: ${isBanquillo ? '#9ca3af' : '#f3f4f6'}; font-size: 0.95rem;">${j.name}</span>
                     </div>
                     ${ptsStr}
                 </div>
