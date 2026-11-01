@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 21:45</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 22:02</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -796,9 +796,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     if (!managers || !managers.length) { grid.innerHTML = '<p class="muted">No hay datos de mánagers.</p>'; return; } 
                     grid.innerHTML = managers.map(m => { 
                         const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg'; 
-                        let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
-                        if (textoM) { let infracciones = textoM.replace(/\\*/g, "").split('\\n').filter(l => l.includes('INFRACCIÓN')); if (infracciones.length > 0) alertaHTML = `<div class="alert-mini">⚠️ ${infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>')}</div>`; } 
-                        
+                        let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN'));
+                        if (textoM) {
+                            let partes = textoM.replace(/\*/g, "").split(/•|\n/).map(p => p.trim()).filter(p => p.includes('INFRACCIÓN'));
+                            if (partes.length > 0) alertaHTML = `<div class="alert-mini" style="text-align:left; padding:6px; margin-top:8px; line-height:1.4;">` + partes.map(p => `<div style="margin-bottom:2px;">⚠️ ${p}</div>`).join('') + `</div>`;
+                        }                        
                         // Buscamos el UID del mánager para inyectar su foto
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
                         
@@ -879,8 +881,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     };
 
                     mercado_vivo.forEach(j => {
-                        let escudo = j.club_id ? `<img src="img/escudos/${j.club_id}.png" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
-                        
+                        let driveId = escudosDrive[j.club_id];
+                        let escudo = driveId ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
+
                         htmlMercado += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <td><b>${j.nombre}</b></td>
                             <td style="text-align:center;">${posBadge(j.posicion)}</td>
@@ -1119,8 +1122,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         grid.innerHTML = managers.map(m => { 
             const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg'; 
             let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
-            if (textoM) { let infracciones = textoM.replace(/\\*/g, "").split('\\n').filter(l => l.includes('INFRACCIÓN')); if (infracciones.length > 0) alertaHTML = `<div class="alert-mini">⚠️ ${infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>')}</div>`; } 
-            return `<div class="card"><div class="mgr-header">👤 ${m.manager}</div><div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div><div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div><div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div><div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div><div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>${alertaHTML}</div>`; 
+            if (textoM) { let partes = textoM.replace(/\*/g, "").split(/•|\n/).map(p => p.trim()).filter(p => p.includes('INFRACCIÓN')); if (partes.length > 0) alertaHTML = `<div class="alert-mini" style="text-align:left; padding:6px; margin-top:8px; line-height:1.4;">` + partes.map(p => `<div style="margin-bottom:2px;">⚠️ ${p}</div>`).join('') + `</div>`; }            return `<div class="card"><div class="mgr-header">👤 ${m.manager}</div><div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div><div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div><div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div><div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div><div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>${alertaHTML}</div>`; 
         }).join(''); 
     }
 
@@ -1855,7 +1857,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             let ptsStr = j.pts === 'LIVE' ? '<span style="color:#ef4444; animation: blinker 1.5s linear infinite;">LIVE</span>' : `<span style="color:${isBanquillo ? '#9ca3af' : '#f3f4f6'}; font-weight:bold;">${j.pts}</span>`;
             
             // Asumiendo que el ID del equipo viaja en j.team_id o j.club_id
-            let escudoHtml = (j.team_id || j.club_id) ? `<img src="img/escudos/${j.team_id || j.club_id}.png" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
+            let clubIdStr = j.team_id || j.club_id || "";
+            let escudoDriveId = escudosDrive[clubIdStr];
+            let escudoHtml = escudoDriveId ? `<img src="https://drive.google.com/thumbnail?id=${escudoDriveId}&sz=w100-h100" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
 
             let fila = `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
