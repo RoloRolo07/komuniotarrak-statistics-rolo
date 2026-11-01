@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 09:37</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 10:11</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -598,7 +598,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
     function fmtE(n) { return Number(n).toLocaleString('es-ES') + ' €'; }
 
-    // DICCIONARIOS DE FOTOS Y ESCUDOS
+    // =======================================================
+    // DICCIONARIOS DE FOTOS (¡RESUCITADOS!)
+    // =======================================================
     const fotosMgrUID = {
         "21057989": "1lMpof0yp07WfdrMiz0xBZ3xpvj3ROxHO", "21058279": "1BbNA9rH0cVFqZhfAjes1Lf-y3TNUPXEz", 
         "21059980": "13oIgZEhUPH-i_DFmILVuUH4Fq1LagBTT", "21067500": "1e0hCuH0j40vb7568S1X9jgempH8KTq48", 
@@ -608,46 +610,16 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         "21057989": "#3b82f6", "21067327": "#ef4444", "21058216": "#10b981",
         "21067500": "#f59e0b", "21058279": "#8b5cf6", "21059980": "#ec4899"
     };
-    // Magia pura: El mapa de escudos de Drive directo en JS
-    const escudosDrive = {
-        "1": "1ed86k_8Vtzao1Y6mQaG9oBPX4Xu24DGP", "2": "16T47GYITukNadt0tZTDbmsH2j1ZdaUUm",
-        "3": "1xA80QYBGEjl8MhrXe-IKN9POjzfiYqOU", "4": "1Eg-cRV9EWYVgsZnc2kcVbHpXAFaAxEhB",
-        "5": "1Vn9GU7iNutlauVC7VN7885t7ORHPQin1", "6": "1tkJ_pWLmgCvrb-j90W2zzyGalW-hZv73",
-        "7": "1tPocKhHEJKZaOIIECE_muv-XN5bgjdeh", "8": "1a-MVrMwFy1TjFoevTHxO7xfJQX5sb6Zy",
-        "10": "1SSfysgptGzhkhgpNTTD6115iWaUpwgo1", "12": "1tACEpHB6h5VNRokEnjzqv3aNRMvgLTxo",
-        "13": "1t6JgECZ0DS2s_TBPMfKG9I56il4mZFNS", "14": "1-JtQvzB-VRm94IlHi6e-jz1VE3CJHLBK",
-        "15": "136eSioUVKMLqxeeKMIuX9JUh5NBMZ_la", "17": "17YhsbdUnU8lgIjeyBilbdGBAgg9cJQFV",
-        "18": "1KnPboCfPsiR9yKhxft7uC-fGsdKCYtZa", "19": "12YncR4pvMSh-mo1Slqtl18-R8dowdPCT",
-        "65": "1HQMh43FWcqDIyGLGVMTuSatc9wSYHWuz", "70": "1MkC0lTQ4kUNy9CHFmMDnMH2NsWVYOjrU",
-        "75": "1zTflbbolSRWGyAqB6LtmHKYbdpN6xbTV", "89": "1bEu2ve-Hh9Tbv_ynpca9H9dLYdpoqV1I"
-    };
-
     function getFotoUrl(id) { return `https://drive.google.com/thumbnail?id=${id}&sz=w100-h100`; }
-
-    const getFotoHtml = (uid) => {
-        let fotoId = fotosMgrUID[uid];
-        let color = coloresMgrUID[uid] || '#fff';
-        let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
-        
-        if(imgSrc) {
-            // El border-radius: 50% directo soluciona de raíz que las fotos salgan cuadradas en tarjetas y modals
-            return `<img src="${imgSrc}" loading="eager" style="border-color: ${color}; border-radius: 50%; object-fit: cover; box-sizing: border-box;">`;
-        }
-        return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem; border-radius: 50%;">👤</div>`;
-    };
 
     function renderCountdown() {
         const banner = document.getElementById('cuenta-atras-banner');
-        
         let info = typeof next_kickoff_date === 'object' ? next_kickoff_date : {kickoff: next_kickoff_date, last_kickoff: '', nombre: 'Jornada'};
         let kickoffStr = info.kickoff;
-        
-        // Limpiamos el nombre y lo pasamos a mayúsculas
         let nombreLimpio = (info.nombre || 'JORNADA').replace(/aplazada/i, '').replace(/[()]/g, '').trim().toUpperCase();
 
         if (!kickoffStr) {
-            // Texto más pequeño (1.2rem en vez de 1.6rem) para que quepa en 1 línea
-            banner.innerHTML = `<div style="font-size:1.2rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
+            banner.innerHTML = `<div style="font-size:1.1rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
             banner.style.display = 'block';
             return;
         }
@@ -659,16 +631,16 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         if (diff > 0) {
             let d = Math.floor(diff / (1000 * 60 * 60 * 24)); let h = Math.floor((diff / (1000 * 60 * 60)) % 24); let m = Math.floor((diff / 1000 / 60) % 60);
             let timeStr = d > 0 
-                ? `<span style="font-size:2.2rem; font-weight:900; margin:0 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${d}</span>DÍAS<span style="font-size:2.2rem; font-weight:900; margin:0 6px 0 12px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS` 
-                : `<span style="font-size:2.2rem; font-weight:900; margin:0 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS<span style="font-size:2.2rem; font-weight:900; margin:0 6px 0 12px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${m}</span>MIN`;
+                ? `<span style="font-size:2rem; font-weight:900; margin:0 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${d}</span>DÍAS<span style="font-size:2rem; font-weight:900; margin:0 4px 0 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS` 
+                : `<span style="font-size:2rem; font-weight:900; margin:0 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS<span style="font-size:2rem; font-weight:900; margin:0 4px 0 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${m}</span>MIN`;
                 
             banner.innerHTML = `
-                <div style="font-weight:900; font-size:1rem; opacity:0.9; margin-bottom: 2px; letter-spacing: 1px;">⏳ ${nombreLimpio}: EL BALÓN RUEDA EN</div>
+                <div style="font-weight:900; font-size:0.9rem; opacity:0.9; margin-bottom: 2px; letter-spacing: 1px;">⏳ ${nombreLimpio}: EL BALÓN RUEDA EN</div>
                 <div style="margin: 2px 0;">${timeStr}</div>
             `;
             banner.style.display = 'block';
         } else {
-            banner.innerHTML = `<div style="font-size:1.2rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
+            banner.innerHTML = `<div style="font-size:1.1rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
             banner.style.display = 'block';
         }
     }
@@ -796,7 +768,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 } else {
                     modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No hay movimientos recientes.</div>`;
                 }
-                } else if (submodo === 'dashboard') {
+            } else if (submodo === 'dashboard') {
                 modalContent.innerHTML = `<div class="card-title" style="font-size:1.1rem; padding-bottom:8px; color:var(--white); justify-content:center;">📊 Dashboard</div><div class="grid-managers" id="grid-dashboard-modal"></div>`;
                 setTimeout(() => {
                     const grid = document.getElementById('grid-dashboard-modal'); 
@@ -804,22 +776,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     if (!managers || !managers.length) { grid.innerHTML = '<p class="muted">No hay datos de mánagers.</p>'; return; } 
                     grid.innerHTML = managers.map(m => { 
                         const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg'; 
-                        let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
-                        if (textoM) { let infracciones = textoM.replace(/\\*/g, "").split('\\n').filter(l => l.includes('INFRACCIÓN')); if (infracciones.length > 0) alertaHTML = `<div class="alert-mini">⚠️ ${infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>')}</div>`; } 
-                        
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
                         let fotoStr = uid ? getFotoHtml(uid).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:48px; height:48px; margin:0 auto;"').replace('<img', '<img style="width:48px; height:48px; margin:0 auto;"') : '👤';
-                        
                         return `<div class="card" style="margin-bottom: 12px;">
-                            <div class="mgr-header" style="display:flex; justify-content:center; margin-bottom:12px;">
-                                ${fotoStr}
-                            </div>
+                            <div class="mgr-header" style="display:flex; justify-content:center; margin-bottom:12px;">${fotoStr}</div>
                             <div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>
-                            ${alertaHTML}
                         </div>`; 
                     }).join(''); 
                 }, 0);
@@ -862,7 +827,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             } else if (submodo === 'mercado') {
                 let htmlMercado = `
                     <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
-                        <div class="card-title" style="margin-bottom:12px; color:var(--blue);">🛒 Mercado de Hoy (Computer)</div>`;
+                        <div class="card-title" style="margin-bottom:12px; color:var(--blue);">🛒 Mercado de Hoy</div>`;
                 
                 if (typeof mercado_vivo !== 'undefined' && mercado_vivo.length > 0) {
                     htmlMercado += `<div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;">
@@ -876,10 +841,13 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         if (p.includes('stri') || p === '4') return `<span class="pos-badge" style="border-left: 3px solid #ef4444;">DEL</span>`;
                         return `<span class="pos-badge">DES</span>`;
                     };
+                    
+                    const mapClubNombres = { "athletic club": "1", "atlético de madrid": "2", "ca osasuna": "3", "leganés": "4", "celta de vigo": "5", "rcd espanyol": "6", "fc barcelona": "7", "getafe cf": "8", "girona fc": "10", "rcd mallorca": "12", "real betis": "13", "deportivo alavés": "14", "real madrid": "15", "real sociedad": "17", "rayo vallecano": "18", "real valladolid": "19", "sevilla fc": "65", "ud las palmas": "70", "valencia cf": "75", "villarreal cf": "89" };
 
                     mercado_vivo.forEach(j => {
-                        let driveId = escudosDrive[j.club_id];
-                        let escudo = driveId ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">-</span>`;
+                        let clubIdStr = j.club_id || mapClubNombres[(j.club||'').toLowerCase()] || "";
+                        let driveId = escudosDrive[clubIdStr];
+                        let escudo = driveId ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
                         
                         htmlMercado += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <td><b>${j.nombre}</b></td>
@@ -890,7 +858,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     });
                     htmlMercado += `</tbody></table></div>`;
                 } else {
-                    htmlMercado += `<div class="muted" style="text-align:center; padding: 20px;">No hay jugadores de Computer a la venta hoy.</div>`;
+                    htmlMercado += `<div class="muted" style="text-align:center; padding: 20px;">No hay jugadores a la venta hoy.</div>`;
                 }
                 htmlMercado += `</div>`;
                 modalContent.innerHTML = htmlMercado;
@@ -927,9 +895,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
         
         if(imgSrc) {
-            return `<img src="${imgSrc}" loading="eager" style="border-color: ${color};">`;
+            return `<img src="${imgSrc}" loading="eager" style="border-color: ${color}; border-radius: 50%; object-fit: cover; box-sizing: border-box;">`;
         }
-        return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`;
+        return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem; border-radius: 50%;">👤</div>`;
     };
 
     window.renderizarVista = function() {
@@ -1828,7 +1796,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     function generarHtmlAlineacion(managerData) {
         const getPosBadge = (pos, isBanquillo) => {
             let p = (pos || '').toLowerCase();
-            let op = isBanquillo ? '0.4' : '1';
+            let op = isBanquillo ? '0.3' : '1';
             let opBg = isBanquillo ? '0.05' : '0.15';
             
             if (p.includes('keep') || p === '1' || p === '1.0') return `<span style="background: rgba(234, 179, 8, ${opBg}); border-left: 3px solid rgba(234, 179, 8, ${op}); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: rgba(253, 224, 71, ${op}); margin-right: 8px;">POR</span>`;
@@ -1840,15 +1808,16 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
         let titularesHTML = `<div style="font-size: 0.75rem; text-transform: uppercase; color: #f59e0b; font-weight: 800; margin-bottom: 8px; text-align: left;">⭐ TITULARES</div>`;
         let banquilloHTML = `<div style="font-size: 0.75rem; text-transform: uppercase; color: #9ca3af; font-weight: 800; margin-top: 15px; margin-bottom: 8px; text-align: left;">🪑 BANQUILLO</div>`;
-        
         let hayBanquillo = false;
 
         managerData.jugadores.forEach(j => {
             let isBanquillo = !j.linedup;
             let ptsStr = j.pts === 'LIVE' ? '<span style="color:#ef4444; animation: blinker 1.5s linear infinite;">LIVE</span>' : `<span style="color:${isBanquillo ? '#9ca3af' : '#f3f4f6'}; font-weight:bold;">${j.pts}</span>`;
             
-            // Magia: Escudos de Drive directos desde nuestro nuevo diccionario JS
-            let clubIdStr = j.team_id || j.club_id || "";
+            // MAPA DE RESCATE: Si Python no manda ID, leemos el nombre y ponemos el escudo igual
+            const mapClubNombres = { "athletic club": "1", "atlético de madrid": "2", "ca osasuna": "3", "leganés": "4", "celta de vigo": "5", "rcd espanyol": "6", "fc barcelona": "7", "getafe cf": "8", "girona fc": "10", "rcd mallorca": "12", "real betis": "13", "deportivo alavés": "14", "real madrid": "15", "real sociedad": "17", "rayo vallecano": "18", "real valladolid": "19", "sevilla fc": "65", "ud las palmas": "70", "valencia cf": "75", "villarreal cf": "89" };
+            
+            let clubIdStr = j.team_id || j.club_id || mapClubNombres[(j.club||'').toLowerCase()] || "";
             let escudoDriveId = escudosDrive[clubIdStr];
             let escudoHtml = escudoDriveId ? `<img src="https://drive.google.com/thumbnail?id=${escudoDriveId}&sz=w100-h100" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
 
@@ -1863,12 +1832,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 </div>
             `;
 
-            if (j.linedup) {
-                titularesHTML += fila;
-            } else {
-                banquilloHTML += fila;
-                hayBanquillo = true;
-            }
+            if (j.linedup) titularesHTML += fila;
+            else { banquilloHTML += fila; hayBanquillo = true; }
         });
 
         return titularesHTML + (hayBanquillo ? banquilloHTML : '');
