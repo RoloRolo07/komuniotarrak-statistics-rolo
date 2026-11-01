@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 08:10</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 08:28</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -349,6 +349,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <div id="content-normativa" class="section-content">
         <div class="card"><div class="card-title">📜 Normativa Oficial Komuniotarrak</div><div class="text-block" style="font-size:0.95rem; line-height:1.8;"><b>1. SALDOS Y PRESUPUESTOS</b><br>- Prohibido estar en negativo al inicio del primer partido de la jornada.<br>- Las multas por saldo negativo se aplicarán sobre el valor de la plantilla o puntos según dictamine la asamblea.<br><br><b>2. MERCADO DE FICHAJES</b><br>- Las sobrepujas son libres. El que más paga, se lo lleva.<br>- Prohibido comprar y vender al mismo jugador a otro mánager de la liga en la misma semana para evadir impuestos (Fair Play Financiero).<br><br><b>3. PAGUITAS</b><br>- Solo se entregan en jornadas completas (sin partidos aplazados).<br>- Último: 2.000.000 €<br>- Penúltimo: 1.200.000 €<br>- Antepenúltimo: 800.000 €<br><br><b>4. SANCIONES</b><br>- Toda venta de un jugador después del pitido inicial que altere el saldo para evitar un negativo será severamente castigada.<br>- El VAR actúa de oficio.</div></div>
     </div>
+
+    <!-- CONTENEDOR INVISIBLE PARA MOVIMIENTOS -->
+    <div id="content-movimientos" style="display: none;"><div style='font-size: 1.05rem; margin-bottom: 2px;'>🛒 <b>COMPRAS:</b></div><ul class='lista-compacta'><li>• <b>Iñaki</b> ha fichado a <b>Giuliano Simeone</b> por 6.751.000 €. gastando <span style='color:var(--danger)'>11.000 € más</span> sobre su valor original (6.740.000 €).</li><li>• <b>Jon MARQUEZ PEREZ</b> ha fichado a <b>Robert Navarro</b> por 3.890.000 €. gastando <span style='color:var(--danger)'>240.000 € más</span> sobre su valor original (3.650.000 €).</li></ul><br><div style='font-size: 1.05rem; margin-bottom: 2px;'>💰 <b>VENTAS:</b></div><div style='margin-bottom: 0px; color:var(--muted); padding-left: 8px;'><i>Ayer:</i></div><ul class='lista-compacta' style='padding-left: 16px;'><li>• <b>Alberto Garcia</b> vendió a <b>Belocian</b> por 1.481.900 €. Lo compró por 1.300.000 € <span style='color:var(--accent)'>[ Ganando 181.900 € ]</span>.</li><li>• <b>Iñaki</b> vendió a <b>Adama Traoré</b> por 3.203.600 €. Lo compró por 3.042.000 € <span style='color:var(--accent)'>[ Ganando 161.600 € ]</span>.</li></ul><br></div>
 
     <!-- ======================================================= -->
     <!-- SUPER CROMOS 3D Y MODALES FLOTANTES                     -->
@@ -843,8 +846,37 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     renderCatalogoModal();
                 }, 0);
             } else if (submodo === 'mercado') {
-                // TODO: Aquí va la futura tarjeta de Mercado
-                modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛒 <b>MERCADO</b><br>Próximamente disponible.</div>`;
+                let htmlMercado = `
+                    <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
+                        <div class="card-title" style="margin-bottom:12px; color:var(--blue);">🛒 Mercado de Hoy (Computer)</div>`;
+                
+                if (typeof mercado_vivo !== 'undefined' && mercado_vivo.length > 0) {
+                    htmlMercado += `<div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;">
+                        <thead><tr><th>Jugador</th><th style="text-align:center;">Pos</th><th>Club</th><th style="text-align:right;">Precio</th></tr></thead><tbody>`;
+                    
+                    const posBadge = (pos) => {
+                        let p = (pos || '').toLowerCase();
+                        if (p.includes('keep') || p === '1') return `<span class="pos-badge" style="border-left: 3px solid #eab308;">POR</span>`;
+                        if (p.includes('def') || p === '2') return `<span class="pos-badge" style="border-left: 3px solid #3b82f6;">DEF</span>`;
+                        if (p.includes('mid') || p === '3') return `<span class="pos-badge" style="border-left: 3px solid #10b981;">MED</span>`;
+                        if (p.includes('stri') || p === '4') return `<span class="pos-badge" style="border-left: 3px solid #ef4444;">DEL</span>`;
+                        return `<span class="pos-badge">DES</span>`;
+                    };
+
+                    mercado_vivo.forEach(j => {
+                        htmlMercado += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td><b>${j.nombre}</b></td>
+                            <td style="text-align:center;">${posBadge(j.posicion)}</td>
+                            <td class="muted">${j.club}</td>
+                            <td style="text-align:right; font-weight:bold; color:var(--white);">${fmtE(j.precio)}</td>
+                        </tr>`;
+                    });
+                    htmlMercado += `</tbody></table></div>`;
+                } else {
+                    htmlMercado += `<div class="muted" style="text-align:center; padding: 20px;">No hay jugadores de Computer a la venta hoy.</div>`;
+                }
+                htmlMercado += `</div>`;
+                modalContent.innerHTML = htmlMercado;
             } else if (submodo === 'normativa') {
                 let contentNormativa = document.getElementById('content-normativa');
                 if (contentNormativa) {
