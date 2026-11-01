@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 13:41</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 21:45</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1786,8 +1786,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             document.querySelectorAll(`#${targetCardId} .nombre-mgr-cabecera`).forEach(el => el.innerText = nombreManager);
             document.querySelectorAll(`#${targetCardId} .tactica-mgr-cabecera`).forEach(el => el.innerText = tactica);
             
-            // Reutilizamos tu función para pintar el avatar y fusionamos los tamaños con el border-radius
-            let fotoHtmlStr = getFotoHtml(uidManager).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px; margin:0 auto;"').replace('style="', 'style="width:52px; height:52px; margin:0 auto; display:block; box-sizing:border-box; ');
+            // Ajuste milimétrico para que la foto encaje en su caja de 52px de la tarjeta
+            let colorManager = coloresMgrUID[uidManager] || '#fff';
+            let fotoId = fotosMgrUID[uidManager];
+            let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
+            
+            let fotoHtmlStr = fotoUrl 
+                ? `<img src="${fotoUrl}" style="width: 100%; height: 100%; max-width: 52px; max-height: 52px; border-radius: 50%; border: 3px solid ${colorManager}; object-fit: cover; display: block; box-sizing: border-box; margin: 0 auto; padding: 0; background: #1e293b;">`
+                : `<div style="width: 100%; height: 100%; max-width: 52px; max-height: 52px; border-radius: 50%; border: 3px solid ${colorManager}; background: #cbd5e1; display:flex; justify-content:center; align-items:center; font-size:1.5rem; box-sizing: border-box; margin: 0 auto; padding: 0;">👤</div>`;
+            
             document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => el.innerHTML = fotoHtmlStr);
 
             // Toggle de tarjetas
