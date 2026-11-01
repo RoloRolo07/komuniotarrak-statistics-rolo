@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 13:16</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 13:28</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1778,8 +1778,10 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             document.querySelectorAll(`#${targetCardId} .nombre-mgr-cabecera`).forEach(el => el.innerText = nombreManager);
             document.querySelectorAll(`#${targetCardId} .tactica-mgr-cabecera`).forEach(el => el.innerText = tactica);
             
-            // Reutilizamos tu función para pintar el botón del avatar (sin que sea clickeable aquí)
-            let fotoHtmlStr = getFotoHtml(uidManager).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px;"').replace('<img', '<img style="width:52px; height:52px;"');
+            // Reutilizamos tu función para pintar el avatar y fusionamos los tamaños con el border-radius
+            let fotoHtmlStr = getFotoHtml(uidManager)
+                .replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px;"')
+                .replace('style="', 'style="width:52px; height:52px; ');
             document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => el.innerHTML = fotoHtmlStr);
 
             // Toggle de tarjetas
