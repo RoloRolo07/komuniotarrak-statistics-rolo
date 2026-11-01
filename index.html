@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 22:30</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 22:50</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -895,9 +895,17 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         return `<span class="pos-badge">DES</span>`;
                     };
 
+                    // El mismo mapa ultra-resistente
+                    const mapClubNombres = { "athletic club": "1", "athletic": "1", "atlético de madrid": "2", "atlético": "2", "atletico": "2", "ca osasuna": "3", "osasuna": "3", "leganés": "4", "leganes": "4", "celta de vigo": "5", "celta": "5", "rcd espanyol": "6", "espanyol": "6", "fc barcelona": "7", "barcelona": "7", "getafe cf": "8", "getafe": "8", "girona fc": "10", "girona": "10", "rcd mallorca": "12", "mallorca": "12", "real betis": "13", "betis": "13", "deportivo alavés": "14", "alavés": "14", "alaves": "14", "real madrid": "15", "real sociedad": "17", "rayo vallecano": "18", "rayo": "18", "real valladolid": "19", "valladolid": "19", "sevilla fc": "65", "sevilla": "65", "ud las palmas": "70", "las palmas": "70", "valencia cf": "75", "valencia": "75", "villarreal cf": "89", "villarreal": "89" };
+
                     mercado_vivo.forEach(j => {
-                        let driveId = escudosDrive[j.club_id];
-                        let escudo = driveId ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
+                        let nombreClubStr = (j.club || '').toLowerCase();
+                        let clubIdStr = j.club_id || mapClubNombres[nombreClubStr] || "";
+                        let driveId = escudosDrive[clubIdStr];
+                        
+                        let escudo = driveId 
+                            ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` 
+                            : `<div style="width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3);" title="Desconocido"></div>`;
 
                         htmlMercado += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <td><b>${j.nombre}</b></td>
@@ -1137,7 +1145,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         grid.innerHTML = managers.map(m => { 
             const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg'; 
             let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
-            if (textoM) { let partes = textoM.replace(/\*/g, "").split(/•|\n/).map(p => p.trim()).filter(p => p.includes('INFRACCIÓN')); if (partes.length > 0) alertaHTML = `<div class="alert-mini" style="text-align:left; padding:6px; margin-top:8px; line-height:1.4;">` + partes.map(p => `<div style="margin-bottom:2px;">⚠️ ${p}</div>`).join('') + `</div>`; }            return `<div class="card"><div class="mgr-header">👤 ${m.manager}</div><div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div><div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div><div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div><div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div><div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>${alertaHTML}</div>`; 
+            if (textoM) { let partes = textoM.replace(/\*/g, "").split(/•|\n/).map(p => p.trim()).filter(p => p.includes('INFRACCIÓN')); if (partes.length > 0) alertaHTML = `<div class="alert-mini" style="text-align:left; padding:6px; margin-top:8px; line-height:1.4;">` + partes.map(p => `<div style="margin-bottom:2px;">🚫 ${p.replace('INFRACCIÓN SALDO NEGATIVO:', 'Saldo Negativo:').replace('INFRACCIÓN LÍMITE PLANTILLA:', 'Límite Plantilla:')}</div>`).join('') + `</div>`; }
         }).join(''); 
     }
 
@@ -1872,9 +1880,18 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             let ptsStr = j.pts === 'LIVE' ? '<span style="color:#ef4444; animation: blinker 1.5s linear infinite;">LIVE</span>' : `<span style="color:${isBanquillo ? '#9ca3af' : '#f3f4f6'}; font-weight:bold;">${j.pts}</span>`;
             
             // Asumiendo que el ID del equipo viaja en j.team_id o j.club_id
-            let clubIdStr = j.team_id || j.club_id || "";
+            // Mapa ultra-resistente
+            const mapClubNombres = { "athletic club": "1", "athletic": "1", "atlético de madrid": "2", "atlético": "2", "atletico": "2", "ca osasuna": "3", "osasuna": "3", "leganés": "4", "leganes": "4", "celta de vigo": "5", "celta": "5", "rcd espanyol": "6", "espanyol": "6", "fc barcelona": "7", "barcelona": "7", "getafe cf": "8", "getafe": "8", "girona fc": "10", "girona": "10", "rcd mallorca": "12", "mallorca": "12", "real betis": "13", "betis": "13", "deportivo alavés": "14", "alavés": "14", "alaves": "14", "real madrid": "15", "real sociedad": "17", "rayo vallecano": "18", "rayo": "18", "real valladolid": "19", "valladolid": "19", "sevilla fc": "65", "sevilla": "65", "ud las palmas": "70", "las palmas": "70", "valencia cf": "75", "valencia": "75", "villarreal cf": "89", "villarreal": "89" };
+            
+            // Buscamos el ID o lo deducimos del nombre
+            let nombreClubStr = (j.club || j.team_name || j.club_name || '').toLowerCase();
+            let clubIdStr = j.club_id || j.team_id || mapClubNombres[nombreClubStr] || "";
             let escudoDriveId = escudosDrive[clubIdStr];
-            let escudoHtml = escudoDriveId ? `<img src="https://drive.google.com/thumbnail?id=${escudoDriveId}&sz=w100-h100" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
+            
+            // Escudo de Drive o fantasma gris
+            let escudoHtml = escudoDriveId 
+                ? `<img src="https://drive.google.com/thumbnail?id=${escudoDriveId}&sz=w100-h100" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` 
+                : `<div style="width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.1); margin-right:6px; display:inline-block; border: 1px dashed rgba(255,255,255,0.3);" title="Club desconocido"></div>`;
 
             let fila = `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
