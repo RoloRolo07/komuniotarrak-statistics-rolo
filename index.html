@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 13:28</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 13:35</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1779,9 +1779,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             document.querySelectorAll(`#${targetCardId} .tactica-mgr-cabecera`).forEach(el => el.innerText = tactica);
             
             // Reutilizamos tu función para pintar el avatar y fusionamos los tamaños con el border-radius
-            let fotoHtmlStr = getFotoHtml(uidManager)
-                .replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px;"')
-                .replace('style="', 'style="width:52px; height:52px; ');
+            let fotoHtmlStr = getFotoHtml(uidManager).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px; margin:0 auto;"').replace('style="', 'style="width:52px; height:52px; margin:0 auto; display:block; box-sizing:border-box; ');
             document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => el.innerHTML = fotoHtmlStr);
 
             // Toggle de tarjetas
