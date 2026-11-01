@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 07:45</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 08:10</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -746,14 +746,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
         // 3. Inyectamos los datos en el MODAL FLOTANTE
         if (window.modoActual === 'general') {
+            // ... (CÓDIGO EXISTENTE DE GENERAL: 11_ideal, etc.) ...
             if (submodo === '11_ideal') {
                 if(globalStats.once_ideal_historico_pitch && globalStats.once_ideal_historico_pitch.jugadores && globalStats.once_ideal_historico_pitch.jugadores.length > 0) {
                     let oiHist = globalStats.once_ideal_historico_pitch;
                     let pitchHTML = generarHtmlOnceIdeal(oiHist.jugadores);
                     modalContent.innerHTML = `
                         <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
-                            <div class="card-title" style="margin-bottom:8px; justify-content:center;">🌟 Once de Gala <span class="muted" style="font-size:0.9rem; margin-left:8px;">(${oiHist.formacion})</span></div>
-                            <div style="margin-bottom:16px; font-size:0.9rem; text-align:center;"><b>Puntos:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oiHist.puntos}</span> | <b>Valor:</b> ${fmtE(oiHist.valor)}</div>
+                            <div class="card-title" style="margin-bottom:4px; justify-content:center;">🌟 Once de Gala <span class="muted" style="font-size:1.1rem; margin-left:8px; font-weight:bold;">(${oiHist.formacion})</span></div>
+                            <div style="margin-bottom:10px; font-size:0.9rem; text-align:center;"><b>Puntos:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oiHist.puntos}</span> | <b>Valor:</b> ${fmtE(oiHist.valor)}</div>
                             ${pitchHTML}
                         </div>`;
                 } else {
@@ -763,6 +764,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
         } else if (window.modoActual === 'jornadas') {
+            // ... (CÓDIGO EXISTENTE DE JORNADAS: 11_ideal, etc.) ...
             if (submodo === '11_ideal') {
                 const jd = jornadasData[selectedJornadaIdx];
                 if (jd && jd.once_ideal && jd.once_ideal.jugadores && jd.once_ideal.jugadores.length > 0) {
@@ -770,12 +772,85 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let pitchHTML = generarHtmlOnceIdeal(oi.jugadores);
                     modalContent.innerHTML = `
                         <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
-                            <div class="card-title" style="margin-bottom:8px; justify-content:center;">🌟 Once de la Jornada <span class="muted" style="font-size:0.9rem; margin-left:8px;">(${oi.formacion})</span></div>
-                            <div style="margin-bottom:16px; font-size:0.9rem; text-align:center;"><b>Puntos:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oi.puntos}</span> | <b>Valor:</b> ${fmtE(oi.valor)}</div>
+                            <div class="card-title" style="margin-bottom:4px; justify-content:center;">🌟 Once de Gala <span class="muted" style="font-size:1.1rem; margin-left:8px; font-weight:bold;">(${oi.formacion})</span></div>
+                            <div style="margin-bottom:10px; font-size:0.9rem; text-align:center;"><b>Puntos:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oi.puntos}</span> | <b>Valor:</b> ${fmtE(oi.valor)}</div>
                             ${pitchHTML}
                         </div>`;
                 } else {
                     modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No se formó un once ideal legal en esta jornada.</div>`;
+                }
+            } else {
+                modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
+            }
+        } else if (window.modoActual === 'menu_dia') {
+            // --- NUEVO: CÓDIGO DE LA RULETA (MENÚ DEL DÍA) ---
+            if (submodo === 'movimientos') {
+                // Recuperamos el div oculto que Python genera en plantilla.html
+                let contentMovimientos = document.getElementById('content-movimientos');
+                if (contentMovimientos) {
+                    modalContent.innerHTML = contentMovimientos.innerHTML;
+                } else {
+                    modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No hay movimientos recientes.</div>`;
+                }
+            } else if (submodo === 'dashboard') {
+                modalContent.innerHTML = `<div class="card-title" style="font-size:1.1rem; padding-bottom:8px; color:var(--white);">📊 Cuentas y Dashboard</div><div class="grid-managers" id="grid-dashboard-modal"></div>`;
+                // Esperamos un tick para que se inyecte el HTML y luego llamamos a la función que lo rellena
+                setTimeout(() => {
+                    const grid = document.getElementById('grid-dashboard-modal'); 
+                    if (!grid) return;
+                    if (!managers || !managers.length) { grid.innerHTML = '<p class="muted">No hay datos de mánagers.</p>'; return; } 
+                    grid.innerHTML = managers.map(m => { 
+                        const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg'; 
+                        let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
+                        if (textoM) { let infracciones = textoM.replace(/\\*/g, "").split('\\n').filter(l => l.includes('INFRACCIÓN')); if (infracciones.length > 0) alertaHTML = `<div class="alert-mini">⚠️ ${infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>')}</div>`; } 
+                        return `<div class="card" style="margin-bottom: 12px;"><div class="mgr-header">👤 ${m.manager}</div><div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div><div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div><div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div><div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div><div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>${alertaHTML}</div>`; 
+                    }).join(''); 
+                }, 0);
+            } else if (submodo === 'mercado_hoy') {
+                modalContent.innerHTML = `
+                    <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
+                        <div class="card-title" style="margin-bottom:12px;">📈 Subidas y Bajadas</div>
+                        <div class="btn-filter-grp" id="filtros-mercado-modal" style="margin-bottom: 12px;"></div>
+                        <input type="search" id="buscador-mercado-modal" class="search-input" placeholder="🔍 Buscar jugador..." oninput="renderMercadoModal()" style="display:none; margin-bottom: 12px;">
+                        <div id="mercado-global-balance-modal" style="display:none; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--blue); padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 16px; font-size: 1.1rem;"></div>
+                        <div id="mercado-sin-movimiento-modal" class="muted" style="display:none; margin-bottom: 16px; font-size: 0.85rem;"></div>
+                        <div class="latentes-grid">
+                            <div class="card" style="margin-bottom: 12px; padding: 12px;"><div class="card-title" style="color: var(--accent); margin-bottom: 8px; font-size: 1rem;" id="tit-mercado-subidas-modal">🚀 Subidas</div><div style="overflow-x:auto;"><table id="tabla-mercado-subidas-modal" class="tabla-compacta" style="width:100%;"></table></div></div>
+                            <div class="card" style="margin-bottom: 0; padding: 12px;"><div class="card-title" style="color: var(--danger); margin-bottom: 8px; font-size: 1rem;" id="tit-mercado-bajadas-modal">🔻 Bajadas</div><div style="overflow-x:auto;"><table id="tabla-mercado-bajadas-modal" class="tabla-compacta" style="width:100%;"></table></div></div>
+                        </div>
+                    </div>`;
+                setTimeout(() => {
+                    const mNamesMerc = ['TOP 5', 'TODOS', ...new Set(mercado_full.map(i => i.manager))]; 
+                    document.getElementById('filtros-mercado-modal').innerHTML = mNamesMerc.map(m => `<button class="btn-filter ${m === 'TOP 5' ? 'active' : ''}" onclick="filterMercModal('${m}', this)">${m}</button>`).join(''); 
+                    window.mercFilterModal = 'TOP 5'; // Estado independiente para el modal
+                    renderMercadoModal();
+                }, 0);
+            } else if (submodo === 'latentes') {
+                modalContent.innerHTML = `
+                    <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
+                        <div class="card-title" style="margin-bottom:12px;">🔮 Rentabilidad Latente</div>
+                        <div class="btn-filter-grp" id="filtros-catalogo-modal" style="margin-bottom: 12px;"></div>
+                        <input type="search" id="buscador-latentes-modal" class="search-input" placeholder="🔍 Buscar jugador..." oninput="renderCatalogoModal()" style="display:none; margin-bottom: 12px;">
+                        <div class="latentes-grid">
+                            <div class="card" style="margin-bottom: 12px; padding: 12px;"><div class="card-title" style="color: var(--accent); margin-bottom: 8px; font-size: 1rem;">🚀 Pelotazos</div><div style="overflow-x:auto;"><table id="tabla-pelotazos-modal" style="width:100%;"></table></div></div>
+                            <div class="card" style="margin-bottom: 0; padding: 12px;"><div class="card-title" style="color: var(--danger); margin-bottom: 8px; font-size: 1rem;">📉 Ruinas</div><div style="overflow-x:auto;"><table id="tabla-ruinas-modal" style="width:100%;"></table></div></div>
+                        </div>
+                    </div>`;
+                setTimeout(() => {
+                    const mNames = ['TOP 5', 'TODOS', ...new Set(catalogo.map(i => i.manager))]; 
+                    document.getElementById('filtros-catalogo-modal').innerHTML = mNames.map(m => `<button class="btn-filter ${m === 'TOP 5' ? 'active' : ''}" onclick="filterCatModal('${m}', this)">${m}</button>`).join(''); 
+                    window.mgrFilterModal = 'TOP 5';
+                    renderCatalogoModal();
+                }, 0);
+            } else if (submodo === 'mercado') {
+                // TODO: Aquí va la futura tarjeta de Mercado
+                modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛒 <b>MERCADO</b><br>Próximamente disponible.</div>`;
+            } else if (submodo === 'normativa') {
+                let contentNormativa = document.getElementById('content-normativa');
+                if (contentNormativa) {
+                    modalContent.innerHTML = contentNormativa.innerHTML;
+                } else {
+                    modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No hay normativa disponible.</div>`;
                 }
             } else {
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
@@ -954,12 +1029,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         if(!container) return;
         
         const opciones = [
-            { nombre: "Mercado", emoji: "🛒", bg: "#3b82f6" },     
-            { nombre: "Dashboard", emoji: "📊", bg: "#eab308" },   
-            { nombre: "Movimientos", emoji: "🔄", bg: "#10b981" }, 
-            { nombre: "V.A.R.", emoji: "🖥️", bg: "#f97316" },     
-            { nombre: "Latentes", emoji: "🔮", bg: "#92400e" },    
-            { nombre: "Subid/Bajad.", emoji: "📈", bg: "#ec4899" } 
+            { nombre: "Mercado", emoji: "🛒", bg: "#3b82f6", id: "mercado" },     
+            { nombre: "Dashboard", emoji: "📊", bg: "#eab308", id: "dashboard" },   
+            { nombre: "Movimientos", emoji: "🔄", bg: "#10b981", id: "movimientos" }, 
+            { nombre: "V.A.R.", emoji: "🖥️", bg: "#f97316", id: "normativa" },     
+            { nombre: "Latentes", emoji: "🔮", bg: "#92400e", id: "latentes" },    
+            { nombre: "Subid/Bajad.", emoji: "📈", bg: "#ec4899", id: "mercado_hoy" } 
         ];
 
         let svgHtml = `<svg class="ruleta-svg" viewBox="-160 -160 320 320" xmlns="http://www.w3.org/2000/svg"><defs>`;
@@ -974,7 +1049,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             let donutPath = `M -34.5,-59.75 L -80,-138.56 A 160,160 0 0,1 80,-138.56 L 34.5,-59.75 A 69,69 0 0,0 -34.5,-59.75 Z`;
             svgHtml += `
                 <g transform="rotate(${rotation})">
-                    <g class="wedge-group" onclick="alert('Próximamente: Abrirá ${op.nombre}')">
+                    <g class="wedge-group" onclick="abrirSubTarjeta('${op.id}')">
                         <path class="wedge-path" d="${donutPath}" fill="url(#grad-triv-${i})" style="stroke: #111827; stroke-width: 4px; stroke-linejoin: round;" />
                         <g transform="translate(0, -115) rotate(${-rotation})">
                             <text x="0" y="-8" font-size="28" text-anchor="middle">${op.emoji}</text>
@@ -986,7 +1061,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         });
         svgHtml += `</svg>`;
         container.innerHTML = svgHtml;
-
     }
     
     function renderDashboard() { 
@@ -1029,6 +1103,82 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         if (iguales.length > 0 && mercFilter !== 'TOP 5') { if(sinMovDiv) { sinMovDiv.innerHTML = `<b>No sufren movimiento:</b> ${iguales.join(', ')}`; sinMovDiv.style.display = 'block'; } } else if(sinMovDiv) sinMovDiv.style.display = 'none'; 
     }
     
+    // --- FUNCIONES ESPECÍFICAS PARA EL MODAL DE MERCADO ---
+    window.filterMercModal = function(m, btn) { 
+        window.mercFilterModal = m; 
+        document.getElementById('filtros-mercado-modal').querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active')); 
+        btn.classList.add('active'); 
+        if (m === 'TODOS') document.getElementById('buscador-mercado-modal').style.display = 'block'; 
+        else { document.getElementById('buscador-mercado-modal').style.display = 'none'; document.getElementById('buscador-mercado-modal').value = ''; } 
+        renderMercadoModal(); 
+    };
+
+    window.renderMercadoModal = function() {
+        const q = (document.getElementById('buscador-mercado-modal')?.value || '').toLowerCase(); 
+        const balDiv = document.getElementById('mercado-global-balance-modal'); 
+        const sinMovDiv = document.getElementById('mercado-sin-movimiento-modal'); 
+        
+        if (!mercado_full || mercado_full.length === 0) { 
+            document.getElementById('tabla-mercado-subidas-modal').innerHTML = '<tr><td class="muted" style="text-align:center;">Sin subidas</td></tr>'; 
+            document.getElementById('tabla-mercado-bajadas-modal').innerHTML = '<tr><td class="muted" style="text-align:center;">Sin bajadas</td></tr>'; 
+            return; 
+        } 
+        
+        let filtrados = mercado_full; 
+        if(window.mercFilterModal !== 'TOP 5' && window.mercFilterModal !== 'TODOS') filtrados = mercado_full.filter(i => i.manager === window.mercFilterModal); 
+        if(q) filtrados = filtrados.filter(i => i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q)); 
+        
+        let subidas = filtrados.filter(i => i.diff > 0).sort((a,b) => b.diff - a.diff); 
+        let bajadas = filtrados.filter(i => i.diff < 0).sort((a,b) => a.diff - b.diff); 
+        let iguales = filtrados.filter(i => i.diff === 0).map(i => i.jugador); 
+        
+        if(window.mercFilterModal === 'TOP 5' && !q) { 
+            subidas = subidas.slice(0,5); bajadas = bajadas.slice(0,5); 
+            if(balDiv) balDiv.style.display = 'none'; 
+        } else { 
+            if(window.mercFilterModal !== 'TODOS') { 
+                let totalDif = filtrados.reduce((sum, item) => sum + item.diff, 0); 
+                if(balDiv) { balDiv.innerHTML = `<b>Balance global de hoy:</b> <span class='${totalDif >= 0 ? 'val-pos' : 'val-neg'}'>${totalDif > 0 ? '+' : ''}${fmtE(totalDif)}</span>`; balDiv.style.display = 'block'; } 
+            } else if (balDiv) { balDiv.style.display = 'none'; }
+        } 
+        
+        if (iguales.length > 0 && window.mercFilterModal !== 'TOP 5') { 
+            if(sinMovDiv) { sinMovDiv.innerHTML = `<b>No sufren movimiento:</b> ${iguales.join(', ')}`; sinMovDiv.style.display = 'block'; } 
+        } else if(sinMovDiv) { sinMovDiv.style.display = 'none'; }
+        
+        let tms = document.getElementById('tabla-mercado-subidas-modal');
+        if(tms) tms.innerHTML = subidas.length ? subidas.map((i, idx) => `<tr><td><b>${i.jugador}</b> <small class="muted">(${i.manager})</small></td><td style="text-align:right;" class="val-pos">${idx === 0 && window.mercFilterModal === 'TOP 5' ? `<span class="badge-rec-max" style="padding:2px 8px;">+${fmtE(i.diff)}</span>` : `+${fmtE(i.diff)}`}${i.diff >= 1000000 ? " 🔥" : ""}</td></tr>`).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
+        
+        let tmb = document.getElementById('tabla-mercado-bajadas-modal');
+        if(tmb) tmb.innerHTML = bajadas.length ? bajadas.map((i, idx) => `<tr><td><b>${i.jugador}</b> <small class="muted">(${i.manager})</small></td><td style="text-align:right;" class="val-neg">${idx === 0 && window.mercFilterModal === 'TOP 5' ? `<span class="badge-rec-min" style="padding:2px 8px;">${fmtE(i.diff)}</span>` : `${fmtE(i.diff)}`}${i.diff <= -1000000 ? " 💥" : ""}</td></tr>`).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
+    };
+
+    // --- FUNCIONES ESPECÍFICAS PARA EL MODAL DE LATENTES ---
+    window.filterCatModal = function(m, btn) { 
+        window.mgrFilterModal = m; 
+        document.getElementById('filtros-catalogo-modal').querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active')); 
+        btn.classList.add('active'); 
+        if (m === 'TODOS') document.getElementById('buscador-latentes-modal').style.display = 'block'; 
+        else { document.getElementById('buscador-latentes-modal').style.display = 'none'; document.getElementById('buscador-latentes-modal').value = ''; } 
+        renderCatalogoModal(); 
+    };
+
+    window.renderCatalogoModal = function() { 
+        const q = (document.getElementById('buscador-latentes-modal')?.value || '').toLowerCase(); 
+        
+        let pelotazos = catalogo.filter(i => i.dif > 0 && (window.mgrFilterModal === 'TOP 5' || window.mgrFilterModal === 'TODOS' || i.manager === window.mgrFilterModal) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => b.dif - a.dif); 
+        if(window.mgrFilterModal === 'TOP 5' && q === '') pelotazos = pelotazos.slice(0,5); 
+        
+        let tp = document.getElementById('tabla-pelotazos-modal');
+        if(tp) tp.innerHTML = pelotazos.length ? pelotazos.map(i => generarFilaLatente(i, 'val-pos', '+')).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
+        
+        let ruinas = catalogo.filter(i => i.dif < 0 && (window.mgrFilterModal === 'TOP 5' || window.mgrFilterModal === 'TODOS' || i.manager === window.mgrFilterModal) && (i.jugador.toLowerCase().includes(q) || i.manager.toLowerCase().includes(q))).sort((a,b) => a.dif - b.dif); 
+        if(window.mgrFilterModal === 'TOP 5' && q === '') ruinas = ruinas.slice(0,5); 
+        
+        let tr = document.getElementById('tabla-ruinas-modal');
+        if(tr) tr.innerHTML = ruinas.length ? ruinas.map(i => generarFilaLatente(i, 'val-neg', '')).join('') : '<tr><td class="muted" style="text-align:center;">Sin resultados</td></tr>'; 
+    };
+
     function initCatalogo() { const mNames = ['TOP 5', 'TODOS', ...new Set(catalogo.map(i => i.manager))]; let flt = document.getElementById('filtros-catalogo'); if(flt) flt.innerHTML = mNames.map(m => `<button class="btn-filter ${m === 'TOP 5' ? 'active' : ''}" onclick="filterCat('${m}', this)">${m}</button>`).join(''); renderCatalogo(); }
     
     function filterCat(m, btn) { mgrFilter = m; document.getElementById('filtros-catalogo').querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active')); btn.classList.add('active'); if (m === 'TODOS') document.getElementById('buscador-latentes').style.display = 'block'; else { document.getElementById('buscador-latentes').style.display = 'none'; document.getElementById('buscador-latentes').value = ''; } renderCatalogo(); }
@@ -1711,21 +1861,20 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let fotoId = fotosMgrUID[uid];
                     let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
                     
-                    // Aumento del tamaño del avatar (de 40px a 48px)
                     let avatarHTML = fotoUrl 
-                        ? `<img src="${fotoUrl}" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; object-fit: cover; margin-bottom: -14px; z-index: 2; background: #1e293b; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">`
-                        : `<div style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; margin-bottom: -14px; z-index: 2; background: #cbd5e1; display:flex; justify-content:center; align-items:center; font-size:1.4rem; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">👤</div>`;
+                        ? `<img src="${fotoUrl}" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; object-fit: cover; margin-bottom: -12px; z-index: 2; background: #1e293b; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">`
+                        : `<div style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; margin-bottom: -12px; z-index: 2; background: #cbd5e1; display:flex; justify-content:center; align-items:center; font-size:1.4rem; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">👤</div>`;
 
                     let escudoHtml = j.team_id ? `<img src="img/escudos/${j.team_id}.png" style="width: 14px; height: 14px; object-fit: contain;" onerror="this.style.display='none'">` : '';
 
                     pitchHTML += `
                         <div style="display: flex; flex-direction: column; align-items: center; width: 86px;">
                             ${avatarHTML}
-                            <div style="background: white; border-radius: 6px; padding: 16px 4px 4px 4px; text-align: center; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                            <div style="background: white; border-radius: 6px; padding: 14px 4px 2px 4px; text-align: center; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                                 <div style="color: #111827; font-size: 0.75rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">${j.name}</div>
                                 <div style="display: flex; align-items: center; justify-content: center; gap: 4px;">
                                     ${escudoHtml}
-                                    <span style="color: #10b981; font-weight: 900; font-size: 0.8rem;">${j.points || j.pts}</span>
+                                    <span style="color: #10b981; font-weight: 900; font-size: 0.95rem;">${j.points || j.pts}</span>
                                 </div>
                             </div>
                         </div>
