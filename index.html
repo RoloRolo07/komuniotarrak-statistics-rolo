@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 09:00</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 09:14</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -598,9 +598,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     let mgrFilter = 'TOP 5'; let mercFilter = 'TOP 5';
     function fmtE(n) { return Number(n).toLocaleString('es-ES') + ' €'; }
 
-    // =======================================================
-    // DICCIONARIOS DE FOTOS (¡RESUCITADOS!)
-    // =======================================================
+    // DICCIONARIOS DE FOTOS Y ESCUDOS
     const fotosMgrUID = {
         "21057989": "1lMpof0yp07WfdrMiz0xBZ3xpvj3ROxHO", "21058279": "1BbNA9rH0cVFqZhfAjes1Lf-y3TNUPXEz", 
         "21059980": "13oIgZEhUPH-i_DFmILVuUH4Fq1LagBTT", "21067500": "1e0hCuH0j40vb7568S1X9jgempH8KTq48", 
@@ -610,33 +608,46 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         "21057989": "#3b82f6", "21067327": "#ef4444", "21058216": "#10b981",
         "21067500": "#f59e0b", "21058279": "#8b5cf6", "21059980": "#ec4899"
     };
+    // Magia pura: El mapa de escudos de Drive directo en JS
+    const escudosDrive = {
+        "1": "1ed86k_8Vtzao1Y6mQaG9oBPX4Xu24DGP", "2": "16T47GYITukNadt0tZTDbmsH2j1ZdaUUm",
+        "3": "1xA80QYBGEjl8MhrXe-IKN9POjzfiYqOU", "4": "1Eg-cRV9EWYVgsZnc2kcVbHpXAFaAxEhB",
+        "5": "1Vn9GU7iNutlauVC7VN7885t7ORHPQin1", "6": "1tkJ_pWLmgCvrb-j90W2zzyGalW-hZv73",
+        "7": "1tPocKhHEJKZaOIIECE_muv-XN5bgjdeh", "8": "1a-MVrMwFy1TjFoevTHxO7xfJQX5sb6Zy",
+        "10": "1SSfysgptGzhkhgpNTTD6115iWaUpwgo1", "12": "1tACEpHB6h5VNRokEnjzqv3aNRMvgLTxo",
+        "13": "1t6JgECZ0DS2s_TBPMfKG9I56il4mZFNS", "14": "1-JtQvzB-VRm94IlHi6e-jz1VE3CJHLBK",
+        "15": "136eSioUVKMLqxeeKMIuX9JUh5NBMZ_la", "17": "17YhsbdUnU8lgIjeyBilbdGBAgg9cJQFV",
+        "18": "1KnPboCfPsiR9yKhxft7uC-fGsdKCYtZa", "19": "12YncR4pvMSh-mo1Slqtl18-R8dowdPCT",
+        "65": "1HQMh43FWcqDIyGLGVMTuSatc9wSYHWuz", "70": "1MkC0lTQ4kUNy9CHFmMDnMH2NsWVYOjrU",
+        "75": "1zTflbbolSRWGyAqB6LtmHKYbdpN6xbTV", "89": "1bEu2ve-Hh9Tbv_ynpca9H9dLYdpoqV1I"
+    };
+
     function getFotoUrl(id) { return `https://drive.google.com/thumbnail?id=${id}&sz=w100-h100`; }
+
+    const getFotoHtml = (uid) => {
+        let fotoId = fotosMgrUID[uid];
+        let color = coloresMgrUID[uid] || '#fff';
+        let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
+        
+        if(imgSrc) {
+            // El border-radius: 50% directo soluciona de raíz que las fotos salgan cuadradas en tarjetas y modals
+            return `<img src="${imgSrc}" loading="eager" style="border-color: ${color}; border-radius: 50%; object-fit: cover; box-sizing: border-box;">`;
+        }
+        return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem; border-radius: 50%;">👤</div>`;
+    };
 
     function renderCountdown() {
         const banner = document.getElementById('cuenta-atras-banner');
         
         let info = typeof next_kickoff_date === 'object' ? next_kickoff_date : {kickoff: next_kickoff_date, last_kickoff: '', nombre: 'Jornada'};
         let kickoffStr = info.kickoff;
-        let lastKickoffStr = info.last_kickoff;
         
         // Limpiamos el nombre y lo pasamos a mayúsculas
         let nombreLimpio = (info.nombre || 'JORNADA').replace(/aplazada/i, '').replace(/[()]/g, '').trim().toUpperCase();
-        
-        const fmtFecha = (iso) => {
-            if(!iso) return 'Por definir';
-            let d = new Date(iso);
-            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth()+1).toString().padStart(2, '0')} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
-        };
 
-        // Generamos la pastilla de fechas (más compacta)
-        let fechasInfo = '';
-        if (kickoffStr || lastKickoffStr) {
-            fechasInfo = `<div style="font-size:0.85rem; font-weight:bold; opacity:0.9; margin-top:6px; color:#d1fae5; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 6px; display: inline-block; letter-spacing: 0.5px;">Inicio: ${fmtFecha(kickoffStr)} &nbsp;|&nbsp; Fin: ${fmtFecha(lastKickoffStr)}</div>`;
-        }
-
-        // Si no hay fecha de inicio, por defecto está en curso
         if (!kickoffStr) {
-            banner.innerHTML = `<div style="font-size:1.6rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
+            // Texto más pequeño (1.2rem en vez de 1.6rem) para que quepa en 1 línea
+            banner.innerHTML = `<div style="font-size:1.2rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
             banner.style.display = 'block';
             return;
         }
@@ -646,7 +657,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         const diff = kickoff - now;
         
         if (diff > 0) {
-            // JORNADA PRÓXIMA (Cuenta atrás)
             let d = Math.floor(diff / (1000 * 60 * 60 * 24)); let h = Math.floor((diff / (1000 * 60 * 60)) % 24); let m = Math.floor((diff / 1000 / 60) % 60);
             let timeStr = d > 0 
                 ? `<span style="font-size:2.2rem; font-weight:900; margin:0 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${d}</span>DÍAS<span style="font-size:2.2rem; font-weight:900; margin:0 6px 0 12px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS` 
@@ -655,12 +665,10 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             banner.innerHTML = `
                 <div style="font-weight:900; font-size:1rem; opacity:0.9; margin-bottom: 2px; letter-spacing: 1px;">⏳ ${nombreLimpio}: EL BALÓN RUEDA EN</div>
                 <div style="margin: 2px 0;">${timeStr}</div>
-                ${fechasInfo}
             `;
             banner.style.display = 'block';
         } else {
-            // JORNADA EN CURSO
-            banner.innerHTML = `<div style="font-size:1.6rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>${fechasInfo}`;
+            banner.innerHTML = `<div style="font-size:1.2rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
             banner.style.display = 'block';
         }
     }
@@ -788,7 +796,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 } else {
                     modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No hay movimientos recientes.</div>`;
                 }
-            } else if (submodo === 'dashboard') {
+                } else if (submodo === 'dashboard') {
                 modalContent.innerHTML = `<div class="card-title" style="font-size:1.1rem; padding-bottom:8px; color:var(--white); justify-content:center;">📊 Dashboard</div><div class="grid-managers" id="grid-dashboard-modal"></div>`;
                 setTimeout(() => {
                     const grid = document.getElementById('grid-dashboard-modal'); 
@@ -799,7 +807,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
                         if (textoM) { let infracciones = textoM.replace(/\\*/g, "").split('\\n').filter(l => l.includes('INFRACCIÓN')); if (infracciones.length > 0) alertaHTML = `<div class="alert-mini">⚠️ ${infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>')}</div>`; } 
                         
-                        // Buscamos el UID del mánager para inyectar su foto
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
                         let fotoStr = uid ? getFotoHtml(uid).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:48px; height:48px; margin:0 auto;"').replace('<img', '<img style="width:48px; height:48px; margin:0 auto;"') : '👤';
                         
@@ -871,7 +878,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     };
 
                     mercado_vivo.forEach(j => {
-                        let escudo = j.club_id ? `<img src="img/escudos/${j.club_id}.png" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
+                        let driveId = escudosDrive[j.club_id];
+                        let escudo = driveId ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">-</span>`;
                         
                         htmlMercado += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <td><b>${j.nombre}</b></td>
@@ -1839,8 +1847,10 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             let isBanquillo = !j.linedup;
             let ptsStr = j.pts === 'LIVE' ? '<span style="color:#ef4444; animation: blinker 1.5s linear infinite;">LIVE</span>' : `<span style="color:${isBanquillo ? '#9ca3af' : '#f3f4f6'}; font-weight:bold;">${j.pts}</span>`;
             
-            // Asumiendo que el ID del equipo viaja en j.team_id o j.club_id
-            let escudoHtml = (j.team_id || j.club_id) ? `<img src="img/escudos/${j.team_id || j.club_id}.png" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
+            // Magia: Escudos de Drive directos desde nuestro nuevo diccionario JS
+            let clubIdStr = j.team_id || j.club_id || "";
+            let escudoDriveId = escudosDrive[clubIdStr];
+            let escudoHtml = escudoDriveId ? `<img src="https://drive.google.com/thumbnail?id=${escudoDriveId}&sz=w100-h100" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
 
             let fila = `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
