@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 10:11</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 10:16</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -614,12 +614,29 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
     function renderCountdown() {
         const banner = document.getElementById('cuenta-atras-banner');
+        
         let info = typeof next_kickoff_date === 'object' ? next_kickoff_date : {kickoff: next_kickoff_date, last_kickoff: '', nombre: 'Jornada'};
         let kickoffStr = info.kickoff;
+        let lastKickoffStr = info.last_kickoff;
+        
+        // Limpiamos el nombre y lo pasamos a mayúsculas
         let nombreLimpio = (info.nombre || 'JORNADA').replace(/aplazada/i, '').replace(/[()]/g, '').trim().toUpperCase();
+        
+        const fmtFecha = (iso) => {
+            if(!iso) return 'Por definir';
+            let d = new Date(iso);
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth()+1).toString().padStart(2, '0')} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+        };
 
+        // Generamos la pastilla de fechas (más compacta)
+        let fechasInfo = '';
+        if (kickoffStr || lastKickoffStr) {
+            fechasInfo = `<div style="font-size:0.85rem; font-weight:bold; opacity:0.9; margin-top:6px; color:#d1fae5; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 6px; display: inline-block; letter-spacing: 0.5px;">Inicio: ${fmtFecha(kickoffStr)} &nbsp;|&nbsp; Fin: ${fmtFecha(lastKickoffStr)}</div>`;
+        }
+
+        // Si no hay fecha de inicio, por defecto está en curso
         if (!kickoffStr) {
-            banner.innerHTML = `<div style="font-size:1.1rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
+            banner.innerHTML = `<div style="font-size:1.6rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
             banner.style.display = 'block';
             return;
         }
@@ -629,18 +646,21 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         const diff = kickoff - now;
         
         if (diff > 0) {
+            // JORNADA PRÓXIMA (Cuenta atrás)
             let d = Math.floor(diff / (1000 * 60 * 60 * 24)); let h = Math.floor((diff / (1000 * 60 * 60)) % 24); let m = Math.floor((diff / 1000 / 60) % 60);
             let timeStr = d > 0 
-                ? `<span style="font-size:2rem; font-weight:900; margin:0 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${d}</span>DÍAS<span style="font-size:2rem; font-weight:900; margin:0 4px 0 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS` 
-                : `<span style="font-size:2rem; font-weight:900; margin:0 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS<span style="font-size:2rem; font-weight:900; margin:0 4px 0 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${m}</span>MIN`;
+                ? `<span style="font-size:2.2rem; font-weight:900; margin:0 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${d}</span>DÍAS<span style="font-size:2.2rem; font-weight:900; margin:0 6px 0 12px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS` 
+                : `<span style="font-size:2.2rem; font-weight:900; margin:0 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${h}</span>HORAS<span style="font-size:2.2rem; font-weight:900; margin:0 6px 0 12px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${m}</span>MIN`;
                 
             banner.innerHTML = `
-                <div style="font-weight:900; font-size:0.9rem; opacity:0.9; margin-bottom: 2px; letter-spacing: 1px;">⏳ ${nombreLimpio}: EL BALÓN RUEDA EN</div>
+                <div style="font-weight:900; font-size:1rem; opacity:0.9; margin-bottom: 2px; letter-spacing: 1px;">⏳ ${nombreLimpio}: EL BALÓN RUEDA EN</div>
                 <div style="margin: 2px 0;">${timeStr}</div>
+                ${fechasInfo}
             `;
             banner.style.display = 'block';
         } else {
-            banner.innerHTML = `<div style="font-size:1.1rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
+            // JORNADA EN CURSO
+            banner.innerHTML = `<div style="font-size:1.6rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>${fechasInfo}`;
             banner.style.display = 'block';
         }
     }
@@ -776,15 +796,23 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     if (!managers || !managers.length) { grid.innerHTML = '<p class="muted">No hay datos de mánagers.</p>'; return; } 
                     grid.innerHTML = managers.map(m => { 
                         const sClass = m.presupuesto_liquido >= 0 ? 'val-pos' : 'val-neg'; 
+                        let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN')); 
+                        if (textoM) { let infracciones = textoM.replace(/\\*/g, "").split('\\n').filter(l => l.includes('INFRACCIÓN')); if (infracciones.length > 0) alertaHTML = `<div class="alert-mini">⚠️ ${infracciones.map(i => i.replace(/<[^>]*>?/gm, '').trim()).join('<br>')}</div>`; } 
+                        
+                        // Buscamos el UID del mánager para inyectar su foto
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
                         let fotoStr = uid ? getFotoHtml(uid).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:48px; height:48px; margin:0 auto;"').replace('<img', '<img style="width:48px; height:48px; margin:0 auto;"') : '👤';
+                        
                         return `<div class="card" style="margin-bottom: 12px;">
-                            <div class="mgr-header" style="display:flex; justify-content:center; margin-bottom:12px;">${fotoStr}</div>
+                            <div class="mgr-header" style="display:flex; justify-content:center; margin-bottom:12px;">
+                                ${fotoStr}
+                            </div>
                             <div class="kpi-row"><span class="kpi-label">🏛️ Valor total:</span><span class="val-blue">${fmtE(m.patrimonio_total)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">👕 Valor plantilla:</span><span class="val-white">${fmtE(m.valor_plantilla)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">💵 Saldo:</span><span class="${sClass}">${fmtE(m.presupuesto_liquido)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">🔨 Puja máxima:</span><span class="val-gold">${fmtE(m.puja_maxima)}</span></div>
                             <div class="kpi-row"><span class="kpi-label">🏃 Jugadores:</span><span class="val-white">${m.total_jugadores || 0}</span></div>
+                            ${alertaHTML}
                         </div>`; 
                     }).join(''); 
                 }, 0);
@@ -827,7 +855,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             } else if (submodo === 'mercado') {
                 let htmlMercado = `
                     <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
-                        <div class="card-title" style="margin-bottom:12px; color:var(--blue);">🛒 Mercado de Hoy</div>`;
+                        <div class="card-title" style="margin-bottom:12px; color:var(--blue);">🛒 Mercado de Hoy (Computer)</div>`;
                 
                 if (typeof mercado_vivo !== 'undefined' && mercado_vivo.length > 0) {
                     htmlMercado += `<div style="overflow-x:auto;"><table class="tabla-compacta" style="width:100%;">
@@ -841,13 +869,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         if (p.includes('stri') || p === '4') return `<span class="pos-badge" style="border-left: 3px solid #ef4444;">DEL</span>`;
                         return `<span class="pos-badge">DES</span>`;
                     };
-                    
-                    const mapClubNombres = { "athletic club": "1", "atlético de madrid": "2", "ca osasuna": "3", "leganés": "4", "celta de vigo": "5", "rcd espanyol": "6", "fc barcelona": "7", "getafe cf": "8", "girona fc": "10", "rcd mallorca": "12", "real betis": "13", "deportivo alavés": "14", "real madrid": "15", "real sociedad": "17", "rayo vallecano": "18", "real valladolid": "19", "sevilla fc": "65", "ud las palmas": "70", "valencia cf": "75", "villarreal cf": "89" };
 
                     mercado_vivo.forEach(j => {
-                        let clubIdStr = j.club_id || mapClubNombres[(j.club||'').toLowerCase()] || "";
-                        let driveId = escudosDrive[clubIdStr];
-                        let escudo = driveId ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
+                        let escudo = j.club_id ? `<img src="img/escudos/${j.club_id}.png" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
                         
                         htmlMercado += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <td><b>${j.nombre}</b></td>
@@ -858,7 +882,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     });
                     htmlMercado += `</tbody></table></div>`;
                 } else {
-                    htmlMercado += `<div class="muted" style="text-align:center; padding: 20px;">No hay jugadores a la venta hoy.</div>`;
+                    htmlMercado += `<div class="muted" style="text-align:center; padding: 20px;">No hay jugadores de Computer a la venta hoy.</div>`;
                 }
                 htmlMercado += `</div>`;
                 modalContent.innerHTML = htmlMercado;
@@ -895,9 +919,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
         
         if(imgSrc) {
-            return `<img src="${imgSrc}" loading="eager" style="border-color: ${color}; border-radius: 50%; object-fit: cover; box-sizing: border-box;">`;
+            return `<img src="${imgSrc}" loading="eager" style="border-color: ${color};">`;
         }
-        return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem; border-radius: 50%;">👤</div>`;
+        return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`;
     };
 
     window.renderizarVista = function() {
@@ -1796,7 +1820,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     function generarHtmlAlineacion(managerData) {
         const getPosBadge = (pos, isBanquillo) => {
             let p = (pos || '').toLowerCase();
-            let op = isBanquillo ? '0.3' : '1';
+            let op = isBanquillo ? '0.4' : '1';
             let opBg = isBanquillo ? '0.05' : '0.15';
             
             if (p.includes('keep') || p === '1' || p === '1.0') return `<span style="background: rgba(234, 179, 8, ${opBg}); border-left: 3px solid rgba(234, 179, 8, ${op}); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: rgba(253, 224, 71, ${op}); margin-right: 8px;">POR</span>`;
@@ -1808,18 +1832,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
         let titularesHTML = `<div style="font-size: 0.75rem; text-transform: uppercase; color: #f59e0b; font-weight: 800; margin-bottom: 8px; text-align: left;">⭐ TITULARES</div>`;
         let banquilloHTML = `<div style="font-size: 0.75rem; text-transform: uppercase; color: #9ca3af; font-weight: 800; margin-top: 15px; margin-bottom: 8px; text-align: left;">🪑 BANQUILLO</div>`;
+        
         let hayBanquillo = false;
 
         managerData.jugadores.forEach(j => {
             let isBanquillo = !j.linedup;
             let ptsStr = j.pts === 'LIVE' ? '<span style="color:#ef4444; animation: blinker 1.5s linear infinite;">LIVE</span>' : `<span style="color:${isBanquillo ? '#9ca3af' : '#f3f4f6'}; font-weight:bold;">${j.pts}</span>`;
             
-            // MAPA DE RESCATE: Si Python no manda ID, leemos el nombre y ponemos el escudo igual
-            const mapClubNombres = { "athletic club": "1", "atlético de madrid": "2", "ca osasuna": "3", "leganés": "4", "celta de vigo": "5", "rcd espanyol": "6", "fc barcelona": "7", "getafe cf": "8", "girona fc": "10", "rcd mallorca": "12", "real betis": "13", "deportivo alavés": "14", "real madrid": "15", "real sociedad": "17", "rayo vallecano": "18", "real valladolid": "19", "sevilla fc": "65", "ud las palmas": "70", "valencia cf": "75", "villarreal cf": "89" };
-            
-            let clubIdStr = j.team_id || j.club_id || mapClubNombres[(j.club||'').toLowerCase()] || "";
-            let escudoDriveId = escudosDrive[clubIdStr];
-            let escudoHtml = escudoDriveId ? `<img src="https://drive.google.com/thumbnail?id=${escudoDriveId}&sz=w100-h100" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
+            // Asumiendo que el ID del equipo viaja en j.team_id o j.club_id
+            let escudoHtml = (j.team_id || j.club_id) ? `<img src="img/escudos/${j.team_id || j.club_id}.png" style="width:18px; height:18px; object-fit:contain; margin-right:6px;" onerror="this.style.display='none'">` : '';
 
             let fila = `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
@@ -1832,8 +1853,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 </div>
             `;
 
-            if (j.linedup) titularesHTML += fila;
-            else { banquilloHTML += fila; hayBanquillo = true; }
+            if (j.linedup) {
+                titularesHTML += fila;
+            } else {
+                banquilloHTML += fila;
+                hayBanquillo = true;
+            }
         });
 
         return titularesHTML + (hayBanquillo ? banquilloHTML : '');
