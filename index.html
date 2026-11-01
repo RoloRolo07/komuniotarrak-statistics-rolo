@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 07:24</div></div>
+    <div class="header-top"><div class="brand">ESTADÍSTICAS KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 01/11/2026 07:45</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -351,26 +351,39 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
 
     <!-- ======================================================= -->
-    <!-- SUPER CROMOS 3D (MAQUETAS DEFINITIVAS V2)               -->
+    <!-- SUPER CROMOS 3D Y MODALES FLOTANTES                     -->
     <!-- ======================================================= -->
+    
+    <!-- MODAL PARA PASTILLAS (11 Ideal, Tarjetero) -->
+    <div id="pastillaModal" class="manager-modal-overlay">
+        <button class="close-modal-btn" onclick="document.getElementById('pastillaModal').classList.remove('active');">✖</button>
+        <div id="pastilla-modal-content" style="width: 95%; max-width: 520px; max-height: 90vh; overflow-y: auto;">
+            <!-- Aquí se inyecta el 11 ideal flotante -->
+        </div>
+    </div>
+
+    <!-- MODAL DE MÁNAGER -->
     <div id="managerModal" class="manager-modal-overlay">
         <button class="close-modal-btn" onclick="cerrarTarjetaX()">✖</button>
 
         <!-- 1. TARJETA MODO GENERAL (HISTÓRICO) -->
         <div id="tarjeta-general" class="manager-card-container" onclick="this.classList.toggle('is-flipped')" style="display: none;">
             <div class="manager-card-inner">
-                
                 <!-- CARA A: GENERAL -->
                 <div class="manager-card-front">
                     <div class="tarjeta-cabecera">
-                        <div class="foto-hundible" ontouchstart="" style="border-color: #3b82f6; margin: 0 auto 15px auto;">👤</div>
-                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
-                        <div style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 10px;">
-                            <i style="margin-right: 8px;">"El Alias"</i> <b style="color: #f59e0b;">3-4-3</b>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px;">
+                            <div style="position: relative;">
+                                <div class="foto-hundible avatar-cabecera" style="margin: 0;">👤</div>
+                                <div class="badge-posicion" style="position: absolute; top: -6px; right: -10px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 10; color: #000;">1º</div>
+                            </div>
+                            <div style="display: flex; align-items: baseline; gap: 6px;">
+                                <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
+                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
+                                <div class="tendencia-cabecera" style="font-size: 1.4rem; font-weight: bold; margin-left: 4px;">-</div>
+                            </div>
                         </div>
-                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
-                            <span>1º General</span> &nbsp;|&nbsp; <span style="color: #f59e0b;">0 pts</span> &nbsp;|&nbsp; <span style="color: #10b981;">▲</span>
-                        </div>
+                        <div class="nombre-mgr-cabecera" style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
                     </div>
                     <div class="tarjeta-cuerpo">
                         <div class="caja-datos">
@@ -403,16 +416,19 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
                 <!-- CARA B: GENERAL (SALÓN DE LA FAMA) -->
                 <div class="manager-card-back">
-                    <!-- Cabecera idéntica (Efecto fijo) -->
                     <div class="tarjeta-cabecera">
-                        <div class="foto-hundible" ontouchstart="" style="border-color: #3b82f6; margin: 0 auto 15px auto;">👤</div>
-                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
-                        <div style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 10px;">
-                            <i style="margin-right: 8px;">"El Alias"</i> <b style="color: #f59e0b;">3-4-3</b>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px;">
+                            <div style="position: relative;">
+                                <div class="foto-hundible avatar-cabecera" style="margin: 0;">👤</div>
+                                <div class="badge-posicion" style="position: absolute; top: -6px; right: -10px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 10; color: #000;">1º</div>
+                            </div>
+                            <div style="display: flex; align-items: baseline; gap: 6px;">
+                                <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
+                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
+                                <div class="tendencia-cabecera" style="font-size: 1.4rem; font-weight: bold; margin-left: 4px;">-</div>
+                            </div>
                         </div>
-                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
-                            <span>1º General</span> &nbsp;|&nbsp; <span style="color: #f59e0b;">0 pts</span> &nbsp;|&nbsp; <span style="color: #10b981;">▲</span>
-                        </div>
+                        <div class="nombre-mgr-cabecera" style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
                     </div>
                     <div class="tarjeta-cuerpo">
                         <div class="caja-datos" style="display: flex; align-items: center; justify-content: space-between;">
@@ -426,7 +442,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             </div>
                             <div style="color: #f59e0b; font-size: 1.1rem; font-weight: bold;">+150</div>
                         </div>
-
                         <div class="caja-datos" style="display: flex; align-items: center; justify-content: space-between;">
                             <div>
                                 <div class="caja-datos-tit" style="color: #3b82f6; margin-bottom: 2px;">🍖 La Pata Negra</div>
@@ -441,7 +456,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                 <div style="color: #9ca3af; font-size: 0.7rem;">pts/M€</div>
                             </div>
                         </div>
-
                         <div class="caja-datos" style="display: flex; align-items: center; justify-content: space-between;">
                             <div>
                                 <div class="caja-datos-tit" style="color: #10b981; margin-bottom: 2px;">📋 El Coleccionista</div>
@@ -456,37 +470,35 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         <div style="text-align: center; font-size: 0.75rem; color: #9ca3af;">Toca para volver ↺</div>
                     </div>
                 </div>
-
             </div>
         </div>
-
 
         <!-- 2. TARJETA MODO JORNADA (EL SEMANAL) -->
         <div id="tarjeta-jornada" class="manager-card-container" onclick="this.classList.toggle('is-flipped')" style="display: none;">
             <div class="manager-card-inner">
-                
                 <!-- CARA A: JORNADA -->
                 <div class="manager-card-front">
                     <div class="tarjeta-cabecera">
-                        <div class="foto-hundible" ontouchstart="" style="border-color: #ef4444; margin: 0 auto 15px auto;">👤</div>
-                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
-                        <div style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 10px;">
-                            <i style="margin-right: 8px;">"El Alias"</i> <b style="color: #f59e0b;">3-4-3</b>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px;">
+                            <div style="position: relative;">
+                                <div class="foto-hundible avatar-cabecera" style="margin: 0;">👤</div>
+                                <div class="badge-posicion" style="position: absolute; top: -6px; right: -10px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 10; color: #000;">1º</div>
+                            </div>
+                            <div style="display: flex; align-items: baseline; gap: 6px;">
+                                <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
+                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
+                                <div class="tendencia-cabecera" style="display: none;"></div>
+                            </div>
                         </div>
-                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
-                            <span>1º de la Jornada</span>
+                        <div class="nombre-mgr-cabecera" style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
+                        <div style="color: #9ca3af; font-size: 0.9rem; font-weight: bold;">
+                            Táctica: <b style="color: #f59e0b;" class="tactica-mgr-cabecera">3-4-3</b>
                         </div>
                     </div>
-                    <div class="tarjeta-cuerpo" style="display: flex; flex-direction: column;">
-                        <div style="text-align: center; margin-bottom: 15px;">
-                            <!-- AQUÍ ESTÁ EL ID PARA LOS PUNTOS -->
-                            <div id="puntos-jornada-tarjeta" style="font-size: 4rem; font-weight: 900; color: #10b981; line-height: 1; text-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);">0</div>
-                            <div style="color: #9ca3af; font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Puntos</div>
-                        </div>
+                    <div class="tarjeta-cuerpo" style="display: flex; flex-direction: column; padding-top: 5px;">
                         <div class="caja-datos" style="flex-grow: 1;">
                             <div class="caja-datos-tit" style="color: #10b981; text-align: center;">🏟️ El Verde</div>
-                            <!-- AQUÍ ESTÁ EL ID PARA LA LISTA DE JUGADORES -->
-                            <div id="verde-alineacion" style="font-size: 0.8rem; text-align: center; color: #9ca3af; padding: 20px 0; overflow-y: auto;">
+                            <div id="verde-alineacion" style="font-size: 0.8rem; text-align: center; color: #9ca3af; padding: 10px 0; overflow-y: auto;">
                                 [ Aquí inyectaremos el 11 titular al conectar JS ]
                             </div>
                         </div>
@@ -497,19 +509,21 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 <!-- CARA B: JORNADA (PREMIOS SEMANALES) -->
                 <div class="manager-card-back">
                     <div class="tarjeta-cabecera">
-                        <div class="foto-hundible" ontouchstart="" style="border-color: #ef4444; margin: 0 auto 15px auto;">👤</div>
-                        <div style="font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
-                        <div style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 10px;">
-                            <i style="margin-right: 8px;">"El Alias"</i> <b style="color: #f59e0b;">3-4-3</b>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px;">
+                            <div style="position: relative;">
+                                <div class="foto-hundible avatar-cabecera" style="margin: 0;">👤</div>
+                                <div class="badge-posicion" style="position: absolute; top: -6px; right: -10px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 10; color: #000;">1º</div>
+                            </div>
+                            <div style="display: flex; align-items: baseline; gap: 6px;">
+                                <div style="font-size: 2.2rem; font-weight: 900; line-height: 1;"><span class="puntos-cabecera">0</span></div>
+                                <div style="font-size: 0.9rem; color: #9ca3af; font-weight: bold;">pts</div>
+                                <div class="tendencia-cabecera" style="display: none;"></div>
+                            </div>
                         </div>
-                        <div style="display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
-                            <span>1º de la Jornada</span>
-                        </div>
+                        <div class="nombre-mgr-cabecera" style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; line-height: 1;">NOMBRE MÁNAGER</div>
                     </div>
                     <div class="tarjeta-cuerpo">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                            
-                            <!-- Premio Pequeño Limpio -->
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
                                 <div style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 2px;">👑</div>
                                 <div style="font-weight: bold; font-size: 0.75rem; color: #9ca3af; margin-bottom: 6px;">TORMENTA</div>
@@ -519,7 +533,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                 </div>
                                 <div style="color: #f59e0b; font-weight: bold; font-size: 0.85rem; margin-top: 4px;">15 pts</div>
                             </div>
-                            
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
                                 <div style="color: #ef4444; font-size: 1.2rem; margin-bottom: 2px;">📉</div>
                                 <div style="font-weight: bold; font-size: 0.75rem; color: #9ca3af; margin-bottom: 6px;">TARDE NEGRA</div>
@@ -529,7 +542,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                 </div>
                                 <div style="color: #ef4444; font-weight: bold; font-size: 0.85rem; margin-top: 4px;">-2 pts</div>
                             </div>
-
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
                                 <div style="color: #3b82f6; font-size: 1.2rem; margin-bottom: 2px;">🦸</div>
                                 <div style="font-weight: bold; font-size: 0.75rem; color: #9ca3af; margin-bottom: 6px;">EL CARRITO</div>
@@ -539,7 +551,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                 </div>
                                 <div style="color: #3b82f6; font-weight: bold; font-size: 0.85rem; margin-top: 4px;">35%</div>
                             </div>
-
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
                                 <div style="color: #f3f4f6; font-size: 1.2rem; margin-bottom: 2px;">👻</div>
                                 <div style="font-weight: bold; font-size: 0.75rem; color: #9ca3af; margin-bottom: 6px;">MR GHOSTING</div>
@@ -549,7 +560,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                 </div>
                                 <div style="color: #f3f4f6; font-weight: bold; font-size: 0.85rem; margin-top: 4px;">12 pts</div>
                             </div>
-
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
                                 <div style="color: #10b981; font-size: 1.2rem; margin-bottom: 2px;">🍖</div>
                                 <div style="font-weight: bold; font-size: 0.75rem; color: #9ca3af; margin-bottom: 6px;">PATA NEGRA</div>
@@ -558,7 +568,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                     <b style="font-size: 0.9rem;">I. Aspas</b>
                                 </div>
                             </div>
-
                             <div class="caja-datos" style="text-align: center; padding: 10px;">
                                 <div style="color: #9ca3af; font-size: 1.2rem; margin-bottom: 2px;">🍷</div>
                                 <div style="font-weight: bold; font-size: 0.75rem; color: #9ca3af; margin-bottom: 6px;">GARRAFÓN</div>
@@ -567,14 +576,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                     <b style="font-size: 0.9rem;">Puado</b>
                                 </div>
                             </div>
-
                         </div>
                         <div style="text-align: center; font-size: 0.75rem; color: #9ca3af; margin-top: 8px;">Toca para volver ↺</div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
         
 <script>
@@ -720,50 +727,40 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     window.abrirSubTarjeta = function(submodo) {
         const botones = document.querySelectorAll('#pastillas-container .btn-filter');
         let botonPulsado = document.getElementById('btn-sub-' + submodo);
-        let subContainer = document.getElementById('sub-tarjetas-area');
+        let modalPastilla = document.getElementById('pastillaModal');
+        let modalContent = document.getElementById('pastilla-modal-content');
         
-        let estabaActivo = botonPulsado && botonPulsado.classList.contains('active');
-        
-        // 1. Apagamos visualmente todas las pastillas
+        // 1. Apagamos visualmente todas las pastillas (efecto estético de deselección)
         botones.forEach(b => {
             b.classList.remove('active');
             b.style.background = 'var(--card)';
             b.style.color = 'var(--text)';
         });
 
-        // 2. Si ya estaba abierta, la cerramos y terminamos (Efecto Toggle)
-        if (estabaActivo) {
-            subContainer.innerHTML = '';
-            subContainer.style.display = 'none';
-            return;
-        }
-
-        // 3. Encendemos visualmente la pastilla seleccionada
+        // 2. Encendemos visualmente la pastilla seleccionada temporalmente
         if (botonPulsado) {
             botonPulsado.classList.add('active');
             botonPulsado.style.background = 'var(--accent)';
             botonPulsado.style.color = '#000';
         }
-        
-        subContainer.style.display = 'block';
 
-        // 4. Inyectamos los datos en la tarjeta
+        // 3. Inyectamos los datos en el MODAL FLOTANTE
         if (window.modoActual === 'general') {
             if (submodo === '11_ideal') {
                 if(globalStats.once_ideal_historico_pitch && globalStats.once_ideal_historico_pitch.jugadores && globalStats.once_ideal_historico_pitch.jugadores.length > 0) {
                     let oiHist = globalStats.once_ideal_historico_pitch;
                     let pitchHTML = generarHtmlOnceIdeal(oiHist.jugadores);
-                    subContainer.innerHTML = `
-                        <div class="card" style="padding:16px; overflow-x:auto;">
-                            <div class="card-title" style="margin-bottom:8px; justify-content:center;">🌟 Once de Gala Histórico <span class="muted" style="font-size:0.9rem; margin-left:8px;">(${oiHist.formacion})</span></div>
-                            <div style="margin-bottom:16px; font-size:0.9rem; text-align:center;"><b>Puntos acumulados:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oiHist.puntos} pts</span> | <b>Valor total:</b> ${fmtE(oiHist.valor)}</div>
+                    modalContent.innerHTML = `
+                        <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
+                            <div class="card-title" style="margin-bottom:8px; justify-content:center;">🌟 Once de Gala <span class="muted" style="font-size:0.9rem; margin-left:8px;">(${oiHist.formacion})</span></div>
+                            <div style="margin-bottom:16px; font-size:0.9rem; text-align:center;"><b>Puntos:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oiHist.puntos}</span> | <b>Valor:</b> ${fmtE(oiHist.valor)}</div>
                             ${pitchHTML}
                         </div>`;
                 } else {
-                    subContainer.innerHTML = `<div class="card text-block" style="text-align:center;">No hay datos suficientes para calcular el Once Histórico.</div>`;
+                    modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No hay datos suficientes para calcular el Once Histórico.</div>`;
                 }
             } else {
-                subContainer.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
+                modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
         } else if (window.modoActual === 'jornadas') {
             if (submodo === '11_ideal') {
@@ -771,21 +768,22 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 if (jd && jd.once_ideal && jd.once_ideal.jugadores && jd.once_ideal.jugadores.length > 0) {
                     let oi = jd.once_ideal;
                     let pitchHTML = generarHtmlOnceIdeal(oi.jugadores);
-                    subContainer.innerHTML = `
-                        <div class="card" style="padding:16px; overflow-x:auto;">
+                    modalContent.innerHTML = `
+                        <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
                             <div class="card-title" style="margin-bottom:8px; justify-content:center;">🌟 Once de la Jornada <span class="muted" style="font-size:0.9rem; margin-left:8px;">(${oi.formacion})</span></div>
-                            <div style="margin-bottom:16px; font-size:0.9rem; text-align:center;"><b>Puntos:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oi.puntos} pts</span> | <b>Valor:</b> ${fmtE(oi.valor)}</div>
+                            <div style="margin-bottom:16px; font-size:0.9rem; text-align:center;"><b>Puntos:</b> <span class="val-accent" style="font-size:1.1rem; font-weight:bold;">${oi.puntos}</span> | <b>Valor:</b> ${fmtE(oi.valor)}</div>
                             ${pitchHTML}
                         </div>`;
                 } else {
-                    subContainer.innerHTML = `<div class="card text-block" style="text-align:center;">No se formó un once ideal legal en esta jornada.</div>`;
+                    modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">No se formó un once ideal legal en esta jornada.</div>`;
                 }
             } else {
-                subContainer.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
+                modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
         }
         
-        subContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // 4. Mostramos el modal
+        if (modalPastilla) modalPastilla.classList.add('active');
     };
     
     function initSelectorJornadas() {
@@ -1529,33 +1527,73 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             const tarjetaInner = document.querySelector('.manager-card-container.is-flipped');
             if (tarjetaInner) tarjetaInner.classList.remove('is-flipped');
 
-            if (window.modoActual === 'jornadas') {
+            const isGeneral = (window.modoActual === 'general');
+            let pos = 0, pts = 0, tend = '', tactica = "3-4-3";
+
+            // Calculamos los stats para inyectarlos en la cabecera
+            if (isGeneral) {
+                let managerData = globalStats.clasif_general_actual.find(m => m.uid === uidManager);
+                if (managerData) {
+                    pos = globalStats.clasif_general_actual.indexOf(managerData) + 1;
+                    pts = managerData.pts_t;
+                    tend = managerData.tendencia;
+                }
+            } else {
                 const jd = jornadasData[selectedJornadaIdx];
-                if (jd && jd.alineaciones && nombreManager) {
-                    const mData = jd.alineaciones.find(a => a.manager.trim() === nombreManager.trim());
-                    
-                    if (mData) {
-                        let todosLosJugadores = [
-                            ...(mData.keeper||[]).map(j => ({ ...j, linedup: true })),
-                            ...(mData.defender||[]).map(j => ({ ...j, linedup: true })),
-                            ...(mData.midfielder||[]).map(j => ({ ...j, linedup: true })),
-                            ...(mData.striker||[]).map(j => ({ ...j, linedup: true })),
-                            ...(mData.banquillo||[]).map(j => ({ ...j, linedup: false }))
-                        ];
-                        
-                        const divVerde = document.getElementById('verde-alineacion');
-                        if (divVerde) divVerde.innerHTML = generarHtmlAlineacion({ jugadores: todosLosJugadores });
-                        
-                        const divPuntos = document.getElementById('puntos-jornada-tarjeta');
-                        if (divPuntos) divPuntos.innerText = mData.puntos_totales;
+                if (jd && jd.clasif_jornada) {
+                    let managerData = jd.clasif_jornada.find(m => m.uid === uidManager);
+                    if (managerData) {
+                        pos = jd.clasif_jornada.indexOf(managerData) + 1;
+                        pts = managerData.pts_j;
+                    }
+                    if (jd.alineaciones) {
+                        const mAlin = jd.alineaciones.find(a => a.manager.trim() === nombreManager.trim());
+                        if (mAlin) {
+                            tactica = mAlin.formacion;
+                            let todosLosJugadores = [
+                                ...(mAlin.keeper||[]).map(j => ({ ...j, linedup: true })),
+                                ...(mAlin.defender||[]).map(j => ({ ...j, linedup: true })),
+                                ...(mAlin.midfielder||[]).map(j => ({ ...j, linedup: true })),
+                                ...(mAlin.striker||[]).map(j => ({ ...j, linedup: true })),
+                                ...(mAlin.banquillo||[]).map(j => ({ ...j, linedup: false }))
+                            ];
+                            const divVerde = document.getElementById('verde-alineacion');
+                            if (divVerde) divVerde.innerHTML = generarHtmlAlineacion({ jugadores: todosLosJugadores });
+                        }
                     }
                 }
-                document.getElementById('tarjeta-general').style.display = 'none';
-                document.getElementById('tarjeta-jornada').style.display = 'block';
-            } else {
-                document.getElementById('tarjeta-general').style.display = 'block';
-                document.getElementById('tarjeta-jornada').style.display = 'none';
             }
+
+            // Diseño de la medalla de posición
+            let badgeColor = '#1e293b', badgeBorder = '#475569', badgeText = pos + 'º', badgeTextColor = '#f3f4f6';
+            if (pos === 1) { badgeColor = '#fef08a'; badgeBorder = '#eab308'; badgeText = '🥇'; badgeTextColor = '#000'; }
+            else if (pos === 2) { badgeColor = '#e5e7eb'; badgeBorder = '#9ca3af'; badgeText = '🥈'; badgeTextColor = '#000'; }
+            else if (pos === 3) { badgeColor = '#fed7aa'; badgeBorder = '#f97316'; badgeText = '🥉'; badgeTextColor = '#000'; }
+
+            const targetCardId = isGeneral ? 'tarjeta-general' : 'tarjeta-jornada';
+
+            // Inyectamos los datos en AMBAS caras de la tarjeta que toque
+            document.querySelectorAll(`#${targetCardId} .badge-posicion`).forEach(el => {
+                el.innerHTML = badgeText;
+                el.style.background = badgeColor;
+                el.style.borderColor = badgeBorder;
+                el.style.color = badgeTextColor;
+            });
+            document.querySelectorAll(`#${targetCardId} .puntos-cabecera`).forEach(el => el.innerText = pts);
+            document.querySelectorAll(`#${targetCardId} .tendencia-cabecera`).forEach(el => {
+                el.innerText = tend;
+                el.className = 'tendencia-cabecera ' + (tend === '▲' ? 'val-pos' : (tend === '▼' ? 'val-neg' : 'muted'));
+            });
+            document.querySelectorAll(`#${targetCardId} .nombre-mgr-cabecera`).forEach(el => el.innerText = nombreManager);
+            document.querySelectorAll(`#${targetCardId} .tactica-mgr-cabecera`).forEach(el => el.innerText = tactica);
+            
+            // Reutilizamos tu función para pintar el botón del avatar (sin que sea clickeable aquí)
+            let fotoHtmlStr = getFotoHtml(uidManager).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px;"').replace('<img', '<img style="width:52px; height:52px;"');
+            document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => el.innerHTML = fotoHtmlStr);
+
+            // Toggle de tarjetas
+            document.getElementById('tarjeta-general').style.display = isGeneral ? 'block' : 'none';
+            document.getElementById('tarjeta-jornada').style.display = isGeneral ? 'none' : 'block';
 
             const modal = document.getElementById('managerModal');
             if (modal) modal.classList.add('active'); 
@@ -1641,7 +1679,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             <div style="position: absolute; bottom: 0; left: 50%; width: 160px; height: 60px; border: 3px solid rgba(255,255,255,0.85); border-bottom: none; transform: translateX(-50%); z-index: 1;"></div>
         `;
 
-        // Filtramos rígidamente por las 4 posiciones del servidor
         ['keeper', 'defender', 'midfielder', 'striker'].forEach(pos => {
             let jugPosicion = jugadoresOnce.filter(j => {
                 let p = (j.position || '').toLowerCase();
@@ -1654,32 +1691,47 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
             if (jugPosicion.length === 0) return;
 
-            pitchHTML += `<div style="display: flex; justify-content: space-evenly; align-items: center; width: 100%; z-index: 10;">`;
+            pitchHTML += `<div style="display: flex; flex-direction: column; align-items: center; width: 100%; z-index: 10; gap: 8px;">`;
             
-            jugPosicion.forEach(j => {
-                let uid = j.manager_id || (j.owner ? j.owner.id : '');
-                let colorManager = coloresMgrUID[uid] || '#fff';
-                let fotoId = fotosMgrUID[uid];
-                let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
-                
-                let avatarHTML = fotoUrl 
-                    ? `<img src="${fotoUrl}" style="width: 40px; height: 40px; border-radius: 50%; border: 3px solid ${colorManager}; object-fit: cover; margin-bottom: -12px; z-index: 2; background: #1e293b; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">`
-                    : `<div style="width: 40px; height: 40px; border-radius: 50%; border: 3px solid ${colorManager}; margin-bottom: -12px; z-index: 2; background: #cbd5e1; display:flex; justify-content:center; align-items:center; font-size:1.2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">👤</div>`;
+            // Lógica para dividir filas si hay más de 3 jugadores
+            let filas = [];
+            if (jugPosicion.length > 3) {
+                let mitad = Math.ceil(jugPosicion.length / 2);
+                filas.push(jugPosicion.slice(0, mitad));
+                filas.push(jugPosicion.slice(mitad));
+            } else {
+                filas.push(jugPosicion);
+            }
 
-                let escudoHtml = j.team_id ? `<img src="img/escudos/${j.team_id}.png" style="width: 14px; height: 14px; object-fit: contain;" onerror="this.style.display='none'">` : '';
+            filas.forEach(fila => {
+                pitchHTML += `<div style="display: flex; justify-content: space-evenly; align-items: center; width: 100%;">`;
+                fila.forEach(j => {
+                    let uid = j.manager_id || (j.owner ? j.owner.id : '');
+                    let colorManager = coloresMgrUID[uid] || '#fff';
+                    let fotoId = fotosMgrUID[uid];
+                    let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
+                    
+                    // Aumento del tamaño del avatar (de 40px a 48px)
+                    let avatarHTML = fotoUrl 
+                        ? `<img src="${fotoUrl}" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; object-fit: cover; margin-bottom: -14px; z-index: 2; background: #1e293b; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">`
+                        : `<div style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; margin-bottom: -14px; z-index: 2; background: #cbd5e1; display:flex; justify-content:center; align-items:center; font-size:1.4rem; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">👤</div>`;
 
-                pitchHTML += `
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 80px;">
-                        ${avatarHTML}
-                        <div style="background: white; border-radius: 6px; padding: 14px 4px 4px 4px; text-align: center; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                            <div style="color: #111827; font-size: 0.7rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">${j.name}</div>
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 4px;">
-                                ${escudoHtml}
-                                <span style="color: #10b981; font-weight: 900; font-size: 0.75rem;">${j.points || j.pts}</span>
+                    let escudoHtml = j.team_id ? `<img src="img/escudos/${j.team_id}.png" style="width: 14px; height: 14px; object-fit: contain;" onerror="this.style.display='none'">` : '';
+
+                    pitchHTML += `
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 86px;">
+                            ${avatarHTML}
+                            <div style="background: white; border-radius: 6px; padding: 16px 4px 4px 4px; text-align: center; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                                <div style="color: #111827; font-size: 0.75rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">${j.name}</div>
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                    ${escudoHtml}
+                                    <span style="color: #10b981; font-weight: 900; font-size: 0.8rem;">${j.points || j.pts}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
+                pitchHTML += `</div>`;
             });
             pitchHTML += `</div>`;
         });
