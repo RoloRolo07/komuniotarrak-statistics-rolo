@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 15:25</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 15:53</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -947,6 +947,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         let imgSrc = fotoId ? getFotoUrl(fotoId) : '';
         
         if(imgSrc) {
+            // AÑADIMOS la clase "avatar-circle-btn" a la etiqueta img
             return `<img class="avatar-circle-btn" src="${imgSrc}" loading="eager" style="border-color: ${color};">`;
         }
         return `<div class="avatar-circle-btn" style="border-color: ${color}; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`;
@@ -1810,8 +1811,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             let fotoId = fotosMgrUID[uidManager];
             let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
             
-            let fotoHtmlStr = getFotoHtml(uidManager).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px; background:transparent; margin:0 auto;"').replace('<img', '<img style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; margin:0 auto;"');
-            document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => el.innerHTML = fotoHtmlStr);
+            // Forzamos el centrado y eliminamos el fondo degradado
+            let fotoHtmlStr = getFotoHtml(uidManager)
+                .replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto;"')
+                .replace('<img', '<img style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto;"');
+                            document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => el.innerHTML = fotoHtmlStr);
 
             // Toggle de tarjetas
             document.getElementById('tarjeta-general').style.display = isGeneral ? 'block' : 'none';
@@ -1934,15 +1938,20 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             filas.forEach(fila => {
                 pitchHTML += `<div style="display: flex; justify-content: space-evenly; align-items: center; width: 100%;">`;
                 fila.forEach(j => {
-                    let uid = j.manager_id || (j.owner ? j.owner.id : '');
+                    // Mapa de emergencia por si Python manda el ID vacío en el histórico
+                    const fallbackUID = { "Rolo": "21057989", "Rolo Tomasi": "21057989", "Alberto": "21067327", "Alberto Garcia": "21067327", "Gorka": "21058216", "Gorka Bartu": "21058216", "Iñaki": "21067500", "Lord Rhal": "21058279", "Jon": "21059980", "Jon MARQUEZ PEREZ": "21059980" };
+                    let nombreMgr = j.manager_name || j.manager || '';
+                    
+                    let uid = j.manager_id || (j.owner ? j.owner.id : '') || fallbackUID[nombreMgr.trim()] || '';
                     let colorManager = coloresMgrUID[uid] || '#fff';
                     let fotoId = fotosMgrUID[uid];
                     let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
                     
+                    // Aquí bajamos un poco la foto (margin-bottom: -15px) para que no corte al portero y quitamos el fondo (background: transparent)
                     let avatarHTML = fotoUrl 
-                        ? `<img src="${fotoUrl}" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; object-fit: cover; margin-bottom: -15px; z-index: 2; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">`
+                        ? `<img src="${fotoUrl}" style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; object-fit: cover; margin-bottom: -15px; z-index: 2; background: transparent; padding: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">`
                         : `<div style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid ${colorManager}; margin-bottom: -15px; z-index: 2; background: #cbd5e1; display:flex; justify-content:center; align-items:center; font-size:1.4rem; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">👤</div>`;
-
+                    
                     let escudoHtml = (j.club_id && escudosDrive[j.club_id]) ? `<img src="https://drive.google.com/thumbnail?id=${escudosDrive[j.club_id]}&sz=w100-h100" style="width:14px; height:14px; object-fit:contain; margin-right:4px;" onerror="this.style.display='none'">` : `<div style="width:14px; height:14px; border-radius:50%; background:rgba(255,255,255,0.1); margin-right:4px; display:inline-block; border: 1px dashed rgba(255,255,255,0.3);" title="Desconocido"></div>`;
 
                     pitchHTML += `
