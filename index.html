@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 18:15</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 18:40</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1806,23 +1806,42 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             document.querySelectorAll(`#${targetCardId} .nombre-mgr-cabecera`).forEach(el => el.innerText = nombreManager);
             document.querySelectorAll(`#${targetCardId} .tactica-mgr-cabecera`).forEach(el => el.innerText = tactica);
             
-            // Ajuste milimétrico para que la foto encaje en su caja de 52px de la tarjeta
+            // EOOOOOO
+            // // Ajuste milimétrico para que la foto encaje en su caja de 52px de la tarjeta
+            // let colorManager = coloresMgrUID[uidManager] || '#fff';
+            // let fotoId = fotosMgrUID[uidManager];
+            // let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
+            // 
+            // // Forzamos el centrado y eliminamos el fondo degradado
+            // let fotoHtmlStr = getFotoHtml(uidManager)
+            //     .replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto;"')
+            //     .replace('<img', '<img style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto;"');
+            //     document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => {
+            //         el.innerHTML = fotoHtmlStr;
+            //        // 👉 ESTO ES LO QUE FALTABA: Matamos el fondo y borde del contenedor padre
+            // //        el.style.background = 'transparent';
+            //        el.style.border = 'none';
+            //        el.style.boxShadow = 'none';
+            //    });
+
+            // Generamos la foto limpia con su borde de color directamente
             let colorManager = coloresMgrUID[uidManager] || '#fff';
             let fotoId = fotosMgrUID[uidManager];
             let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
             
-            // Forzamos el centrado y eliminamos el fondo degradado
-            let fotoHtmlStr = getFotoHtml(uidManager)
-                .replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto;"')
-                .replace('<img', '<img style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto;"');
-                document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => {
-                    el.innerHTML = fotoHtmlStr;
-                    // 👉 ESTO ES LO QUE FALTABA: Matamos el fondo y borde del contenedor padre
-                    el.style.background = 'transparent';
-                    el.style.border = 'none';
-                    el.style.boxShadow = 'none';
-                });
-            // Toggle de tarjetas
+            let fotoHtmlStr = fotoUrl 
+                ? `<img src="${fotoUrl}" style="width:52px; height:52px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto; border: 3px solid ${colorManager};">`
+                : `<div style="width:52px; height:52px; border-radius:50%; background:transparent; padding:0; margin:0 auto; border: 3px solid ${colorManager}; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`;
+            
+            // Lo inyectamos y matamos el fondo oscuro del contenedor padre
+            document.querySelectorAll(`#${targetCardId} .avatar-cabecera`).forEach(el => {
+                el.innerHTML = fotoHtmlStr;
+                el.style.background = 'transparent';
+                el.style.border = 'none';
+                el.style.boxShadow = 'none';
+            });
+
+            // / Toggle de tarjetas
             document.getElementById('tarjeta-general').style.display = isGeneral ? 'block' : 'none';
             document.getElementById('tarjeta-jornada').style.display = isGeneral ? 'none' : 'block';
 
