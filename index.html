@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 14:03</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 14:19</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -897,8 +897,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
                     mercado_vivo.forEach(j => {
                         let driveId = escudosDrive[j.club_id];
-                        let escudo = driveId ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` : `<span class="muted" style="font-size:0.75rem;">${j.club}</span>`;
-
                         let escudo = driveId 
                             ? `<img src="https://drive.google.com/thumbnail?id=${driveId}&sz=w100-h100" title="${j.club}" style="width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'">` 
                             : `<div style="width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3);" title="Desconocido"></div>`;
