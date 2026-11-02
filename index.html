@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 20:05</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 20:27</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -651,7 +651,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
         // Si no hay fecha de inicio, por defecto está en curso
         if (!kickoffStr) {
-            banner.innerHTML = `<div style="font-size:1.6rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>`;
+            banner.innerHTML = `<div style="font-size:1.2rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>
             banner.style.display = 'block';
             return;
         }
@@ -670,12 +670,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             banner.innerHTML = `
                 <div style="font-weight:900; font-size:1rem; opacity:0.9; margin-bottom: 2px; letter-spacing: 1px;">⏳ ${nombreLimpio}: EL BALÓN RUEDA EN</div>
                 <div style="margin: 2px 0;">${timeStr}</div>
-                ${fechasInfo}
             `;
             banner.style.display = 'block';
         } else {
             // JORNADA EN CURSO
-            banner.innerHTML = `<div style="font-size:1.6rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>${fechasInfo}`;
+            banner.innerHTML = `<div style="font-size:1.2rem; font-weight:900; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">⚽ ${nombreLimpio} EN CURSO ⚽</div>
             banner.style.display = 'block';
         }
     }
@@ -814,17 +813,20 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let alertaHTML = ''; const textoM = alertas.find(txt => txt.includes(m.manager) && txt.includes('INFRACCIÓN'));
                         if (textoM) {
                             let partes = textoM.replace(/\*/g, "").split(/•|\n/).map(p => p.trim()).filter(p => p.includes('INFRACCIÓN'));
-                            if (partes.length > 0) alertaHTML = `<div class="alert-mini" style="text-align:left; padding:6px; margin-top:8px; line-height:1.4;">` + partes.map(p => `<div style="margin-bottom:2px;">⚠️ ${p}</div>`).join('') + `</div>`;
+                            // Limpiamos los emojis basura de Python y dejamos solo el prohibido
+                            if (partes.length > 0) alertaHTML = `<div class="alert-mini" style="text-align:left; padding:6px; margin-top:8px; line-height:1.4;">` + partes.map(p => `<div style="margin-bottom:2px;">🚫 ${p.replace(/[⚠️🚨💰]/g, '').trim()}</div>`).join('') + `</div>`;
                         }                        
-                        // Buscamos el UID del mánager para inyectar su foto
+                        
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
+                        let colorManager = uid ? coloresMgrUID[uid] || '#fff' : '#fff';
+                        let fotoId = uid ? fotosMgrUID[uid] : null;
+                        let fotoUrl = fotoId ? getFotoUrl(fotoId) : '';
                         
-                        // Técnica calcada del 11 Ideal:
-                        let colorDash = coloresMgrUID[uid] || '#fff';
-                        let fotoIdDash = fotosMgrUID[uid];
-                        let fotoUrlDash = fotoIdDash ? getFotoUrl(fotoIdDash) : '';
-                        
-                        let fotoStr = uid ? getFotoHtml(uid).replace('class="avatar-circle-btn"', 'class="avatar-circle-btn" style="width:48px; height:48px; margin:0 auto; background:transparent;"').replace('<img', '<img style="width:48px; height:48px; margin:0 auto; border-radius:50%; object-fit:cover; background:transparent;"') : '👤';
+                        // Foto limpia con el borde del color exacto del mánager
+                        let fotoStr = fotoUrl 
+                            ? `<img src="${fotoUrl}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; background:transparent; padding:0; margin:0 auto; border: 3px solid ${colorManager};">`
+                            : `<div style="width:48px; height:48px; border-radius:50%; background:transparent; padding:0; margin:0 auto; border: 3px solid ${colorManager}; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">👤</div>`;
+
                         return `<div class="card" style="margin-bottom: 12px;">
                             <div class="mgr-header" style="display:flex; justify-content:center; margin-bottom:12px;">
                                 ${fotoStr}
@@ -1316,8 +1318,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         <td class="val-blue">${d.pts_j}</td>
                     </tr>
                 `).join('');
+            } else if (jd.alineaciones && jd.alineaciones.length > 0) {
+                tj.innerHTML = jd.alineaciones.map(a => {
+                    let mData = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === a.manager) : null;
+                    return `<tr onclick="abrirTarjetaManager('${mData ? mData.uid : ''}', '${a.manager}')" style="cursor: pointer;">
+                        <td style="text-align:center;">-</td><td><b>${a.manager}</b></td><td class="val-blue" style="text-align:center; font-weight:bold;">-</td>
+                    </tr>`;
+                }).join('');
             } else {
-                tj.innerHTML = '<tr><td colspan="3" class="muted" style="text-align:center; padding:20px;">⏳ Jornada en juego. Puntos no definitivos.</td></tr>';
+                tj.innerHTML = '<tr><td colspan="3" class="muted" style="text-align:center; padding:20px;">⏳ Sin datos.</td></tr>';
             }
         }
         
@@ -1966,7 +1975,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
                     // CAJA OSCURA PREMIUM: Escudo y Nombre arriba / Puntos dorados abajo
                     pitchHTML += `
-                        <div style="display: flex; flex-direction: column; align-items: center; width: 120px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 90px;">
                             ${avatarHTML}
                             <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 18px 4px 4px 4px; text-align: center; width: 100%; box-shadow: 0 4px 8px rgba(0,0,0,0.6);">
                                 <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 2px;">
