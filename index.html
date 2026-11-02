@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 19:49</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 02/11/2026 20:05</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -765,7 +765,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     modalContent.innerHTML = `
                         <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
                             <div class="card-title" style="margin-bottom:2px; justify-content:center;">🌟 Once de Gala <span class="muted" style="font-size:1.1rem; margin-left:8px; font-weight:bold;">(${oiHist.formacion})</span></div>
-                            <div style="margin-bottom:12px; font-size:0.95rem; text-align:center; font-weight:bold; color:var(--muted);">Puntos: <span class="val-accent" style="font-size:1.1rem;">${oiHist.puntos}</span> <span style="margin:0 8px;">|</span> Valor: <span style="color:var(--white); font-size:1.1rem;">${fmtE(oiHist.valor)}</span></div>
+                            <div style="margin-bottom:12px; font-size:0.95rem; text-align:center; font-weight:bold; color:#fff;">Puntos: <span style="color:#10b981; font-size:1.1rem;">${oiHist.puntos}</span> <span style="margin:0 8px; color:var(--muted);">|</span> Valor: <span style="color:#10b981; font-size:1.1rem;">${fmtE(oiHist.valor)}</span></div>
                             ${pitchHTML}
                         </div>`;
                 } else {
@@ -784,7 +784,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     modalContent.innerHTML = `
                         <div class="card" style="padding:16px; overflow-x:hidden; margin-bottom: 0;">
                             <div class="card-title" style="margin-bottom:2px; justify-content:center;">🌟 Once de Gala <span class="muted" style="font-size:1.1rem; margin-left:8px; font-weight:bold;">(${oi.formacion})</span></div>
-                            <div style="margin-bottom:12px; font-size:0.95rem; text-align:center; font-weight:bold; color:var(--muted);">Puntos: <span class="val-accent" style="font-size:1.1rem;">${oi.puntos}</span> <span style="margin:0 8px;">|</span> Valor: <span style="color:var(--white); font-size:1.1rem;">${fmtE(oi.valor)}</span></div>
+                            <div style="margin-bottom:12px; font-size:0.95rem; text-align:center; font-weight:bold; color:#fff;">Puntos: <span style="color:#10b981; font-size:1.1rem;">${oi.puntos}</span> <span style="margin:0 8px; color:var(--muted);">|</span> Valor: <span style="color:#10b981; font-size:1.1rem;">${fmtE(oi.valor)}</span></div>
                             ${pitchHTML}
                         </div>`;
                 } else {
@@ -1332,9 +1332,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         <div class="card-title" style="margin-bottom:2px; justify-content:center;">
                             🌟 Once de Gala <span class="muted" style="font-size:0.9rem; margin-left:8px;">(${oi.formacion})</span>
                         </div>
-                        <div style="margin-bottom:12px; font-size:0.95rem; text-align:center; font-weight:bold; color:var(--muted);">
-                            Puntos: <span class="val-accent" style="font-size:1.1rem;">${oi.puntos} pts</span> <span style="margin: 0 8px;">|</span> 
-                            Valor: <span style="color:var(--white); font-size:1.1rem;">${fmtE(oi.valor)}</span>
+                        <div style="margin-bottom:12px; font-size:0.95rem; text-align:center; font-weight:bold; color:#fff;">
+                            Puntos: <span style="color:#10b981; font-size:1.1rem;">${oi.puntos} pts</span> <span style="margin: 0 8px; color:var(--muted);">|</span> 
+                            Valor: <span style="color:#10b981; font-size:1.1rem;">${fmtE(oi.valor)}</span>
                         </div>
                         ${pitchHTML}
                     </div>`; 
@@ -1964,16 +1964,16 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         ? `<img src="https://drive.google.com/thumbnail?id=${escudosDrive[j.club_id]}&sz=w100-h100" style="width:22px; height:22px; object-fit:contain; filter: drop-shadow(0 1px 2px rgba(255,255,255,0.2));" onerror="this.style.display='none'">` 
                         : `<div style="width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.1); display:inline-block; border: 1px dashed rgba(255,255,255,0.3);" title="Desconocido"></div>`;
 
-                    // CAJA OSCURA PREMIUM: Escudo y Nombre arriba / Puntos gigantes abajo
+                    // CAJA OSCURA PREMIUM: Escudo y Nombre arriba / Puntos dorados abajo
                     pitchHTML += `
-                        <div style="display: flex; flex-direction: column; align-items: center; width: 90px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 120px;">
                             ${avatarHTML}
                             <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 18px 4px 4px 4px; text-align: center; width: 100%; box-shadow: 0 4px 8px rgba(0,0,0,0.6);">
                                 <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 2px;">
                                     ${escudoHtml}
                                     <span style="color: #f3f4f6; font-size: 0.75rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${j.name}</span>
                                 </div>
-                                <div style="color: #10b981; font-weight: 900; font-size: 1.1rem; line-height: 1;">${j.points || j.pts}</div>
+                                <div style="color: #f59e0b; font-weight: 900; font-size: 1.1rem; line-height: 1;">${j.points || j.pts}</div>
                             </div>
                         </div>
                     `;
