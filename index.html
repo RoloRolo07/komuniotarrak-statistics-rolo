@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 11:59</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 12:14</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1042,15 +1042,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 <button id="btn-sub-tarjetero" class="btn-filter" onclick="abrirSubTarjeta('tarjetero')">🟨 Tarjetero</button>
             `;
             
-            tablaHead.innerHTML = `<tr>
-                <th style="text-align:center; padding:6px 2px;">Pos</th>
-                <th style="text-align:center; padding:6px 2px;">Mánager</th>
-                <th style="text-align:center; padding:6px 2px;">Pts</th>
-                <th style="text-align:center; padding:6px 2px;">Paguitas</th>
-                <th style="text-align:center; padding:6px 2px;">Sanc.</th>
-            </tr>`;
-
             if (jd && jd.clasif_jornada && jd.clasif_jornada.length > 0) {
+                tablaHead.innerHTML = `<tr>
+                    <th style="text-align:center; padding:6px 2px;">Pos</th>
+                    <th style="text-align:center; padding:6px 2px;">Mánager</th>
+                    <th style="text-align:center; padding:6px 2px;">Pts</th>
+                    <th style="text-align:center; padding:6px 2px;">Paguitas</th>
+                    <th style="text-align:center; padding:6px 2px;">Sanc.</th>
+                </tr>`;
+                
                 tablaBody.innerHTML = jd.clasif_jornada.map((d, i) => {
                     let pagoHtml = `<div style="font-size:0.85rem; white-space:nowrap;"><span class="val-pos">0 €</span></div>`;
                     let sancionHtml = `<div style="font-size:0.85rem; white-space:nowrap;"><span class="val-neg">0 €</span></div>`;
@@ -1074,7 +1074,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;"><div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div></td>
                         
                         <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
-                            <!-- AQUÍ LE PASAMOS d.manager PARA QUE LO ENCUENTRE -->
                             <div class="manager-avatar-btn" onclick="abrirTarjetaManager('${d.uid}', '${d.manager}')" style="display:inline-flex; justify-content:center; padding:4px;">
                                 ${getFotoHtml(d.uid)}
                             </div>
@@ -1086,7 +1085,27 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     </tr>`;
                 }).join('');
             } else {
-                tablaBody.innerHTML = '<tr><td colspan="5" class="muted" style="text-align:center; padding:20px;">⏳ Jornada en juego o sin datos.</td></tr>';
+                // MODO LIVE: Ocultamos cabecera y pintamos la Constelación
+                tablaHead.innerHTML = '';
+                
+                let nubeHTML = `<div style="text-align:center; padding: 20px 10px;">
+                    <div style="font-size:1.05rem; color:var(--white); margin-bottom: 24px; font-weight:bold; letter-spacing:0.5px;">⏳ Jornada en curso</div>
+                    <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:20px; padding: 10px;">`;
+                
+                let mgrsData = globalStats.clasif_general_actual ? [...globalStats.clasif_general_actual] : [];
+                mgrsData.sort(() => Math.random() - 0.5);
+                
+                nubeHTML += mgrsData.map(m => {
+                    let randX = Math.floor(Math.random() * 16) - 8;
+                    let randY = Math.floor(Math.random() * 16) - 8;
+                    return `<div onclick="abrirTarjetaManager('${m.uid}', '${m.manager}')" style="cursor:pointer; display:flex; flex-direction:column; align-items:center; transform: translate(${randX}px, ${randY}px);">
+                        <div style="pointer-events:none;">${getFotoHtml(m.uid)}</div>
+                        <span style="font-size:0.8rem; margin-top:8px; font-weight:bold; color:var(--muted); pointer-events:none;">${m.manager}</span>
+                    </div>`;
+                }).join('');
+                
+                nubeHTML += `</div></div>`;
+                tablaBody.innerHTML = `<tr><td colspan="5" style="padding:0; border:none; background:transparent;">${nubeHTML}</td></tr>`;
             }
             
             if (subContainer) {
@@ -1319,31 +1338,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     </tr>
                 `).join('');
             } else if (jd.alineaciones && jd.alineaciones.length > 0) {
-                let nubeHTML = `<div style="text-align:center; padding: 20px 10px;">
-                    <div style="font-size:1.05rem; color:var(--white); margin-bottom: 24px; font-weight:bold; letter-spacing:0.5px;">⏳ Jornada en curso</div>
-                    <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:20px; padding: 10px;">`;
-                
-                let alineacionesBarajadas = [...jd.alineaciones].sort(() => Math.random() - 0.5);
-                
-                nubeHTML += alineacionesBarajadas.map(a => {
+                tj.innerHTML = jd.alineaciones.map(a => {
                     let mData = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === a.manager) : null;
-                    let uid = mData ? mData.uid : '';
-                    let randX = Math.floor(Math.random() * 16) - 8;
-                    let randY = Math.floor(Math.random() * 16) - 8;
-                    
-                    return `<div onclick="abrirTarjetaManager('${uid}', '${a.manager}')" style="cursor:pointer; display:flex; flex-direction:column; align-items:center; transform: translate(${randX}px, ${randY}px);">
-                        <div style="pointer-events:none;">${getFotoHtml(uid)}</div>
-                        <span style="font-size:0.8rem; margin-top:8px; font-weight:bold; color:var(--muted); pointer-events:none;">${a.manager}</span>
-                    </div>`;
+                    return `<tr onclick="abrirTarjetaManager('${mData ? mData.uid : ''}', '${a.manager}')" style="cursor: pointer;">
+                        <td style="text-align:center;">-</td><td><b>${a.manager}</b></td><td class="val-blue" style="text-align:center; font-weight:bold;">-</td>
+                    </tr>`;
                 }).join('');
-                
-                nubeHTML += `</div></div>`;
-                
-                // Ocultar cabecera de tabla y pintar nube
-                let thead = tj.closest('table').querySelector('thead');
-                if (thead) thead.style.display = 'none';
-                
-                tj.innerHTML = `<tr><td colspan="5" style="padding:0; border:none; background:transparent;">${nubeHTML}</td></tr>`;
             } else {
                 tj.innerHTML = '<tr><td colspan="3" class="muted" style="text-align:center; padding:20px;">⏳ Sin datos.</td></tr>';
             }
@@ -1811,11 +1811,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 }
             }
 
-            // Detectamos si la jornada está "en vivo" (sin clasificación definitiva)
+            // Detectamos si es jornada viva
             const jdLocal = jornadasData[selectedJornadaIdx];
             const isJornadaViva = !isGeneral && (!jdLocal.clasif_jornada || jdLocal.clasif_jornada.length === 0);
 
-            // Diseño de la medalla y cabecera
+            // Diseño de la medalla de posición y cabecera
             let badgeColor = '#1e293b', badgeBorder = '#475569', badgeText = pos + 'º', badgeTextColor = '#f3f4f6';
             
             if (isJornadaViva) {
@@ -1870,7 +1870,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
             // CERROJO: Ocultar botón de girar en modo LIVE
             document.querySelectorAll(`#${targetCardId} [onclick*="flipped"], #${targetCardId} [onclick*="is-flipped"], #${targetCardId} .flip-btn`).forEach(btn => {
-                btn.style.display = isJornadaViva ? 'none' : 'inline-flex';
+                btn.style.display = (typeof isJornadaViva !== 'undefined' && isJornadaViva) ? 'none' : 'inline-flex';
             });
 
             const modal = document.getElementById('managerModal');
