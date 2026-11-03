@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 12:27</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 12:41</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1098,7 +1098,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 let total = mgrsData.length;
 
                 let nubeHTML = `<div style="text-align:center; padding: 20px 10px;">
-                    <div style="font-size:1.1rem; color:var(--white); margin-bottom: 30px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">⏳ Jornada en juego</div>
+                    <div style="font-size:0.85rem; color:var(--white); margin-bottom: 30px; font-weight:bold; letter-spacing:0.5px; text-transform:uppercase;">⏳ Jornada en curso ⏳</div>
                     <div style="position:relative; width:260px; height:260px; margin:0 auto;">`;
                 
                 // Bucle para colocar a cada mánager en su "quesito"
@@ -1107,20 +1107,19 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let colorManager = coloresMgrUID[uid] || '#fff';
                     let fotoUrl = fotosMgrUID[uid] ? getFotoUrl(fotosMgrUID[uid]) : '';
                     
-                    // Cálculo de la posición (Empezando a las 12 en punto y repartiendo los grados)
+                    // Cálculo de la posición
                     let angulo = (index / total) * 2 * Math.PI - (Math.PI / 2); 
-                    let x = Math.round(cx + radio * Math.cos(angulo) - 30); // Restamos 30 (mitad del tamaño de la foto)
+                    let x = Math.round(cx + radio * Math.cos(angulo) - 30); 
                     let y = Math.round(cy + radio * Math.sin(angulo) - 30);
                     
-                    // Construcción de la foto 100% redonda y con halo
+                    // Construcción de la foto
                     let fotoStr = fotoUrl 
                         ? `<img src="${fotoUrl}" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border: 3px solid ${colorManager}; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">`
                         : `<div style="width:60px; height:60px; border-radius:50%; border: 3px solid ${colorManager}; background:#1e293b; display:flex; align-items:center; justify-content:center; font-size:1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">👤</div>`;
 
-                    // Inyectamos el mánager en sus coordenadas exactas (position: absolute)
+                    // Inyectamos el avatar (Sin el span del nombre)
                     return `<div onclick="abrirTarjetaManager('${uid}', '${m.manager}')" style="position:absolute; left:${x}px; top:${y}px; cursor:pointer; display:flex; flex-direction:column; align-items:center; width:60px;">
                         ${fotoStr}
-                        <span style="font-size:0.75rem; margin-top:8px; font-weight:bold; color:var(--white); text-shadow: 1px 1px 3px #000; text-align:center; width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.manager}</span>
                     </div>`;
                 }).join('');
                 
@@ -1128,6 +1127,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 nubeHTML += `<div style="position:absolute; top:110px; left:110px; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.05); display:flex; justify-content:center; align-items:center; font-size:1.2rem; opacity:0.6;">⚽</div>`;
 
                 nubeHTML += `</div></div>`;
+
                 tablaBody.innerHTML = `<tr><td colspan="5" style="padding:0; border:none; background:transparent;">${nubeHTML}</td></tr>`;
             }
             
@@ -1891,31 +1891,23 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             document.getElementById('tarjeta-general').style.display = isGeneral ? 'block' : 'none';
             document.getElementById('tarjeta-jornada').style.display = isGeneral ? 'none' : 'block';
 
-            // CERROJO AGRESIVO: Matamos botones de girar y anulamos el clic de la propia tarjeta
-            const cardActiva = document.getElementById(targetCardId);
-            if (cardActiva) {
-                // 1. Ocultar botones visibles (si los hay)
-                cardActiva.querySelectorAll('.flip-btn, [onclick*="flipped"], [onclick*="is-flipped"]').forEach(btn => {
-                    btn.style.display = isJornadaViva ? 'none' : '';
-                });
-                
-                // 2. Anular el clic maestro del contenedor
-                const containerGiratorio = cardActiva.querySelector('.manager-card-container');
-                if (containerGiratorio) {
-                    if (isJornadaViva) {
-                        // Guardamos el onclick original y lo borramos temporalmente
-                        if (containerGiratorio.getAttribute('onclick')) {
-                            containerGiratorio.dataset.onclickOriginal = containerGiratorio.getAttribute('onclick');
-                            containerGiratorio.removeAttribute('onclick');
-                        }
-                    } else {
-                        // Restauramos el clic para las jornadas terminadas
-                        if (containerGiratorio.dataset.onclickOriginal) {
-                            containerGiratorio.setAttribute('onclick', containerGiratorio.dataset.onclickOriginal);
-                        }
-                    }
+            // CERROJO A PRUEBA DE BOMBAS: Anulamos el clic maestro de toda tarjeta
+            document.querySelectorAll('.manager-card-container').forEach(container => {
+                if (isJornadaViva) {
+                    // Fulminamos la acción de girar (anulamos el atributo HTML y la propiedad JS)
+                    container.removeAttribute('onclick');
+                    container.onclick = function(e) { if(e) e.stopPropagation(); return false; };
+                } else {
+                    // Restauramos el giro habitual si la jornada ya terminó
+                    container.onclick = null; 
+                    container.setAttribute('onclick', "this.classList.toggle('is-flipped')");
                 }
-            }
+            });
+
+            // Ocultamos cualquier botoncito de giro adicional si lo hubiera
+            document.querySelectorAll(`#${targetCardId} .flip-btn`).forEach(btn => {
+                btn.style.display = isJornadaViva ? 'none' : 'inline-flex';
+            });
 
             const modal = document.getElementById('managerModal');
             if (modal) modal.classList.add('active');
