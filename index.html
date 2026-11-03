@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 19:20</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 19:35</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1069,7 +1069,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let pago = jd.paguitas.find(p => p.manager === d.manager);
                         if (pago) {
                             pagoHtml = pago.pendiente 
-                                ? `<div style="font-size:0.85rem; white-space:nowrap; margin-bottom:2px;"><span style="color:var(--gold); font-weight:bold;">Pendiente ⏳</span></div>` 
+                                ? `<div style="font-size:0.85rem; white-space:nowrap; margin-bottom:2px;"><span style="color:var(--gold); font-weight:bold;">⏳ Pendiente</span></div>` 
                                 : `<div style="font-size:0.85rem; white-space:nowrap; margin-bottom:2px;"><span class="val-pos">${fmtE(pago.premio)}</span></div>`;
                         }
                     }
@@ -1088,7 +1088,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                                     t.message && 
                                     t.message.text &&
                                     t.message.text.includes("Pena disciplinaria") &&
-                                    t.message.text.includes(d.manager) &&
+                                    t.message.text.includes("restados a " + d.manager) &&
                                     t.message.text.includes(nombreJornada)
                                 );
                                 
