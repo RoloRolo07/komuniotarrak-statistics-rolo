@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 20:37</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 20:50</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1980,21 +1980,28 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 }
                 htmlTrofeos += '</div>';
 
-                // Inyectamos esto en el HTML (Buscamos el contenedor dentro de la tarjeta general, si no existe lo creamos)
+                // Inyectamos esto en el HTML fulminando los datos falsos
                 let tarjetaGeneralBack = document.querySelector('#tarjeta-general .card-back');
                 if (tarjetaGeneralBack) {
-                    let contenedorTrofeos = tarjetaGeneralBack.querySelector('#contenedor-trofeos-general');
-                    if (!contenedorTrofeos) {
-                        contenedorTrofeos = document.createElement('div');
-                        contenedorTrofeos.id = 'contenedor-trofeos-general';
-                        contenedorTrofeos.style.flex = '1';
-                        contenedorTrofeos.style.display = 'flex';
-                        contenedorTrofeos.style.flexDirection = 'column';
-                        contenedorTrofeos.style.overflow = 'hidden';
-                        contenedorTrofeos.style.marginTop = '12px';
-                        tarjetaGeneralBack.appendChild(contenedorTrofeos);
-                    }
+                    // 1. Rescatamos la cabecera original (Avatar, Nombre, Botón X) para no perderla
+                    let headerOriginal = tarjetaGeneralBack.querySelector('.card-header');
+                    
+                    // 2. Aniquilamos todo el contenido de la Cara B (¡Adiós Bellingham!)
+                    tarjetaGeneralBack.innerHTML = '';
+                    
+                    // 3. Volvemos a poner la cabecera
+                    if (headerOriginal) tarjetaGeneralBack.appendChild(headerOriginal);
+                    
+                    // 4. Inyectamos nuestros trofeos reales debajo
+                    let contenedorTrofeos = document.createElement('div');
+                    contenedorTrofeos.style.flex = '1';
+                    contenedorTrofeos.style.display = 'flex';
+                    contenedorTrofeos.style.flexDirection = 'column';
+                    contenedorTrofeos.style.overflow = 'hidden';
+                    contenedorTrofeos.style.marginTop = '12px';
                     contenedorTrofeos.innerHTML = htmlTrofeos;
+                    
+                    tarjetaGeneralBack.appendChild(contenedorTrofeos);
                 }
             }
             // --- FIN CÁLCULO SALÓN DE LA FAMA ---
