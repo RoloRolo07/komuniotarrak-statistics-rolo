@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 12:48</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 03/11/2026 13:53</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1053,11 +1053,13 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 
                 tablaBody.innerHTML = jd.clasif_jornada.map((d, i) => {
                     let pagoHtml = `<div style="font-size:0.85rem; white-space:nowrap;"><span class="val-pos">0 €</span></div>`;
-                    let sancionHtml = `<div style="font-size:0.85rem; white-space:nowrap;"><span class="val-neg">0 €</span></div>`;
-                    
                     if (jd.paguitas) {
                         let pago = jd.paguitas.find(p => p.manager === d.manager);
-                        if (pago) pagoHtml = `<div style="font-size:0.85rem; white-space:nowrap; margin-bottom:2px;"><span class="val-pos">${fmtE(pago.premio)}</span></div>`;
+                        if (pago) {
+                            pagoHtml = pago.pendiente 
+                                ? `<div style="font-size:0.85rem; white-space:nowrap; margin-bottom:2px;"><span style="color:var(--gold); font-weight:bold;">Pendiente ⏳</span></div>` 
+                                : `<div style="font-size:0.85rem; white-space:nowrap; margin-bottom:2px;"><span class="val-pos">${fmtE(pago.premio)}</span></div>`;
+                        }
                     }
                     if (jd.sanciones) {
                         let sancion = jd.sanciones.find(s => s.manager === d.manager);
@@ -1394,40 +1396,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             }
         }
         
-        // 4. Pintar Paguitas (Directo a la página)
-        let pc = document.getElementById('paguitas-content'); 
-        if(pc) {
-            let pa = jd.paguitas;
-            let htmlP = `<div class="card" style="padding: 16px; margin-bottom: 16px;"><div class="card-title" style="color:var(--white); margin-bottom: 6px;">🏹 Paguitas</div>`;
-            if(pa && pa.length > 0) { 
-                pa.forEach((p) => {
-                    let iconoRol = p.rol === 'Último' ? '🩸' : (p.rol === 'Penúltimo' ? '🛟' : '🛶');
-                    let valorHtml = p.pendiente ? `<span style="color:var(--gold); font-weight:bold; float:right;">Pendiente ⏳</span>` : `<span class="val-pos" style="float:right;">+${fmtE(p.premio)}</span>`;
-                    htmlP += `<div style="font-size:1.05rem; padding: 4px 0; margin-bottom: 2px; display:flex; justify-content:space-between; align-items:center;"><span>${iconoRol} <b>${p.rol}:</b> ${p.manager}</span> ${valorHtml}</div>`;
-                });
-            } else {
-                htmlP += `<div class="muted">No se han registrado pagos para esta jornada.</div>`; 
-            }
-            htmlP += `</div>`;
-            pc.innerHTML = htmlP;
-        }
-        
-        // 5. Pintar Sanciones (Directo a la página)
-        let sc = document.getElementById('sanciones-content'); 
-        if(sc) {
-            let htmlS = `<div class="card" style="padding: 16px;"><div class="card-title" style="color:var(--white); margin-bottom: 6px;">🚨 Sanciones Disciplinarias</div>`; 
-            let sancionesList = jd.sanciones || []; 
-            if (sancionesList.length > 0) {
-                sancionesList.forEach(s => {
-                    htmlS += `<div style="font-size:0.95rem; padding: 4px 0;"><b>${s.manager}</b>: ${s.descripcion} <span class="val-neg" style="float:right;">-${fmtE(s.cantidad)}</span></div>`;
-                });
-            } else {
-                htmlS += `<div class="muted" style="padding:4px 0;">✅ Sin sanciones disciplinarias registradas esta jornada.</div>`;
-            }
-            htmlS += `</div>`; 
-            sc.innerHTML = htmlS;
-        }
-
         // 6. RESTAURADO: CURIOSIDADES (EL FUTURO TARJETERO)
         // Guardamos todo el cálculo para cuando decidas inyectarlo en la nueva pastilla
         let he = jd.heroes; 
