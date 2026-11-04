@@ -272,14 +272,14 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 11:31</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 12:06</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
 <!-- NUEVO RELOJ FLIP (Sustituye al anterior) -->
 <style>
     .flip-banner-container {
-        display: none; /* Se activa desde JS */
+        display: none;
         justify-content: center; align-items: center; gap: 20px;
         background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(4, 120, 87, 0.95) 100%);
         border-bottom: 3px solid #34d399; padding: 12px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
@@ -299,12 +299,21 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 4px 6px rgba(0,0,0,0.4); 
         overflow: hidden;
     }
-    /* La línea negra horizontal para el efecto bloc de notas */
     .flip-box::after {
         content: ''; position: absolute; top: 50%; left: 0; right: 0;
         height: 2px; background: rgba(0,0,0,0.7); z-index: 10;
     }
     .flip-label { font-size: 0.7rem; color: #a7f3d0; font-weight: bold; text-transform: uppercase; margin-top: 5px; }
+
+    /* EL MOTOR DEL DESLIZAMIENTO */
+    @keyframes rodillo {
+        0% { transform: translateY(-15px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+    .anim-rodillo {
+        display: inline-block;
+        animation: rodillo 0.2s ease-out forwards;
+    }
 </style>
 
 <div id="cuenta-atras-banner" class="flip-banner-container"></div>
@@ -633,7 +642,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     <div class="flip-col"><div class="flip-box">${dStr}</div><div class="flip-label">Días</div></div>
                     <div class="flip-col"><div class="flip-box">${hStr}</div><div class="flip-label">Hrs</div></div>
                     <div class="flip-col"><div class="flip-box">${mStr}</div><div class="flip-label">Min</div></div>
-                    <div class="flip-col"><div class="flip-box">${sStr}</div><div class="flip-label">Seg</div></div>
+                    <div class="flip-col"><div class="flip-box"><span class="anim-rodillo">${sStr}</span></div><div class="flip-label">Seg</div></div>
                 </div>
             `;
             
