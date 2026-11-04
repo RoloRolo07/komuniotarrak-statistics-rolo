@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 16:08</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 17:10</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1018,6 +1018,81 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 } else {
                     modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">VAR no configurado.</div>`;
                 }
+            } else if (submodo === 'medallero') {
+                // 1. Convertimos el objeto de mánagers en un array para poder ordenarlo
+                let lista = Object.values(managers);
+
+                // 2. ORDENACIÓN OLÍMPICA ESTRICTA
+                lista.sort((a, b) => {
+                    // OJO: Si tus variables en el Python se llaman diferente, cámbialas aquí
+                    let oroA = a.oros || 0; let oroB = b.oros || 0;
+                    if (oroA !== oroB) return oroB - oroA;
+
+                    let plataA = a.platas || 0; let plataB = b.platas || 0;
+                    if (plataA !== plataB) return plataB - plataA;
+
+                    let bronceA = a.bronces || 0; let bronceB = b.bronces || 0;
+                    if (bronceA !== bronceB) return bronceB - bronceA;
+
+                    // Desempate: Valor de equipo (patrimonio)
+                    let valorA = a.valor_equipo || 0; 
+                    let valorB = b.valor_equipo || 0;
+                    return valorB - valorA;
+                });
+
+                // 3. Cabecera de la tabla
+                let htmlMedallero = `
+                    <div class="card" style="padding: 15px; border-color: var(--accent);">
+                        <div class="card-title" style="margin-bottom: 15px; text-align: left; font-size: 1.15rem;">🏅 Medallero</div>
+                        <table class="tabla-compacta" style="width: 100%; text-align: center; font-size: 0.95rem;">
+                            <thead>
+                                <tr style="color: #9ca3af; border-bottom: 1px solid #374151; font-size: 0.75rem;">
+                                    <th style="padding-bottom: 8px; text-align: center; width: 45px;">POS</th>
+                                    <th style="padding-bottom: 8px; text-align: center;">MÁNAGER</th>
+                                    <th style="padding-bottom: 8px; text-align: center;">🥇</th>
+                                    <th style="padding-bottom: 8px; text-align: center;">🥈</th>
+                                    <th style="padding-bottom: 8px; text-align: center;">🥉</th>
+                                    <th style="padding-bottom: 8px; text-align: center;">TOT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                // 4. Filas de Mánagers con el circulito de récord
+                lista.forEach((mgr, index) => {
+                    let oro = mgr.oros || 0;
+                    let plata = mgr.platas || 0;
+                    let bronce = mgr.bronces || 0;
+                    let total = oro + plata + bronce;
+
+                    let maxVal = Math.max(oro, plata, bronce);
+                    let highlightOro = (oro === maxVal && oro > 0) ? 'border: 1px solid #f59e0b; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #f59e0b; font-weight: bold;' : '';
+                    let highlightPlata = (plata === maxVal && plata > 0 && !highlightOro) ? 'border: 1px solid #d1d5db; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #d1d5db; font-weight: bold;' : '';
+                    let highlightBronce = (bronce === maxVal && bronce > 0 && !highlightOro && !highlightPlata) ? 'border: 1px solid #d97706; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #d97706; font-weight: bold;' : '';
+
+                    let posIcon = `<span style="color: #9ca3af; font-weight:bold;">${index + 1}º</span>`;
+                    if (index === 0) posIcon = '🥇';
+                    else if (index === 1) posIcon = '🥈';
+                    else if (index === 2) posIcon = '🥉';
+
+                    let avatarHtml = `<div class="foto-hundible" style="width: 34px; height: 34px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👤</div>`;
+
+                    htmlMedallero += `
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 10px 0;">${posIcon}</td>
+                            <td style="padding: 10px 0; text-align: center;">${avatarHtml}</td>
+                            <td style="padding: 10px 0;"><span style="${highlightOro || 'color:#f3f4f6;'}">${oro}</span></td>
+                            <td style="padding: 10px 0;"><span style="${highlightPlata || 'color:#f3f4f6;'}">${plata}</span></td>
+                            <td style="padding: 10px 0;"><span style="${highlightBronce || 'color:#f3f4f6;'}">${bronce}</span></td>
+                            <td style="padding: 10px 0; font-weight: 900; color: #60a5fa;">${total}</td>
+                        </tr>
+                    `;
+                });
+
+                htmlMedallero += `</tbody></table></div>`;
+                
+                // 5. Inyectamos en tu modal existente
+                modalContent.innerHTML = htmlMedallero;
             } else {
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
@@ -2225,6 +2300,98 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             if (tarjetaInner && tarjetaInner.classList.contains('is-flipped')) {
                 tarjetaInner.classList.remove('is-flipped');
             }
+        }
+    }
+
+    function abrirMedallero() {
+        // 1. Convertimos el objeto de mánagers en un array para poder ordenarlo
+        let lista = Object.values(managers);
+
+        // 2. ORDENACIÓN OLÍMPICA ESTRICTA
+        lista.sort((a, b) => {
+            // NOTA: Ajusta "oros", "platas", "bronces" y "valor_equipo" al nombre exacto de tus variables del JSON
+            let oroA = a.oros || 0; let oroB = b.oros || 0;
+            if (oroA !== oroB) return oroB - oroA;
+
+            let plataA = a.platas || 0; let plataB = b.platas || 0;
+            if (plataA !== plataB) return plataB - plataA;
+
+            let bronceA = a.bronces || 0; let bronceB = b.bronces || 0;
+            if (bronceA !== bronceB) return bronceB - bronceA;
+
+            // Desempate: Valor de equipo (patrimonio) en la última jornada
+            let valorA = a.valor_equipo || 0; 
+            let valorB = b.valor_equipo || 0;
+            return valorB - valorA;
+        });
+
+        // 3. Construimos la cabecera de la tabla
+        let html = `
+            <div class="card" style="padding: 15px; border-color: var(--accent);">
+                <div class="card-title" style="margin-bottom: 15px; text-align: left; font-size: 1.15rem;">🏅 Medallero</div>
+                <table class="tabla-compacta" style="width: 100%; text-align: center; font-size: 0.95rem;">
+                    <thead>
+                        <tr style="color: #9ca3af; border-bottom: 1px solid #374151; font-size: 0.75rem;">
+                            <th style="padding-bottom: 8px; text-align: center; width: 45px;">POS</th>
+                            <th style="padding-bottom: 8px; text-align: left;">MÁNAGER</th>
+                            <th style="padding-bottom: 8px; text-align: center;">🥇</th>
+                            <th style="padding-bottom: 8px; text-align: center;">🥈</th>
+                            <th style="padding-bottom: 8px; text-align: center;">🥉</th>
+                            <th style="padding-bottom: 8px; text-align: center;">TOT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        // 4. Recorremos la lista ya ordenada y dibujamos cada fila
+        lista.forEach((mgr, index) => {
+            let oro = mgr.oros || 0;
+            let plata = mgr.platas || 0;
+            let bronce = mgr.bronces || 0;
+            let total = oro + plata + bronce;
+
+            // Lógica del Círculo Destacado: Buscamos su metal más alto (>0) y le damos prioridad (Oro > Plata > Bronce)
+            let maxVal = Math.max(oro, plata, bronce);
+            let highlightOro = (oro === maxVal && oro > 0) ? 'border: 1px solid #f59e0b; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #f59e0b; font-weight: bold;' : '';
+            let highlightPlata = (plata === maxVal && plata > 0 && !highlightOro) ? 'border: 1px solid #d1d5db; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #d1d5db; font-weight: bold;' : '';
+            let highlightBronce = (bronce === maxVal && bronce > 0 && !highlightOro && !highlightPlata) ? 'border: 1px solid #d97706; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #d97706; font-weight: bold;' : '';
+
+            // Trofeos de Posición
+            let posIcon = `<span style="color: #9ca3af; font-weight:bold;">${index + 1}º</span>`;
+            if (index === 0) posIcon = '🥇';
+            else if (index === 1) posIcon = '🥈';
+            else if (index === 2) posIcon = '🥉';
+
+            // Avatar (Si tuvieras imagen real, cambia el 👤 por un <img src="${mgr.foto}">)
+            let avatarHtml = `<div class="foto-hundible" style="width: 34px; height: 34px; margin: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👤</div>`;
+
+            html += `
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 10px 0;">${posIcon}</td>
+                    <td style="padding: 10px 0; text-align: left;">
+                        <div style="display: flex; align-items: center;">
+                            ${avatarHtml}
+                        </div>
+                    </td>
+                    <td style="padding: 10px 0;"><span style="${highlightOro || 'color:#f3f4f6;'}">${oro}</span></td>
+                    <td style="padding: 10px 0;"><span style="${highlightPlata || 'color:#f3f4f6;'}">${plata}</span></td>
+                    <td style="padding: 10px 0;"><span style="${highlightBronce || 'color:#f3f4f6;'}">${bronce}</span></td>
+                    <td style="padding: 10px 0; font-weight: 900; color: #60a5fa;">${total}</td>
+                </tr>
+            `;
+        });
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        // 5. Inyectamos en el modal y lo mostramos (Usando tu estructura actual)
+        let modalContent = document.getElementById('pastilla-modal-content');
+        if (modalContent) {
+            modalContent.innerHTML = html;
+            document.getElementById('pastillaModal').classList.add('active');
         }
     }
 
