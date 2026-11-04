@@ -272,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 11:13</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 11:31</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -2339,8 +2339,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
     // ARRANQUE OFICIAL (Solo arranca cuando el HTML base está 100% construido)
     document.addEventListener('DOMContentLoaded', () => {
-    // Arrancamos el reloj
+    // Arrancamos el reloj al instante y le damos cuerda cada segundo
         renderCountdown();
+        setInterval(renderCountdown, 1000);
 
         // Arrancamos limpios y seguros en la General
         cambiarModo('general');
