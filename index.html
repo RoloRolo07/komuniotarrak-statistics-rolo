@@ -226,10 +226,15 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     background: rgba(0,0,0,0.2);
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
+
 .tarjeta-cuerpo {
     padding: 15px;
     overflow-y: auto;
     flex-grow: 1;
+    /* --- LAS 3 LÍNEAS SALVAVIDAS PARA MÓVILES --- */
+    -webkit-overflow-scrolling: touch; /* Obliga a iOS/Safari a activar el scroll suave */
+    overscroll-behavior-y: contain;    /* Bloquea el "Pull-to-refresh" dentro de la carta */
+    transform: translateZ(0);          /* Aísla el scroll del giro 3D para que no se congele */
 }
 
 /* Cajas de datos internas (Efecto Relieve Físico 3D) */
@@ -274,7 +279,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 17:43</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 04/11/2026 17:50</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
