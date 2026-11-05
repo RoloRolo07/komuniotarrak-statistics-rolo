@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 05/11/2026 15:42</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 05/11/2026 17:19</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -911,7 +911,94 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 
                 htmlModal += `</div>`;
                 modalContent.innerHTML = htmlModal;
+            } else if (submodo === 'medallero') {
+                let lista = Object.values(managers);
 
+                // 1. ORDENACIÓN OLÍMPICA ESTRICTA
+                lista.sort((a, b) => {
+                    let oroA = a.oros || 0; let oroB = b.oros || 0;
+                    if (oroA !== oroB) return oroB - oroA;
+                    let plataA = a.platas || 0; let plataB = b.platas || 0;
+                    if (plataA !== plataB) return plataB - plataA;
+                    let bronceA = a.bronces || 0; let bronceB = b.bronces || 0;
+                    if (bronceA !== bronceB) return bronceB - bronceA;
+                    let valorA = a.valor_equipo || 0; 
+                    let valorB = b.valor_equipo || 0;
+                    return valorB - valorA;
+                });
+
+                // 2. CABECERA DE LA TABLA
+                let htmlMedallero = `
+                    <div class="card" style="padding: 16px; overflow-x: hidden; margin-bottom: 0;">
+                        <div class="card-title" style="margin-bottom: 12px; justify-content: center;">🏅 Medallero</div>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="color: #9ca3af; font-size: 0.85rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <th style="padding: 6px 2px; text-align: center;">Pos</th>
+                                    <th style="padding: 6px 2px; text-align: center;">Mánager</th>
+                                    <th style="padding: 6px 2px; text-align: center;">🥇</th>
+                                    <th style="padding: 6px 2px; text-align: center;">🥈</th>
+                                    <th style="padding: 6px 2px; text-align: center;">🥉</th>
+                                    <th style="padding: 6px 2px; text-align: center;">Tot</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                // 3. FILAS (Calcadas de La General)
+                lista.forEach((mgr, i) => {
+                    let oro = mgr.oros || 0;
+                    let plata = mgr.platas || 0;
+                    let bronce = mgr.bronces || 0;
+                    let total = oro + plata + bronce;
+
+                    // Extraemos el UID para poder cargar la foto y abrir la tarjeta 3D
+                    let u = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === mgr.manager)?.uid : null;
+
+                    // Récords absolutos
+                    let maxVal = Math.max(oro, plata, bronce);
+                    let highlightOro = (oro === maxVal && oro > 0) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #f59e0b; color:#f59e0b; font-weight:bold;' : '';
+                    let highlightPlata = (plata === maxVal && plata > 0 && !highlightOro) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d1d5db; color:#d1d5db; font-weight:bold;' : '';
+                    let highlightBronce = (bronce === maxVal && bronce > 0 && !highlightOro && !highlightPlata) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d97706; color:#d97706; font-weight:bold;' : '';
+
+                    // Mismos degradados EXACTOS de La General
+                    let bgStyle = '';
+                    if (i === 0) bgStyle = 'background: linear-gradient(90deg, rgba(234,179,8,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else if (i === 1) bgStyle = 'background: linear-gradient(90deg, rgba(156,163,175,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else if (i === 2) bgStyle = 'background: linear-gradient(90deg, rgba(180,83,9,0.35) 0%, rgba(0,0,0,0) 80%);'; 
+                    else bgStyle = 'background: linear-gradient(90deg, rgba(148,163,184,0.10) 0%, rgba(0,0,0,0) 80%);';
+
+                    htmlMedallero += `
+                        <tr style="${bgStyle} border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
+                                <div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div>
+                            </td>
+                            
+                            <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
+                                <div class="manager-avatar-btn" onclick="abrirTarjetaManager('${u}', '${mgr.manager}')" style="display:inline-flex; flex-direction:column; align-items:center; padding:4px; cursor:pointer;">
+                                    ${u ? getFotoHtml(u) : `<div class="avatar-circle-btn" style="border-color: #fff; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`}
+                                    <div style="font-size: 0.75rem; color: var(--white); font-weight: bold; margin-top: 4px;">${mgr.manager}</div>
+                                </div>
+                            </td>
+                            
+                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
+                                <span style="${highlightOro || 'color:#f3f4f6;'}">${oro}</span>
+                            </td>
+                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
+                                <span style="${highlightPlata || 'color:#f3f4f6;'}">${plata}</span>
+                            </td>
+                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
+                                <span style="${highlightBronce || 'color:#f3f4f6;'}">${bronce}</span>
+                            </td>
+                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem; font-weight:bold; color:#60a5fa;">
+                                ${total}
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                htmlMedallero += `</tbody></table></div>`;
+                modalContent.innerHTML = htmlMedallero;
             } else {
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
@@ -1107,94 +1194,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 } else {
                     modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">VAR no configurado.</div>`;
                 }
-            } else if (submodo === 'medallero') {
-                let lista = Object.values(managers);
-
-                // 1. ORDENACIÓN OLÍMPICA ESTRICTA
-                lista.sort((a, b) => {
-                    let oroA = a.oros || 0; let oroB = b.oros || 0;
-                    if (oroA !== oroB) return oroB - oroA;
-                    let plataA = a.platas || 0; let plataB = b.platas || 0;
-                    if (plataA !== plataB) return plataB - plataA;
-                    let bronceA = a.bronces || 0; let bronceB = b.bronces || 0;
-                    if (bronceA !== bronceB) return bronceB - bronceA;
-                    let valorA = a.valor_equipo || 0; 
-                    let valorB = b.valor_equipo || 0;
-                    return valorB - valorA;
-                });
-
-                // 2. CABECERA DE LA TABLA
-                let htmlMedallero = `
-                    <div class="card" style="padding: 16px; overflow-x: hidden; margin-bottom: 0;">
-                        <div class="card-title" style="margin-bottom: 12px; justify-content: center;">🏅 Medallero</div>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="color: #9ca3af; font-size: 0.85rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                    <th style="padding: 6px 2px; text-align: center;">Pos</th>
-                                    <th style="padding: 6px 2px; text-align: center;">Mánager</th>
-                                    <th style="padding: 6px 2px; text-align: center;">🥇</th>
-                                    <th style="padding: 6px 2px; text-align: center;">🥈</th>
-                                    <th style="padding: 6px 2px; text-align: center;">🥉</th>
-                                    <th style="padding: 6px 2px; text-align: center;">Tot</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-
-                // 3. FILAS (Calcadas de La General)
-                lista.forEach((mgr, i) => {
-                    let oro = mgr.oros || 0;
-                    let plata = mgr.platas || 0;
-                    let bronce = mgr.bronces || 0;
-                    let total = oro + plata + bronce;
-
-                    // Extraemos el UID para poder cargar la foto y abrir la tarjeta 3D
-                    let u = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === mgr.manager)?.uid : null;
-
-                    // Récords absolutos
-                    let maxVal = Math.max(oro, plata, bronce);
-                    let highlightOro = (oro === maxVal && oro > 0) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #f59e0b; color:#f59e0b; font-weight:bold;' : '';
-                    let highlightPlata = (plata === maxVal && plata > 0 && !highlightOro) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d1d5db; color:#d1d5db; font-weight:bold;' : '';
-                    let highlightBronce = (bronce === maxVal && bronce > 0 && !highlightOro && !highlightPlata) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d97706; color:#d97706; font-weight:bold;' : '';
-
-                    // Mismos degradados EXACTOS de La General
-                    let bgStyle = '';
-                    if (i === 0) bgStyle = 'background: linear-gradient(90deg, rgba(234,179,8,0.35) 0%, rgba(0,0,0,0) 80%);'; 
-                    else if (i === 1) bgStyle = 'background: linear-gradient(90deg, rgba(156,163,175,0.35) 0%, rgba(0,0,0,0) 80%);'; 
-                    else if (i === 2) bgStyle = 'background: linear-gradient(90deg, rgba(180,83,9,0.35) 0%, rgba(0,0,0,0) 80%);'; 
-                    else bgStyle = 'background: linear-gradient(90deg, rgba(148,163,184,0.10) 0%, rgba(0,0,0,0) 80%);';
-
-                    htmlMedallero += `
-                        <tr style="${bgStyle} border-bottom: 1px solid rgba(255,255,255,0.03);">
-                            <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
-                                <div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div>
-                            </td>
-                            
-                            <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
-                                <div class="manager-avatar-btn" onclick="abrirTarjetaManager('${u}', '${mgr.manager}')" style="display:inline-flex; flex-direction:column; align-items:center; padding:4px; cursor:pointer;">
-                                    ${u ? getFotoHtml(u) : `<div class="avatar-circle-btn" style="border-color: #fff; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`}
-                                    <div style="font-size: 0.75rem; color: var(--white); font-weight: bold; margin-top: 4px;">${mgr.manager}</div>
-                                </div>
-                            </td>
-                            
-                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
-                                <span style="${highlightOro || 'color:#f3f4f6;'}">${oro}</span>
-                            </td>
-                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
-                                <span style="${highlightPlata || 'color:#f3f4f6;'}">${plata}</span>
-                            </td>
-                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
-                                <span style="${highlightBronce || 'color:#f3f4f6;'}">${bronce}</span>
-                            </td>
-                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem; font-weight:bold; color:#60a5fa;">
-                                ${total}
-                            </td>
-                        </tr>
-                    `;
-                });
-
-                htmlMedallero += `</tbody></table></div>`;
-                modalContent.innerHTML = htmlMedallero;
             } else {
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
