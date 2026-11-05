@@ -293,31 +293,37 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     animation: desplegarModal 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* 3. CIELO ESTRELLADO PARA EL BOTÓN NORMATIVA */
+/* 3. CIELO ESTRELLADO INFALIBLE (SVG + ROTACIÓN) */
 .center-btn-2d {
     position: relative;
     overflow: hidden;
+    z-index: 1; 
 }
-@keyframes moverEstrellas {
-    from { background-position: 0 0, 0 0; }
-    to { background-position: -150px 150px, 100px 100px; }
+
+.center-content { 
+    position: relative; 
+    z-index: 10; 
 }
+
+@keyframes rotarCielo {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 .center-btn-2d::before {
     content: '';
     position: absolute;
-    top: -50%; left: -50%; right: -50%; bottom: -50%;
-    /* Dos capas de puntos blancos con distinto tamaño para dar profundidad */
-    background-image: 
-        radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(1.5px 1.5px at 60px 70px, rgba(255,255,255,0.7), rgba(0,0,0,0));
-    background-size: 100px 100px, 80px 80px;
-    animation: moverEstrellas 15s linear infinite;
-    opacity: 0.5;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='15' cy='25' r='1.5' fill='white'/%3E%3Ccircle cx='60' cy='55' r='1' fill='white' opacity='0.7'/%3E%3Ccircle cx='35' cy='75' r='2' fill='white' opacity='0.9'/%3E%3Ccircle cx='75' cy='15' r='1' fill='white' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 70px 70px;
+    z-index: 2;
     pointer-events: none;
-    z-index: 0;
+    animation: rotarCielo 35s linear infinite;
+    opacity: 0.8;
 }
-/* Asegurar que el texto dorado e icono queden por encima de las estrellas */
-.center-content { position: relative; z-index: 1; }
 
 /* 4. ANIMACIÓN DE GIRO DE LA RULETA */
 @keyframes giroRuletaMotor {
@@ -332,7 +338,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 05/11/2026 07:37</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 05/11/2026 07:59</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
