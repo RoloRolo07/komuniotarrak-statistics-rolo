@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 14:47</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 19:14</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1006,7 +1006,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 // 1. Gráfico de Evolución
                 htmlFinanzas += `
                     <div class="card" style="padding: 12px; margin-bottom: 16px;">
-                        <div class="card-title" style="color:var(--white); font-size: 1rem; margin-bottom: 8px;">💶 Evolución Valor de Plantillas <span class="muted" style="font-size:0.8rem; font-weight:normal; margin-left:8px;">(Por jornada)</span></div>
+                        <div class="card-title" style="color:var(--white); font-size: 1rem; margin-bottom: 8px;">💶 Evolución Valor de Plantillas</div>
                         <div style="height: 250px; position: relative;">
                             <canvas id="chart-valor"></canvas>
                         </div>
@@ -1020,16 +1020,21 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let worstMin = Math.min(...fr.map(d => d.min).filter(v => v > 0));
                     if (worstMin === Infinity) worstMin = 0;
 
-                    let filasPicos = Object.entries(globalStats.finanzas_resumen).sort((a,b) => b[1].media - a[1].media).map(([mgr, data]) => {
+                    let filasPicos = Object.entries(globalStats.finanzas_resumen).sort((a,b) => b[1].max - a[1].max).map(([mgr, data]) => {
                         let badgeMax = data.max === bestMax && bestMax > 0 ? `<span class="badge-rec-max" style="padding:2px 8px;">${fmtE(data.max)}</span>` : fmtE(data.max);
                         let badgeMin = data.min === worstMin && worstMin > 0 ? `<span class="badge-rec-min" style="padding:2px 8px;">${fmtE(data.min)}</span>` : fmtE(data.min);
                         let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span style="background: rgba(249, 115, 22, 0.15); color: #fb923c; padding: 2px 8px; border-radius: 12px; font-weight: bold; border: 1px solid rgba(249, 115, 22, 0.4); font-size: 0.9rem;">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));
-                        return `<tr><td style="text-align:left;"><b>${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
+                        
+                        // Encontrar el UID para la foto
+                        let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === mgr);
+                        let fotoHtml = uid ? getFotoHtml(uid) : '👤';
+                        
+                        return `<tr><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
                     }).join('');
 
                     htmlFinanzas += `
                     <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
-                        <div class="card-title" style="color:var(--gold); font-size: 1rem; margin-bottom: 8px;">📈 Picos y Media de Plantilla <span class="muted" style="font-size:0.8rem; font-weight:normal; margin-left:8px;">(Por jornada)</span></div>
+                        <div class="card-title" style="color:var(--gold); font-size: 1rem; margin-bottom: 8px;">📈 Picos y Media de Plantilla</div>
                         <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
                             <thead><tr><th style="text-align:left;">Mánager</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th><th style="text-align:right;">Media</th></tr></thead>
                             <tbody>${filasPicos}</tbody>
@@ -1051,14 +1056,18 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let valTotalStr = (totalMovs === maxMovs && maxMovs > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${totalMovs}</span>` : ((totalMovs === minMovs) ? `<span class="badge-rec-min" style="padding:2px 8px;">${totalMovs}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${totalMovs}</span>`);
                     let valComps = (m.compras_realizadas === maxComp && maxComp > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${m.compras_realizadas}</span>` : ((m.compras_realizadas === minComp) ? `<span class="badge-rec-min" style="padding:2px 8px;">${m.compras_realizadas}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${m.compras_realizadas}</span>`);
                     let valVents = (m.ventas_realizadas === maxVent && maxVent > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${m.ventas_realizadas}</span>` : ((m.ventas_realizadas === minVent) ? `<span class="badge-rec-min" style="padding:2px 8px;">${m.ventas_realizadas}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${m.ventas_realizadas}</span>`);
-                    return `<tr><td style="text-align:left;">${idx === 0 ? '🥇 ' : ''}<b>${m.manager}</b></td><td><b>${valTotalStr}</b></td><td style="color:var(--muted);">${valComps}</td><td style="color:var(--muted);">${valVents}</td></tr>`;
+                    
+                    let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === m.manager);
+                    let fotoHtml = uid ? getFotoHtml(uid) : '👤';
+                    
+                    return `<tr><td>${idx+1}º</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${m.manager}</b></td><td><b>${valTotalStr}</b></td><td style="color:var(--muted);">${valComps}</td><td style="color:var(--muted);">${valVents}</td></tr>`;
                 }).join('');
 
                 htmlFinanzas += `
                     <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
                         <div class="card-title" style="color:var(--blue); font-size: 1rem; margin-bottom: 8px;">📊 Total Movimientos de Mercado</div>
                         <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
-                            <thead><tr><th style="text-align:left;">Mánager</th><th>Total Movs.</th><th>🛒 Compras</th><th>💰 Ventas</th></tr></thead>
+                            <thead><tr><th>Pos</th><th style="text-align:left;">Mánager</th><th>Total Movs.</th><th>🛒 Compras</th><th>💰 Ventas</th></tr></thead>
                             <tbody>${filasMovs}</tbody>
                         </table>
                     </div>`;
@@ -1075,7 +1084,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let badgeP = d.penultimo === maxPen && maxPen > 0 ? `<span class="badge-orange">${d.penultimo}</span>` : d.penultimo;
                         let badgeA = d.antepenultimo === maxAnt && maxAnt > 0 ? `<span class="badge-yellow">${d.antepenultimo}</span>` : d.antepenultimo;
                         let pendienteHtml = d.pendientes_count > 0 ? `<span style="color:var(--gold); font-size:0.75rem; margin-left:4px;" title="Pendiente ⏳">(${d.pendientes_count} ⏳)</span>` : '';
-                        return `<tr><td>${i+1}º</td><td style="text-align:left;"><b>${d.manager}</b></td><td class="val-pos" style="text-align:right;">+${fmtE(d.ingreso)}${pendienteHtml}</td><td>${badgeU}</td><td>${badgeP}</td><td>${badgeA}</td></tr>`;
+                        
+                        let posStr = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º';
+                        let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === d.manager);
+                        let fotoHtml = uid ? getFotoHtml(uid) : '👤';
+
+                        return `<tr><td>${posStr}</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${d.manager}</b></td><td class="val-pos" style="text-align:right;">+${fmtE(d.ingreso)}${pendienteHtml}</td><td>${badgeU}</td><td>${badgeP}</td><td>${badgeA}</td></tr>`;
                     }).join('');
 
                     htmlFinanzas += `
@@ -1088,7 +1102,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     </div>`;
                 }
 
-                // 5. Ranking de Sancionados (Arreglado para funcionar directo en JS)
+                // 5. Ranking de Sancionados
                 let sancionadosData = [];
                 if (globalStats.clasif_general_actual) {
                     globalStats.clasif_general_actual.forEach(mgrObj => {
@@ -1113,7 +1127,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 
                 let filasSancionados = sancionadosData.map((d, i) => {
                     let posStr = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º';
-                    return `<tr><td>${posStr}</td><td style="text-align:left;"><b>${d.manager}</b></td><td class="val-neg" style="text-align:right;">${d.valor > 0 ? '-' : ''}${fmtE(d.valor)}</td></tr>`;
+                    let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === d.manager);
+                    let fotoHtml = uid ? getFotoHtml(uid) : '👤';
+                    return `<tr><td>${posStr}</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${d.manager}</b></td><td class="val-neg" style="text-align:right;">${d.valor > 0 ? '-' : ''}${fmtE(d.valor)}</td></tr>`;
                 }).join('');
 
                 htmlFinanzas += `
@@ -1128,9 +1144,39 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 htmlFinanzas += `</div>`;
                 modalContent.innerHTML = htmlFinanzas;
 
+                // Y aquí aplicamos el truco para que Chart.js formatee los millones a "M" (ej: 90M)
                 setTimeout(() => {
                     chartFinInit = false; 
-                    initChartFinanzas();
+                    const ctxVal = document.getElementById('chart-valor')?.getContext('2d');
+                    if(ctxVal && globalStats.finanzas_labels && globalStats.finanzas_labels.length) {
+                        const colorPalette = ["#3b82f6", "#ef4444", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899"]; 
+                        let dsVal = []; let i = 0;
+                        for (let mgr in globalStats.finanzas_evolucion) {
+                            let col = colorPalette[i % colorPalette.length];
+                            dsVal.push({ label: mgr, data: globalStats.finanzas_evolucion[mgr], borderColor: col, backgroundColor: col, tension: 0.3, spanGaps: true, pointRadius: 3, pointHoverRadius: 6 }); i++;
+                        }
+                        Chart.defaults.color = '#9ca3af'; Chart.defaults.font.family = 'Inter';
+                        let chartOptions = { 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            plugins: { legend: { position: 'bottom' } }, 
+                            scales: { 
+                                y: { 
+                                    grid: { color: 'rgba(255,255,255,0.05)' },
+                                    ticks: {
+                                        callback: function(value) {
+                                            if (value >= 1000000) {
+                                                return (value / 1000000) + 'M';
+                                            }
+                                            return value;
+                                        }
+                                    }
+                                }, 
+                                x: { grid: { display: false } } 
+                            } 
+                        };
+                        new Chart(ctxVal, { type: 'line', data: { labels: globalStats.finanzas_labels, datasets: dsVal }, options: chartOptions });
+                    }
                 }, 100);
 
             } else {
