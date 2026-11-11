@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 14:38</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 14:47</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1088,13 +1088,26 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     </div>`;
                 }
 
-                // 5. Ranking de Sancionados
+                // 5. Ranking de Sancionados (Arreglado para funcionar directo en JS)
                 let sancionadosData = [];
                 if (globalStats.clasif_general_actual) {
-                    for (let uid in mgr_metrics) {
-                        let mgrObj = globalStats.clasif_general_actual.find(m => m.uid === uid);
-                        if (mgrObj) sancionadosData.push({ manager: mgrObj.manager, valor: mgr_metrics[uid].sanciones || 0 });
-                    }
+                    globalStats.clasif_general_actual.forEach(mgrObj => {
+                        let totalSanc = 0;
+                        if (typeof transacciones !== 'undefined' && transacciones.length > 0) {
+                            transacciones.forEach(bloqueT => {
+                                let entradas = bloqueT.entradas || [bloqueT];
+                                entradas.forEach(t => {
+                                    if (t.type === "TRANSACTION_BONUS" && t.message && t.message.text) {
+                                        let match = t.message.text.match(/Pena disciplinaria:\s*([\d\.]+).*?restados a\s*(.*?)\s*por/i);
+                                        if (match && match[2].trim().toLowerCase() === mgrObj.manager.toLowerCase() && !t.message.text.toLowerCase().includes("abono jornada")) {
+                                            totalSanc += parseInt(match[1].replace(/\./g, ''), 10);
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                        sancionadosData.push({ manager: mgrObj.manager, valor: totalSanc });
+                    });
                 }
                 sancionadosData.sort((a,b) => b.valor - a.valor);
                 
@@ -1115,11 +1128,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 htmlFinanzas += `</div>`;
                 modalContent.innerHTML = htmlFinanzas;
 
-                // El pequeño truco para que Chart.js enganche con el nuevo canvas del modal
                 setTimeout(() => {
                     chartFinInit = false; 
                     initChartFinanzas();
-                }, 100);   
+                }, 100);
+
             } else {
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
