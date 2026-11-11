@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 19:39</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 20:08</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1177,6 +1177,133 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         new Chart(ctxVal, { type: 'line', data: { labels: globalStats.finanzas_labels, datasets: dsVal }, options: chartOptions });
                     }
                 }, 100);
+                
+            } else if (submodo === 'evolucion') {
+                let htmlEvolucion = `<div style="padding:16px; overflow-x:hidden;">
+                    <div class="card-title" style="margin-bottom:16px; justify-content:center; font-size:1.2rem;">📈 Evolución y Récords</div>`;
+
+                // 1. Gráfico Posiciones
+                htmlEvolucion += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px;">
+                        <div class="card-title" style="color:var(--white); font-size: 1rem; margin-bottom: 8px;">📊 Evolución de Posiciones</div>
+                        <div style="height: 250px; position: relative;">
+                            <canvas id="chart-posiciones-modal"></canvas>
+                        </div>
+                    </div>`;
+
+                // 2. Gráfico Puntos
+                htmlEvolucion += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px;">
+                        <div class="card-title" style="color:var(--white); font-size: 1rem; margin-bottom: 8px;">📈 Evolución de Puntos</div>
+                        <div style="height: 250px; position: relative;">
+                            <canvas id="chart-puntos-modal"></canvas>
+                        </div>
+                    </div>`;
+
+                // 3. Tabla de Récords
+                let max_r = -999; let min_r = 999;
+                let recordsData = [];
+                for(let m in globalStats.records) { 
+                    let rMax = globalStats.records[m].max_jornada;
+                    let rMin = globalStats.records[m].min_jornada;
+                    if(rMax > max_r && rMax !== -999) max_r = rMax; 
+                    if(rMin < min_r && rMin !== 999) min_r = rMin; 
+                    recordsData.push({ manager: m, max: rMax, min: rMin });
+                }
+                
+                // Ordenar por récord máximo descendente
+                recordsData.sort((a,b) => b.max - a.max);
+                
+                let filasRecords = recordsData.map((d, i) => {
+                    let rMax = d.max; let rMin = d.min;
+                    let hMax = rMax === -999 ? '--' : rMax; 
+                    let hMin = rMin === 999 ? '--' : rMin;
+                    
+                    if (rMax === max_r && rMax !== -999) hMax = `<span class="badge-rec-max" style="padding:2px 8px;">${rMax}</span>`; 
+                    if (rMin === min_r && rMin !== 999) hMin = `<span class="badge-rec-min" style="padding:2px 8px;">${rMin}</span>`; 
+                    
+                    let posStr = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º';
+                    let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === d.manager)?.uid : null;
+                    let fotoHtml = uid ? getFotoHtml(uid) : '👤';
+                    
+                    return `<tr>
+                        <td>${posStr}</td>
+                        <td style="text-align:center;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8);">${fotoHtml}</div></td>
+                        <td style="text-align:center; font-weight:bold; font-size:1.1rem; color:var(--white);">${hMax}</td>
+                        <td style="text-align:center; font-weight:bold; font-size:1.1rem; color:var(--muted);">${hMin}</td>
+                    </tr>`;
+                }).join('');
+
+                htmlEvolucion += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
+                        <div class="card-title" style="color:var(--gold); font-size: 1rem; margin-bottom: 8px;">🌟 Récords de Puntos</div>
+                        <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
+                            <thead><tr><th>Pos</th><th style="text-align:center;">Mánager</th><th style="text-align:center;">Récord Máx</th><th style="text-align:center;">Récord Mín</th></tr></thead>
+                            <tbody>${filasRecords}</tbody>
+                        </table>
+                    </div>`;
+
+                htmlEvolucion += `</div>`;
+                modalContent.innerHTML = htmlEvolucion;
+
+                // Motor de Gráficos (Ordenando cronológicamente el Eje X)
+                setTimeout(() => {
+                    let indicesOrdenados = globalStats.jornadas_labels.map((lbl, idx) => {
+                        let fecha = (jornadasData[idx] && jornadasData[idx].info.fecha) ? jornadasData[idx].info.fecha : '2000-01-01';
+                        return { label: lbl, fecha: fecha, originalIdx: idx };
+                    }).sort((a,b) => a.fecha.localeCompare(b.fecha));
+
+                    let sortedLabels = indicesOrdenados.map(x => x.label);
+                    const colorPalette = ["#3b82f6", "#ef4444", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899"]; 
+                    
+                    // Chart Posiciones
+                    const ctxPos = document.getElementById('chart-posiciones-modal')?.getContext('2d');
+                    if(ctxPos) {
+                        let dsPos = []; let i = 0;
+                        for (let mgr in globalStats.posicion_evolucion) {
+                            let col = colorPalette[i % colorPalette.length];
+                            let sortedData = indicesOrdenados.map(x => globalStats.posicion_evolucion[mgr][x.originalIdx]);
+                            dsPos.push({ label: mgr, data: sortedData, borderColor: col, backgroundColor: col, tension: 0.3, spanGaps: true }); 
+                            i++;
+                        }
+                        Chart.defaults.color = '#9ca3af'; Chart.defaults.font.family = 'Inter';
+                        new Chart(ctxPos, { 
+                            type: 'line', 
+                            data: { labels: sortedLabels, datasets: dsPos }, 
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { reverse: true, min: 1, max: Object.keys(globalStats.posicion_evolucion).length, ticks: { stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } } 
+                        });
+                    }
+
+                    // Chart Puntos
+                    const ctxPts = document.getElementById('chart-puntos-modal')?.getContext('2d');
+                    if(ctxPts) {
+                        let dsPts = []; let i = 0;
+                        for (let mgr in globalStats.puntos_evolucion) {
+                            let col = colorPalette[i % colorPalette.length];
+                            let sortedData = indicesOrdenados.map(x => globalStats.puntos_evolucion[mgr][x.originalIdx]);
+                            dsPts.push({ label: mgr, data: sortedData, borderColor: col, backgroundColor: col, tension: 0.3, spanGaps: true }); 
+                            i++;
+                        }
+                        
+                        let mediaData = [];
+                        for(let k=0; k<indicesOrdenados.length; k++) {
+                            let originalIdx = indicesOrdenados[k].originalIdx;
+                            let sum = 0; let count = 0;
+                            for(let mgr in globalStats.puntos_evolucion) {
+                                let val = globalStats.puntos_evolucion[mgr][originalIdx]; 
+                                if(val !== null && val !== undefined) { sum += val; count++; }
+                            }
+                            mediaData.push(count > 0 ? (sum/count) : 0);
+                        }
+                        dsPts.push({ label: 'Media Liga', data: mediaData, borderColor: '#ffffff', borderDash: [5, 5], backgroundColor: 'transparent', borderWidth: 2, tension: 0.3, pointRadius: 0 });
+                        
+                        new Chart(ctxPts, { 
+                            type: 'line', 
+                            data: { labels: sortedLabels, datasets: dsPts }, 
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } } 
+                        });
+                    }
+                }, 100);
 
             } else {
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
@@ -1436,6 +1563,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 <button id="btn-sub-records_mgr" class="btn-filter" onclick="abrirSubTarjeta('records_mgr')">👔 Récords Mánagers</button>
                 <button id="btn-sub-records_jug" class="btn-filter" onclick="abrirSubTarjeta('records_jug')">⚽ Récords Jugadores</button>
                 <button id="btn-sub-finanzas" class="btn-filter" onclick="abrirSubTarjeta('finanzas')">💰 Finanzas</button>
+                <button id="btn-sub-evolucion" class="btn-filter" onclick="abrirSubTarjeta('evolucion')">📈 Evolución</button>
                 <button id="btn-sub-fichajes" class="btn-filter" onclick="abrirSubTarjeta('fichajes')">📖 Fichajes</button>
             `;
             
