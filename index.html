@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 13:45</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 14:28</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -912,10 +912,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 htmlModal += `</div>`;
                 modalContent.innerHTML = htmlModal;
             } else if (submodo === 'medallero') {
-                // 1. ORIGEN DE DATOS CORRECTO: Usamos globalStats.medallero_actual
                 let lista = globalStats.medallero_actual ? [...globalStats.medallero_actual] : [];
 
-                // 2. ORDENACIÓN OLÍMPICA ESTRICTA
                 lista.sort((a, b) => {
                     let oroA = a.oros || 0; let oroB = b.oros || 0;
                     if (oroA !== oroB) return oroB - oroA;
@@ -928,7 +926,12 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     return valorB - valorA;
                 });
 
-                // 3. CABECERA CON ANCHOS FORZADOS PARA AJUSTAR ESPACIOS
+                // NUEVO: Calculamos los topes absolutos de cada columna de toda la liga
+                let maxOros = Math.max(0, ...lista.map(m => m.oros || 0));
+                let maxPlatas = Math.max(0, ...lista.map(m => m.platas || 0));
+                let maxBronces = Math.max(0, ...lista.map(m => m.bronces || 0));
+                let maxTotales = Math.max(0, ...lista.map(m => (m.oros || 0) + (m.platas || 0) + (m.bronces || 0)));
+
                 let htmlMedallero = `
                     <div class="card" style="padding: 16px; overflow-x: hidden; margin-bottom: 0;">
                         <div class="card-title" style="margin-bottom: 12px; justify-content: center;">🏅 Medallero</div>
@@ -946,22 +949,21 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             <tbody>
                 `;
 
-                // 4. FILAS CON DATOS REALES Y ALINEACIÓN IZQUIERDA PARA EL MÁNAGER
                 lista.forEach((mgr, i) => {
                     let oro = mgr.oros || 0;
                     let plata = mgr.platas || 0;
                     let bronce = mgr.bronces || 0;
                     let total = oro + plata + bronce;
+                    let u = mgr.uid; 
 
-                    let u = mgr.uid; // Ahora el uid ya viene directo en el objeto
+                    // AHORA SÍ: Comparamos contra el máximo de la liga, sin exclusiones
+                    let highlightOro = (oro === maxOros && maxOros > 0) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #f59e0b; color:#f59e0b; font-weight:bold;' : '';
+                    let highlightPlata = (plata === maxPlatas && maxPlatas > 0) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d1d5db; color:#d1d5db; font-weight:bold;' : '';
+                    let highlightBronce = (bronce === maxBronces && maxBronces > 0) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d97706; color:#d97706; font-weight:bold;' : '';
+                    
+                    // El subrayado "azulón" que pedías para el tope de totales
+                    let highlightTotal = (total === maxTotales && maxTotales > 0) ? 'background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; padding: 2px 8px; border-radius: 12px; color: #60a5fa; font-weight: bold;' : 'color:#60a5fa; font-weight:bold;';
 
-                    // Récords absolutos
-                    let maxVal = Math.max(oro, plata, bronce);
-                    let highlightOro = (oro === maxVal && oro > 0) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #f59e0b; color:#f59e0b; font-weight:bold;' : '';
-                    let highlightPlata = (plata === maxVal && plata > 0 && !highlightOro) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d1d5db; color:#d1d5db; font-weight:bold;' : '';
-                    let highlightBronce = (bronce === maxVal && bronce > 0 && !highlightOro && !highlightPlata) ? 'display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; border:1px solid #d97706; color:#d97706; font-weight:bold;' : '';
-
-                    // Degradados de fondo
                     let bgStyle = '';
                     if (i === 0) bgStyle = 'background: linear-gradient(90deg, rgba(234,179,8,0.35) 0%, rgba(0,0,0,0) 80%);'; 
                     else if (i === 1) bgStyle = 'background: linear-gradient(90deg, rgba(156,163,175,0.35) 0%, rgba(0,0,0,0) 80%);'; 
@@ -973,13 +975,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
                                 <div style="font-size: 1.1rem;">${i<3 ? ['🥇','🥈','🥉'][i] : `<b>${i+1}</b><span style="font-size:0.6rem;">º</span>`}</div>
                             </td>
-                            
                             <td style="text-align:center; padding:6px 2px; vertical-align:middle;">
                                 <div class="manager-avatar-btn" onclick="abrirTarjetaManager('${u}', '${mgr.manager}')" style="display:inline-flex; justify-content:center; padding:4px; cursor:pointer;">
                                     ${u ? getFotoHtml(u) : `<div class="avatar-circle-btn" style="border-color: #fff; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>`}
                                 </div>
                             </td>
-                            
                             <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
                                 <span style="${highlightOro || 'color:#f3f4f6;'}">${oro}</span>
                             </td>
@@ -989,8 +989,8 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                             <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
                                 <span style="${highlightBronce || 'color:#f3f4f6;'}">${bronce}</span>
                             </td>
-                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem; font-weight:bold; color:#60a5fa;">
-                                ${total}
+                            <td style="text-align:center; padding:6px 2px; vertical-align:middle; font-size:1.1rem;">
+                                <span style="${highlightTotal}">${total}</span>
                             </td>
                         </tr>
                     `;
@@ -2426,98 +2426,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         } else {
             // Plan B inmediato por si algo falla
             abrirSubTarjeta(idModal); 
-        }
-    }
-
-    function abrirMedallero() {
-        // 1. Convertimos el objeto de mánagers en un array para poder ordenarlo
-        let lista = Object.values(managers);
-
-        // 2. ORDENACIÓN OLÍMPICA ESTRICTA
-        lista.sort((a, b) => {
-            // NOTA: Ajusta "oros", "platas", "bronces" y "valor_equipo" al nombre exacto de tus variables del JSON
-            let oroA = a.oros || 0; let oroB = b.oros || 0;
-            if (oroA !== oroB) return oroB - oroA;
-
-            let plataA = a.platas || 0; let plataB = b.platas || 0;
-            if (plataA !== plataB) return plataB - plataA;
-
-            let bronceA = a.bronces || 0; let bronceB = b.bronces || 0;
-            if (bronceA !== bronceB) return bronceB - bronceA;
-
-            // Desempate: Valor de equipo (patrimonio) en la última jornada
-            let valorA = a.valor_equipo || 0; 
-            let valorB = b.valor_equipo || 0;
-            return valorB - valorA;
-        });
-
-        // 3. Construimos la cabecera de la tabla
-        let html = `
-            <div class="card" style="padding: 15px; border-color: var(--accent);">
-                <div class="card-title" style="margin-bottom: 15px; text-align: left; font-size: 1.15rem;">🏅 Medallero</div>
-                <table class="tabla-compacta" style="width: 100%; text-align: center; font-size: 0.95rem;">
-                    <thead>
-                        <tr style="color: #9ca3af; border-bottom: 1px solid #374151; font-size: 0.75rem;">
-                            <th style="padding-bottom: 8px; text-align: center; width: 45px;">POS</th>
-                            <th style="padding-bottom: 8px; text-align: left;">MÁNAGER</th>
-                            <th style="padding-bottom: 8px; text-align: center;">🥇</th>
-                            <th style="padding-bottom: 8px; text-align: center;">🥈</th>
-                            <th style="padding-bottom: 8px; text-align: center;">🥉</th>
-                            <th style="padding-bottom: 8px; text-align: center;">TOT</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
-
-        // 4. Recorremos la lista ya ordenada y dibujamos cada fila
-        lista.forEach((mgr, index) => {
-            let oro = mgr.oros || 0;
-            let plata = mgr.platas || 0;
-            let bronce = mgr.bronces || 0;
-            let total = oro + plata + bronce;
-
-            // Lógica del Círculo Destacado: Buscamos su metal más alto (>0) y le damos prioridad (Oro > Plata > Bronce)
-            let maxVal = Math.max(oro, plata, bronce);
-            let highlightOro = (oro === maxVal && oro > 0) ? 'border: 1px solid #f59e0b; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #f59e0b; font-weight: bold;' : '';
-            let highlightPlata = (plata === maxVal && plata > 0 && !highlightOro) ? 'border: 1px solid #d1d5db; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #d1d5db; font-weight: bold;' : '';
-            let highlightBronce = (bronce === maxVal && bronce > 0 && !highlightOro && !highlightPlata) ? 'border: 1px solid #d97706; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; color: #d97706; font-weight: bold;' : '';
-
-            // Trofeos de Posición
-            let posIcon = `<span style="color: #9ca3af; font-weight:bold;">${index + 1}º</span>`;
-            if (index === 0) posIcon = '🥇';
-            else if (index === 1) posIcon = '🥈';
-            else if (index === 2) posIcon = '🥉';
-
-            // Avatar (Si tuvieras imagen real, cambia el 👤 por un <img src="${mgr.foto}">)
-            let avatarHtml = `<div class="foto-hundible" style="width: 34px; height: 34px; margin: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">👤</div>`;
-
-            html += `
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: 10px 0;">${posIcon}</td>
-                    <td style="padding: 10px 0; text-align: left;">
-                        <div style="display: flex; align-items: center;">
-                            ${avatarHtml}
-                        </div>
-                    </td>
-                    <td style="padding: 10px 0;"><span style="${highlightOro || 'color:#f3f4f6;'}">${oro}</span></td>
-                    <td style="padding: 10px 0;"><span style="${highlightPlata || 'color:#f3f4f6;'}">${plata}</span></td>
-                    <td style="padding: 10px 0;"><span style="${highlightBronce || 'color:#f3f4f6;'}">${bronce}</span></td>
-                    <td style="padding: 10px 0; font-weight: 900; color: #60a5fa;">${total}</td>
-                </tr>
-            `;
-        });
-
-        html += `
-                    </tbody>
-                </table>
-            </div>
-        `;
-
-        // 5. Inyectamos en el modal y lo mostramos (Usando tu estructura actual)
-        let modalContent = document.getElementById('pastilla-modal-content');
-        if (modalContent) {
-            modalContent.innerHTML = html;
-            document.getElementById('pastillaModal').classList.add('active');
         }
     }
 
