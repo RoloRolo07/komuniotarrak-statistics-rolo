@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 19:22</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 19:39</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1025,18 +1025,17 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let badgeMin = data.min === worstMin && worstMin > 0 ? `<span class="badge-rec-min" style="padding:2px 8px;">${fmtE(data.min)}</span>` : fmtE(data.min);
                         let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span style="background: rgba(249, 115, 22, 0.15); color: #fb923c; padding: 2px 8px; border-radius: 12px; font-weight: bold; border: 1px solid rgba(249, 115, 22, 0.4); font-size: 0.9rem;">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));
                         
-                        // Encontrar el UID para la foto
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === mgr)?.uid : null;
                         let fotoHtml = uid ? getFotoHtml(uid) : '👤';
                         
-                        return `<tr><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
+                        return `<tr><td style="text-align:center;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8);">${fotoHtml}</div></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
                     }).join('');
 
                     htmlFinanzas += `
                     <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
                         <div class="card-title" style="color:var(--gold); font-size: 1rem; margin-bottom: 8px;">📈 Picos y Media de Plantilla</div>
                         <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
-                            <thead><tr><th style="text-align:left;">Mánager</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th><th style="text-align:right;">Media</th></tr></thead>
+                            <thead><tr><th style="text-align:center;">Mánager</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th><th style="text-align:right;">Media</th></tr></thead>
                             <tbody>${filasPicos}</tbody>
                         </table>
                     </div>`;
@@ -1060,14 +1059,14 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
                     let fotoHtml = uid ? getFotoHtml(uid) : '👤';
                     
-                    return `<tr><td>${idx+1}º</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${m.manager}</b></td><td><b>${valTotalStr}</b></td><td style="color:var(--muted);">${valComps}</td><td style="color:var(--muted);">${valVents}</td></tr>`;
+                    return `<tr><td>${idx+1}º</td><td style="text-align:center;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8);">${fotoHtml}</div></td><td><b>${valTotalStr}</b></td><td style="color:var(--muted);">${valComps}</td><td style="color:var(--muted);">${valVents}</td></tr>`;
                 }).join('');
 
                 htmlFinanzas += `
                     <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
                         <div class="card-title" style="color:var(--blue); font-size: 1rem; margin-bottom: 8px;">📊 Total Movimientos de Mercado</div>
                         <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
-                            <thead><tr><th>Pos</th><th style="text-align:left;">Mánager</th><th>Total Movs.</th><th>🛒 Compras</th><th>💰 Ventas</th></tr></thead>
+                            <thead><tr><th>Pos</th><th style="text-align:center;">Mánager</th><th>Total Movs.</th><th>🛒 Compras</th><th>💰 Ventas</th></tr></thead>
                             <tbody>${filasMovs}</tbody>
                         </table>
                     </div>`;
@@ -1089,14 +1088,14 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === d.manager)?.uid : null;
                         let fotoHtml = uid ? getFotoHtml(uid) : '👤';
 
-                        return `<tr><td>${posStr}</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${d.manager}</b></td><td class="val-pos" style="text-align:right;">+${fmtE(d.ingreso)}${pendienteHtml}</td><td>${badgeU}</td><td>${badgeP}</td><td>${badgeA}</td></tr>`;
+                        return `<tr><td>${posStr}</td><td style="text-align:center;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8);">${fotoHtml}</div></td><td class="val-pos" style="text-align:right;">+${fmtE(d.ingreso)}${pendienteHtml}</td><td>${badgeU}</td><td>${badgeP}</td><td>${badgeA}</td></tr>`;
                     }).join('');
 
                     htmlFinanzas += `
                     <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
                         <div class="card-title" style="color:var(--accent); font-size: 1rem; margin-bottom: 8px;">💰 Ranking de Paguitas</div>
                         <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
-                            <thead><tr><th>Pos</th><th style="text-align:left;">Mánager</th><th style="text-align:right;">Total Ingresado</th><th>Último</th><th>Penúltimo</th><th>Antepenúltimo</th></tr></thead>
+                            <thead><tr><th>Pos</th><th style="text-align:center;">Mánager</th><th style="text-align:right;">Total Ingresado</th><th>Último</th><th>Penul.</th><th>Antepen.</th></tr></thead>
                             <tbody>${filasPaguitas}</tbody>
                         </table>
                     </div>`;
@@ -1129,14 +1128,14 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let posStr = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º';
                     let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === d.manager)?.uid : null;
                     let fotoHtml = uid ? getFotoHtml(uid) : '👤';
-                    return `<tr><td>${posStr}</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${d.manager}</b></td><td class="val-neg" style="text-align:right;">${d.valor > 0 ? '-' : ''}${fmtE(d.valor)}</td></tr>`;
+                    return `<tr><td>${posStr}</td><td style="text-align:center;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8);">${fotoHtml}</div></td><td class="val-neg" style="text-align:right;">${d.valor > 0 ? '-' : ''}${fmtE(d.valor)}</td></tr>`;
                 }).join('');
 
                 htmlFinanzas += `
                     <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
                         <div class="card-title" style="color:var(--danger); font-size: 1rem; margin-bottom: 8px;">⚖️ Ranking de Sancionados</div>
                         <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
-                            <thead><tr><th>Pos</th><th style="text-align:left;">Mánager</th><th style="text-align:right;">Valor Sanción</th></tr></thead>
+                            <thead><tr><th>Pos</th><th style="text-align:center;">Mánager</th><th style="text-align:right;">Valor Sanción</th></tr></thead>
                             <tbody>${filasSancionados}</tbody>
                         </table>
                     </div>`;
@@ -1144,7 +1143,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 htmlFinanzas += `</div>`;
                 modalContent.innerHTML = htmlFinanzas;
 
-                // Y aquí aplicamos el truco para que Chart.js formatee los millones a "M" (ej: 90M)
+                // Gráfico Chart.js formateando los 90.000.000 a 90M
                 setTimeout(() => {
                     chartFinInit = false; 
                     const ctxVal = document.getElementById('chart-valor')?.getContext('2d');
