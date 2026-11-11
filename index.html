@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 14:28</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 14:38</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -998,6 +998,128 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
                 htmlMedallero += `</tbody></table></div>`;
                 modalContent.innerHTML = htmlMedallero;
+
+            } else if (submodo === 'finanzas') {
+                let htmlFinanzas = `<div style="padding:16px; overflow-x:hidden;">
+                    <div class="card-title" style="margin-bottom:16px; justify-content:center; font-size:1.2rem;">💰 Finanzas y Mercado</div>`;
+
+                // 1. Gráfico de Evolución
+                htmlFinanzas += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px;">
+                        <div class="card-title" style="color:var(--white); font-size: 1rem; margin-bottom: 8px;">💶 Evolución Valor de Plantillas <span class="muted" style="font-size:0.8rem; font-weight:normal; margin-left:8px;">(Por jornada)</span></div>
+                        <div style="height: 250px; position: relative;">
+                            <canvas id="chart-valor"></canvas>
+                        </div>
+                    </div>`;
+
+                // 2. Picos y Media de Plantilla
+                if(globalStats.finanzas_resumen) {
+                    let fr = Object.values(globalStats.finanzas_resumen);
+                    let bestMedia = Math.max(...fr.map(d => d.media));
+                    let bestMax = Math.max(...fr.map(d => d.max));
+                    let worstMin = Math.min(...fr.map(d => d.min).filter(v => v > 0));
+                    if (worstMin === Infinity) worstMin = 0;
+
+                    let filasPicos = Object.entries(globalStats.finanzas_resumen).sort((a,b) => b[1].media - a[1].media).map(([mgr, data]) => {
+                        let badgeMax = data.max === bestMax && bestMax > 0 ? `<span class="badge-rec-max" style="padding:2px 8px;">${fmtE(data.max)}</span>` : fmtE(data.max);
+                        let badgeMin = data.min === worstMin && worstMin > 0 ? `<span class="badge-rec-min" style="padding:2px 8px;">${fmtE(data.min)}</span>` : fmtE(data.min);
+                        let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span style="background: rgba(249, 115, 22, 0.15); color: #fb923c; padding: 2px 8px; border-radius: 12px; font-weight: bold; border: 1px solid rgba(249, 115, 22, 0.4); font-size: 0.9rem;">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));
+                        return `<tr><td style="text-align:left;"><b>${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
+                    }).join('');
+
+                    htmlFinanzas += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
+                        <div class="card-title" style="color:var(--gold); font-size: 1rem; margin-bottom: 8px;">📈 Picos y Media de Plantilla <span class="muted" style="font-size:0.8rem; font-weight:normal; margin-left:8px;">(Por jornada)</span></div>
+                        <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
+                            <thead><tr><th style="text-align:left;">Mánager</th><th style="text-align:right;">Máximo</th><th style="text-align:right;">Mínimo</th><th style="text-align:right;">Media</th></tr></thead>
+                            <tbody>${filasPicos}</tbody>
+                        </table>
+                    </div>`;
+                }
+
+                // 3. Movimientos de Mercado
+                let ordenadosMovs = [...managers].sort((a,b) => (b.compras_realizadas + b.ventas_realizadas) - (a.compras_realizadas + a.ventas_realizadas));
+                let maxMovs = Math.max(...managers.map(m => m.compras_realizadas + m.ventas_realizadas));
+                let minMovs = Math.min(...managers.map(m => m.compras_realizadas + m.ventas_realizadas));
+                let maxComp = Math.max(...managers.map(m => m.compras_realizadas));
+                let minComp = Math.min(...managers.map(m => m.compras_realizadas));
+                let maxVent = Math.max(...managers.map(m => m.ventas_realizadas));
+                let minVent = Math.min(...managers.map(m => m.ventas_realizadas));
+
+                let filasMovs = ordenadosMovs.map((m, idx) => {
+                    let totalMovs = m.compras_realizadas + m.ventas_realizadas;
+                    let valTotalStr = (totalMovs === maxMovs && maxMovs > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${totalMovs}</span>` : ((totalMovs === minMovs) ? `<span class="badge-rec-min" style="padding:2px 8px;">${totalMovs}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${totalMovs}</span>`);
+                    let valComps = (m.compras_realizadas === maxComp && maxComp > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${m.compras_realizadas}</span>` : ((m.compras_realizadas === minComp) ? `<span class="badge-rec-min" style="padding:2px 8px;">${m.compras_realizadas}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${m.compras_realizadas}</span>`);
+                    let valVents = (m.ventas_realizadas === maxVent && maxVent > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${m.ventas_realizadas}</span>` : ((m.ventas_realizadas === minVent) ? `<span class="badge-rec-min" style="padding:2px 8px;">${m.ventas_realizadas}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${m.ventas_realizadas}</span>`);
+                    return `<tr><td style="text-align:left;">${idx === 0 ? '🥇 ' : ''}<b>${m.manager}</b></td><td><b>${valTotalStr}</b></td><td style="color:var(--muted);">${valComps}</td><td style="color:var(--muted);">${valVents}</td></tr>`;
+                }).join('');
+
+                htmlFinanzas += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
+                        <div class="card-title" style="color:var(--blue); font-size: 1rem; margin-bottom: 8px;">📊 Total Movimientos de Mercado</div>
+                        <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
+                            <thead><tr><th style="text-align:left;">Mánager</th><th>Total Movs.</th><th>🛒 Compras</th><th>💰 Ventas</th></tr></thead>
+                            <tbody>${filasMovs}</tbody>
+                        </table>
+                    </div>`;
+
+                // 4. Ranking de Paguitas
+                if(globalStats.paguitas_ranking) {
+                    let pagData = Object.values(globalStats.paguitas_ranking).filter(p => p.manager).sort((a,b) => b.ingreso - a.ingreso);
+                    let maxUlt = pagData.length ? Math.max(...pagData.map(p => p.ultimo)) : 0;
+                    let maxPen = pagData.length ? Math.max(...pagData.map(p => p.penultimo)) : 0;
+                    let maxAnt = pagData.length ? Math.max(...pagData.map(p => p.antepenultimo)) : 0;
+                    
+                    let filasPaguitas = pagData.map((d, i) => {
+                        let badgeU = d.ultimo === maxUlt && maxUlt > 0 ? `<span class="badge-red">${d.ultimo}</span>` : d.ultimo;
+                        let badgeP = d.penultimo === maxPen && maxPen > 0 ? `<span class="badge-orange">${d.penultimo}</span>` : d.penultimo;
+                        let badgeA = d.antepenultimo === maxAnt && maxAnt > 0 ? `<span class="badge-yellow">${d.antepenultimo}</span>` : d.antepenultimo;
+                        let pendienteHtml = d.pendientes_count > 0 ? `<span style="color:var(--gold); font-size:0.75rem; margin-left:4px;" title="Pendiente ⏳">(${d.pendientes_count} ⏳)</span>` : '';
+                        return `<tr><td>${i+1}º</td><td style="text-align:left;"><b>${d.manager}</b></td><td class="val-pos" style="text-align:right;">+${fmtE(d.ingreso)}${pendienteHtml}</td><td>${badgeU}</td><td>${badgeP}</td><td>${badgeA}</td></tr>`;
+                    }).join('');
+
+                    htmlFinanzas += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
+                        <div class="card-title" style="color:var(--accent); font-size: 1rem; margin-bottom: 8px;">💰 Ranking de Paguitas</div>
+                        <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
+                            <thead><tr><th>Pos</th><th style="text-align:left;">Mánager</th><th style="text-align:right;">Total Ingresado</th><th>Último</th><th>Penúltimo</th><th>Antepenúltimo</th></tr></thead>
+                            <tbody>${filasPaguitas}</tbody>
+                        </table>
+                    </div>`;
+                }
+
+                // 5. Ranking de Sancionados
+                let sancionadosData = [];
+                if (globalStats.clasif_general_actual) {
+                    for (let uid in mgr_metrics) {
+                        let mgrObj = globalStats.clasif_general_actual.find(m => m.uid === uid);
+                        if (mgrObj) sancionadosData.push({ manager: mgrObj.manager, valor: mgr_metrics[uid].sanciones || 0 });
+                    }
+                }
+                sancionadosData.sort((a,b) => b.valor - a.valor);
+                
+                let filasSancionados = sancionadosData.map((d, i) => {
+                    let posStr = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º';
+                    return `<tr><td>${posStr}</td><td style="text-align:left;"><b>${d.manager}</b></td><td class="val-neg" style="text-align:right;">${d.valor > 0 ? '-' : ''}${fmtE(d.valor)}</td></tr>`;
+                }).join('');
+
+                htmlFinanzas += `
+                    <div class="card" style="padding: 12px; margin-bottom: 16px; overflow-x: auto;">
+                        <div class="card-title" style="color:var(--danger); font-size: 1rem; margin-bottom: 8px;">⚖️ Ranking de Sancionados</div>
+                        <table class="tabla-compacta" style="width:100%; font-size: 0.85rem; text-align: center;">
+                            <thead><tr><th>Pos</th><th style="text-align:left;">Mánager</th><th style="text-align:right;">Valor Sanción</th></tr></thead>
+                            <tbody>${filasSancionados}</tbody>
+                        </table>
+                    </div>`;
+
+                htmlFinanzas += `</div>`;
+                modalContent.innerHTML = htmlFinanzas;
+
+                // El pequeño truco para que Chart.js enganche con el nuevo canvas del modal
+                setTimeout(() => {
+                    chartFinInit = false; 
+                    initChartFinanzas();
+                }, 100);   
             } else {
                 modalContent.innerHTML = `<div class="card text-block" style="text-align:center;">🛠️ <b>${submodo.toUpperCase()}</b><br>Próximamente disponible.</div>`;
             }
