@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 19:14</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 11/11/2026 19:22</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -1026,7 +1026,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let badgeMedia = data.media === bestMedia && bestMedia > 0 ? `<span style="background: rgba(249, 115, 22, 0.15); color: #fb923c; padding: 2px 8px; border-radius: 12px; font-weight: bold; border: 1px solid rgba(249, 115, 22, 0.4); font-size: 0.9rem;">${fmtE(Math.round(data.media))}</span>` : fmtE(Math.round(data.media));
                         
                         // Encontrar el UID para la foto
-                        let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === mgr);
+                        let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === mgr)?.uid : null;
                         let fotoHtml = uid ? getFotoHtml(uid) : '👤';
                         
                         return `<tr><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${mgr}</b></td><td style="text-align:right;">${badgeMax}</td><td style="text-align:right;">${badgeMin}</td><td style="text-align:right;">${badgeMedia}</td></tr>`;
@@ -1057,7 +1057,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                     let valComps = (m.compras_realizadas === maxComp && maxComp > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${m.compras_realizadas}</span>` : ((m.compras_realizadas === minComp) ? `<span class="badge-rec-min" style="padding:2px 8px;">${m.compras_realizadas}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${m.compras_realizadas}</span>`);
                     let valVents = (m.ventas_realizadas === maxVent && maxVent > 0) ? `<span class="badge-rec-max" style="padding:2px 8px;">${m.ventas_realizadas}</span>` : ((m.ventas_realizadas === minVent) ? `<span class="badge-rec-min" style="padding:2px 8px;">${m.ventas_realizadas}</span>` : `<span style="font-weight: normal; color: #e5e7eb;">${m.ventas_realizadas}</span>`);
                     
-                    let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === m.manager);
+                    let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === m.manager)?.uid : null;
                     let fotoHtml = uid ? getFotoHtml(uid) : '👤';
                     
                     return `<tr><td>${idx+1}º</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${m.manager}</b></td><td><b>${valTotalStr}</b></td><td style="color:var(--muted);">${valComps}</td><td style="color:var(--muted);">${valVents}</td></tr>`;
@@ -1086,7 +1086,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                         let pendienteHtml = d.pendientes_count > 0 ? `<span style="color:var(--gold); font-size:0.75rem; margin-left:4px;" title="Pendiente ⏳">(${d.pendientes_count} ⏳)</span>` : '';
                         
                         let posStr = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º';
-                        let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === d.manager);
+                        let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === d.manager)?.uid : null;
                         let fotoHtml = uid ? getFotoHtml(uid) : '👤';
 
                         return `<tr><td>${posStr}</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${d.manager}</b></td><td class="val-pos" style="text-align:right;">+${fmtE(d.ingreso)}${pendienteHtml}</td><td>${badgeU}</td><td>${badgeP}</td><td>${badgeA}</td></tr>`;
@@ -1127,7 +1127,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 
                 let filasSancionados = sancionadosData.map((d, i) => {
                     let posStr = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1)+'º';
-                    let uid = Object.keys(mapa_ids).find(key => mapa_ids[key] === d.manager);
+                    let uid = globalStats.clasif_general_actual ? globalStats.clasif_general_actual.find(x => x.manager === d.manager)?.uid : null;
                     let fotoHtml = uid ? getFotoHtml(uid) : '👤';
                     return `<tr><td>${posStr}</td><td style="text-align:left;"><div class="manager-avatar-btn" style="display:inline-flex; transform:scale(0.8); margin-right:4px;">${fotoHtml}</div><b style="vertical-align:super;">${d.manager}</b></td><td class="val-neg" style="text-align:right;">${d.valor > 0 ? '-' : ''}${fmtE(d.valor)}</td></tr>`;
                 }).join('');
