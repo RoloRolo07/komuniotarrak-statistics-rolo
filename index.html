@@ -361,7 +361,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </head>
 <body>
 <header>
-    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 14/11/2026 13:36</div></div>
+    <div class="header-top"><div class="brand">KOMUNIOTARRAK</div><div class="subtitle">Generado por Rolo | Actualizado: 14/11/2026 13:56</div></div>
 <!-- SE ELIMINÓ LA VIEJA BOTONERA (main-nav) -->
 </header>
 
@@ -2600,6 +2600,19 @@ tr:hover td { background: rgba(255,255,255,0.02); }
             }
 
             let caraAGeneral = document.querySelector('#tarjeta-general .manager-card-front .tarjeta-cuerpo');
+            
+            // --- CHIVATOS DE DEBUGGING ---
+            console.log("DEBUG JS - Abriendo tarjeta de:", nombreManager, "UID:", uidManager);
+            console.log("DEBUG JS - Récords Puros (Filtro inicial):", globalStats.recordsPuros);
+            console.log("DEBUG JS - Fluctuaciones Históricas Completas:", globalStats.fluctuaciones_historicas);
+            
+            if (globalStats.fluctuaciones_historicas && globalStats.fluctuaciones_historicas[uidManager]) {
+                console.log("DEBUG JS - Fluctuaciones de este mánager:", globalStats.fluctuaciones_historicas[uidManager]);
+            } else {
+                console.warn("DEBUG JS - ⚠️ ATENCIÓN: No hay datos de fluctuación para este UID.");
+            }
+            // -----------------------------
+            
             if (caraAGeneral) {
                 caraAGeneral.innerHTML = `
                     <div class="caja-datos">
